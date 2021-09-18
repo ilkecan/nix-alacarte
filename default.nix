@@ -8,6 +8,7 @@ let
     genericClosure
     isAttrs
     mapAttrs
+    readDir
     substring
     tryEval
   ;
@@ -125,16 +126,28 @@ let
     mergeSets (map (getOcamlPackagesFrom pkgs packageNames) ocamlScopeNames);
 
   forEachAttr = set: f: mapAttrs f set;
+
+  getFilesWithSuffix = suffix: directory:
+    let
+      nixFiles = filterAttrs
+        (file: type: type == "regular" && hasSuffix suffix file)
+        (readDir directory);
+    in
+    map (f: ./. + "/${f}") (attrNames nixFiles);
+
+  getPatches = directory: getFilesWithSuffix ".patch" directory;
 in
 {
   inherit
     createDebugSymbolsSearchPath
     createOcamlOverlays
     createOverlays
+    forEachAttr
     getClosure
+    getFilesWithSuffix
     getOcamlPackages
     getOcamlPackagesFrom
+    getPatches
     getUnstableVersion
-    forEachAttr
   ;
 }
