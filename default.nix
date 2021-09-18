@@ -123,6 +123,8 @@ let
 
   getOcamlPackages = pkgs: packageNames:
     mergeSets (map (getOcamlPackagesFrom pkgs packageNames) ocamlScopeNames);
+
+  forEachAttr = set: f: mapAttrs f set;
 in
 {
   inherit
@@ -133,5 +135,6 @@ in
     getOcamlPackages
     getOcamlPackagesFrom
     getUnstableVersion
+    forEachAttr
   ;
 }
