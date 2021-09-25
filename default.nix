@@ -129,11 +129,11 @@ let
 
   getFilesWithSuffix = suffix: directory:
     let
-      nixFiles = filterAttrs
+      files = filterAttrs
         (file: type: type == "regular" && hasSuffix suffix file)
         (readDir directory);
     in
-    map (f: ./. + "/${f}") (attrNames nixFiles);
+    map (f: directory + "/${f}") (attrNames files);
 
   getPatches = directory: getFilesWithSuffix ".patch" directory;
 in
