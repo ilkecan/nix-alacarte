@@ -7,5 +7,9 @@
 
   outputs = { self, nixpkgs }: {
     lib = import ./lib { inherit (nixpkgs) lib; };
+    tests = import ./tests {
+      inherit (nixpkgs) lib;
+      nix-utils = self.lib;
+    };
   };
 }
