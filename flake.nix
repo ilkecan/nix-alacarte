@@ -6,6 +6,6 @@
   };
 
   outputs = { self, nixpkgs }: {
-    lib = import ./. { inherit (nixpkgs) lib; };
+    lib = import ./lib { inherit (nixpkgs) lib; };
   };
 }
