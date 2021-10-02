@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: nix-utils
+Upstream-Contact: ilkecan <ilkecan@protonmail.com>
+Source: https://git.sr.ht/~ilkecan/nix-utils
+
+Files: *.lock
+Copyright: 2021 ilkecan <ilkecan@protonmail.com>
+License: Unlicense
+
+Files: *.md
+Copyright: 2021 ilkecan <ilkecan@protonmail.com>
+License: CC-BY-SA-4.0
+
+Files: *.nix
+Copyright: 2021 ilkecan <ilkecan@protonmail.com>
+License: MPL-2.0
