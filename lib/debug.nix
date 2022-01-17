@@ -17,16 +17,15 @@ let
 in
 
 rec {
-  createDebugSymbolsSearchPath = pkgs: drvs:
+  createDebugSymbolsSearchPath = { stdenv }: drvs:
     let
-      inherit (pkgs) stdenv;
       inherit (stdenv) isLinux;
 
       defaultBuildInputs = optionals isLinux [ stdenv.glibc ];
 
       runtimeDependencies = defaultBuildInputs ++ getClosure drvs;
       debuggableDependencies = filter hasDebugInfo runtimeDependencies;
-      debugOutputs = map (drv: drv.debug) debuggableDependencies;
+      debugOutputs = map (drv: drv.debug or drv.out) debuggableDependencies;
       debugSymbolsSearchPath = makeSearchPath "lib/debug" debugOutputs;
     in
     debugSymbolsSearchPath;
