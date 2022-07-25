@@ -10,7 +10,7 @@ let
   ;
 in
 
-rec {
+{
   importCargoLock = directory:
     let
       cargoLock = importTOML "${toString directory}/Cargo.lock";

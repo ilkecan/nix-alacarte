@@ -15,12 +15,9 @@ let
     splitString
     stringAsChars
   ;
-
-  inherit (nix-utils)
-  ;
 in
 
-rec {
+{
   getUnstableVersion = lastModifiedDate:
     let
       year = substring 0 4 lastModifiedDate;
