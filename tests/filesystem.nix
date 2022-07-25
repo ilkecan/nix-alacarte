@@ -2,36 +2,42 @@
 
 let
   inherit (nix-utils)
-    getFilesWithSuffix
-    listFilenamesWithSuffix
-    listFilepathsWithSuffix
+    filesOf
     relTo
   ;
 in
 
 {
-  "getFilesWithSuffix" = {
-    expr = getFilesWithSuffix ".c" ./data;
-    expected = {
-      "app" = ./data/app.c;
-      "main" = ./data/main.c;
+  "filesOf_with_suffix" = {
+    expr = filesOf ./data {
+      withSuffix = ".c";
     };
+    expected = [
+      ./data/app.c
+      ./data/main.c
+    ];
   };
 
-  "listFilenamesWithSuffix" = {
-    expr = listFilenamesWithSuffix ".c" ./data;
+  "filesOf_use_relative_paths" = {
+    expr = filesOf ./data {
+      withSuffix = ".c";
+      useRelativePaths = true;
+    };
     expected = [
       "app.c"
       "main.c"
     ];
   };
 
-  "listFilepathsWithSuffix" = {
-    expr = listFilepathsWithSuffix ".c" ./data;
-    expected = [
-      ./data/app.c
-      ./data/main.c
-    ];
+  "filesOf_as_attrs" = {
+    expr = filesOf ./data {
+      withSuffix = ".c";
+      asAttrs = true;
+    };
+    expected = {
+      "app" = ./data/app.c;
+      "main" = ./data/main.c;
+    };
   };
 
   "relTo_path" = {
