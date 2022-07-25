@@ -13,8 +13,8 @@ in
   "getFilesWithSuffix" = {
     expr = getFilesWithSuffix ".c" ./data;
     expected = {
-      "app.c" = ./data/app.c;
-      "main.c" = ./data/main.c;
+      "app" = ./data/app.c;
+      "main" = ./data/main.c;
     };
   };
 

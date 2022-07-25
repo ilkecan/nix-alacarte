@@ -3,14 +3,15 @@
 let
   inherit (builtins)
     attrNames
-    mapAttrs
-    readDir
     filter
+    listToAttrs
+    readDir
   ;
 
   inherit (lib)
-    filterAttrs
     hasSuffix
+    nameValuePair
+    removeSuffix
   ;
 
   inherit (nix-utils)
@@ -23,11 +24,11 @@ in
 {
   getFilesWithSuffix = suffix: dir:
     let
-      files = filterAttrs
-        (file: _: hasSuffix suffix file)
-        (readDir dir);
+      filenames = listFilenamesWithSuffix suffix dir;
+      filenamePathPair = f:
+        nameValuePair (removeSuffix suffix f) (relTo dir f);
     in
-    mapAttrs (name: _: relTo dir name) files;
+    listToAttrs (map filenamePathPair filenames);
 
   listFilenamesWithSuffix = suffix: dir:
     filter (hasSuffix suffix) (attrNames (readDir dir));
