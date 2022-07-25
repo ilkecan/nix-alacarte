@@ -4,6 +4,7 @@ let
   inherit (nix-utils)
     getFilesWithSuffix
     getFilesWithSuffix'
+    relTo
   ;
 in
 
@@ -27,5 +28,15 @@ in
   "getFilesWithSuffix_empty" = {
     expr = getFilesWithSuffix ".h" ./data;
     expected = [ ];
+  };
+
+  "relTo_path" = {
+    expr = relTo ./data "abc";
+    expected = ./data/abc;
+  };
+
+  "relTo_string" = {
+    expr = relTo (toString ./data) "abc";
+    expected = toString ./data/abc;
   };
 }

@@ -15,6 +15,7 @@ let
   inherit (nix-utils)
     getFilesWithSuffix
     getFilesWithSuffix'
+    relTo
   ;
 in
 
@@ -28,7 +29,10 @@ in
         (file: type: type == "regular" && hasSuffix suffix file)
         (readDir directory);
     in
-    mapAttrs (name: _: directory + "/${name}") files;
+    mapAttrs (name: _: relTo directory name) files;
 
   getPatches = getFilesWithSuffix ".patch";
+
+  relTo = dir: path:
+    dir + "/${path}";
 }
