@@ -2,20 +2,21 @@
 
 let
   inherit (builtins)
-    map
+    foldl'
   ;
+
   inherit (lib)
-    foldl
-    importTOML
+    mergeAttrs
   ;
+
   inherit (nix-utils)
+    mergeListOfAttrs
   ;
 in
 
-rec {
+{
   mapListToAttrs = f: list:
-    mergeAttrs (map f list);
+    mergeListOfAttrs (map f list);
 
-  mergeAttrs = sets:
-    foldl (l: r: l // r) {} sets;
+  mergeListOfAttrs = foldl' mergeAttrs { };
 }

@@ -3,7 +3,7 @@
 let
   inherit (nix-utils)
     mapListToAttrs
-    mergeAttrs
+    mergeListOfAttrs
   ;
 in
 
@@ -32,8 +32,8 @@ in
     };
   };
 
-  "mergeAttrs" = {
-    expr = mergeAttrs [
+  "mergeListOfAttrs" = {
+    expr = mergeListOfAttrs [
       { "a" = 1; }
       { "b" = 2; }
     ];
