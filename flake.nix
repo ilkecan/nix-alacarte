@@ -2,7 +2,7 @@
   description = "small code snippets to reduce code duplication";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-21.05";
+    nixpkgs.url = "nixpkgs/nixos-22.05";
   };
 
   outputs = { self, nixpkgs }: {
