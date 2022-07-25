@@ -7,6 +7,7 @@ let
     genericClosure
     isAttrs
   ;
+
   inherit (lib)
     filterAttrs
     flatten
