@@ -10,7 +10,7 @@ let
   ;
 in
 
-rec {
+{
   lines = splitString "\n";
 
   unlines = concatStringsSep "\n";

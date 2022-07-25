@@ -25,7 +25,7 @@ let
 in
 
 {
-  getClosure = drvs:
+  closureOf = drvs:
     let
       closure = genericClosure {
         startSet = map wrap drvs;
