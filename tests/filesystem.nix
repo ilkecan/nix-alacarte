@@ -40,6 +40,18 @@ in
     };
   };
 
+  "filesOf_excluded_paths" = {
+    expr = filesOf ./data {
+      withSuffix = ".c";
+      excludedPaths = [ ./data/app.c ];
+      asAttrs = true;
+    };
+    expected = {
+      "main" = ./data/main.c;
+    };
+  };
+
+
   "relTo_path" = {
     expr = relTo ./data "abc";
     expected = ./data/abc;

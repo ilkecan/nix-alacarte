@@ -46,6 +46,7 @@ in
         let
           path = relTo dir name;
           stem = removeSuffix withSuffix name;
+
           file = if useRelativePaths then name else path;
           file' = if hasSuffix withSuffix name then file else null;
           file'' = if asAttrs then nameValuePair stem file' else file';
@@ -53,12 +54,11 @@ in
         if elem path excludedPaths then null
         else if type == "directory" && recursive then filesOf path args
         else file'';
+
       files' = mapAttrsToList f files;
       files'' = if recursive then flatten files' else files';
-      files''' = if asAttrs then listToAttrs files'' else files'';
-      notNull = x: x != null;
-      filterFunc = if asAttrs then filterAttrs (_: notNull) else filter notNull;
-      files'''' = filterFunc files''';
+      files''' = filter (x: x.value or x != null) files'';
+      files'''' = if asAttrs then listToAttrs files''' else files''';
     in
     files'''';
 
