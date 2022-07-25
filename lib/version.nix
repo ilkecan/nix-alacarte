@@ -18,14 +18,6 @@ let
 in
 
 {
-  getUnstableVersion = lastModifiedDate:
-    let
-      year = substring 0 4 lastModifiedDate;
-      month = substring 4 2 lastModifiedDate;
-      day = substring 6 2 lastModifiedDate;
-    in
-    "unstable-${year}-${month}-${day}";
-
   getCmakeVersion = file:
     let
       content = readFile file;
@@ -38,4 +30,12 @@ in
       version = concatStringsSep "." versionNumbers;
     in
     version;
+
+  getUnstableVersion = lastModifiedDate:
+    let
+      year = substring 0 4 lastModifiedDate;
+      month = substring 4 2 lastModifiedDate;
+      day = substring 6 2 lastModifiedDate;
+    in
+    "unstable-${year}-${month}-${day}";
 }

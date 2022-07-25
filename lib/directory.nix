@@ -19,6 +19,9 @@ let
 in
 
 {
+  getFilesWithSuffix = suffix: directory:
+    attrValues (getFilesWithSuffix' suffix directory);
+
   getFilesWithSuffix' = suffix: directory:
     let
       files = filterAttrs
@@ -26,9 +29,6 @@ in
         (readDir directory);
     in
     mapAttrs (name: _: directory + "/${name}") files;
-
-  getFilesWithSuffix = suffix: directory:
-    attrValues (getFilesWithSuffix' suffix directory);
 
   getPatches = getFilesWithSuffix ".patch";
 }

@@ -6,7 +6,6 @@ let
     filter
     genericClosure
     isAttrs
-    map
   ;
   inherit (lib)
     filterAttrs
@@ -14,8 +13,6 @@ let
     hasPrefix
     hasSuffix
     unique
-  ;
-  inherit (nix-utils)
   ;
 
   wrap = drv: { key = drv.outPath; inherit drv; };
@@ -26,7 +23,7 @@ let
   reduceToDerivations = deps: unique (filter isAttrs (flatten deps));
 in
 
-rec {
+{
   getClosure = drvs:
     let
       closure = genericClosure {
