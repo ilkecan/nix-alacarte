@@ -6,6 +6,7 @@ let
   ;
 
   inherit (lib)
+    concat
     mergeAttrs
   ;
 
@@ -15,6 +16,8 @@ let
 in
 
 {
+  concatListOfLists = foldl' concat [ ];
+
   mapListToAttrs = f: list:
     mergeListOfAttrs (map f list);
 
