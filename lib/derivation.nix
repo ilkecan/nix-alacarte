@@ -9,4 +9,7 @@ in
 {
   overridePackageWith = pkg: overrides:
     pkg.override (mergeListOfAttrs overrides);
+
+  sourceOf = pkg:
+    pkg.src or pkg;
 }
