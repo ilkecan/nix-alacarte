@@ -2,9 +2,10 @@
 
 let
   inherit (builtins)
-    attrValues
+    attrNames
     mapAttrs
     readDir
+    filter
   ;
 
   inherit (lib)
@@ -14,24 +15,28 @@ let
 
   inherit (nix-utils)
     getFilesWithSuffix
-    getFilesWithSuffix'
+    listFilenamesWithSuffix
     relTo
   ;
 in
 
 {
-  getFilesWithSuffix = suffix: directory:
-    attrValues (getFilesWithSuffix' suffix directory);
-
-  getFilesWithSuffix' = suffix: directory:
+  getFilesWithSuffix = suffix: dir:
     let
       files = filterAttrs
-        (file: type: type == "regular" && hasSuffix suffix file)
-        (readDir directory);
+        (file: _: hasSuffix suffix file)
+        (readDir dir);
     in
-    mapAttrs (name: _: relTo directory name) files;
+    mapAttrs (name: _: relTo dir name) files;
 
-  getPatches = getFilesWithSuffix ".patch";
+  listFilenamesWithSuffix = suffix: dir:
+    filter (hasSuffix suffix) (attrNames (readDir dir));
+
+  listFilepathsWithSuffix = suffix: dir:
+    let
+      filenames = listFilenamesWithSuffix suffix dir;
+    in
+    map (relTo dir) filenames;
 
   relTo = dir: path:
     dir + "/${path}";

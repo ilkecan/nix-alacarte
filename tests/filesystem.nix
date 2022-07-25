@@ -3,31 +3,35 @@
 let
   inherit (nix-utils)
     getFilesWithSuffix
-    getFilesWithSuffix'
+    listFilenamesWithSuffix
+    listFilepathsWithSuffix
     relTo
   ;
 in
 
 {
-  "getFilesWithSuffix'" = {
-    expr = getFilesWithSuffix' ".c" ./data;
+  "getFilesWithSuffix" = {
+    expr = getFilesWithSuffix ".c" ./data;
     expected = {
       "app.c" = ./data/app.c;
       "main.c" = ./data/main.c;
     };
   };
 
-  "getFilesWithSuffix" = {
-    expr = getFilesWithSuffix ".c" ./data;
+  "listFilenamesWithSuffix" = {
+    expr = listFilenamesWithSuffix ".c" ./data;
+    expected = [
+      "app.c"
+      "main.c"
+    ];
+  };
+
+  "listFilepathsWithSuffix" = {
+    expr = listFilepathsWithSuffix ".c" ./data;
     expected = [
       ./data/app.c
       ./data/main.c
     ];
-  };
-
-  "getFilesWithSuffix_empty" = {
-    expr = getFilesWithSuffix ".h" ./data;
-    expected = [ ];
   };
 
   "relTo_path" = {
