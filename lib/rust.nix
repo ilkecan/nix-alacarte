@@ -1,11 +1,10 @@
 { lib, nix-utils }:
 
 let
-  inherit (builtins)
-  ;
   inherit (lib)
     importTOML
   ;
+
   inherit (nix-utils)
     mapListToAttrs
   ;
@@ -19,4 +18,7 @@ rec {
     mapListToAttrs (p: {
       ${p.name} = p;
     }) cargoLock.package;
+
+  importCargoToml = directory:
+    importTOML "${toString directory}/Cargo.toml";
 }

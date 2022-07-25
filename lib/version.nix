@@ -9,6 +9,7 @@ let
     sort
     substring
   ;
+
   inherit (lib)
     hasInfix
     splitString
