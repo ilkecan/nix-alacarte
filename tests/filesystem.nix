@@ -10,7 +10,7 @@ in
 {
   "filesOf_with_suffix" = {
     expr = filesOf ./data {
-      withSuffix = ".c";
+      withExtension = "c";
     };
     expected = [
       ./data/app.c
@@ -20,8 +20,8 @@ in
 
   "filesOf_use_relative_paths" = {
     expr = filesOf ./data {
-      withSuffix = ".c";
-      useRelativePaths = true;
+      withExtension = "c";
+      return = "name";
     };
     expected = [
       "app.c"
@@ -31,7 +31,7 @@ in
 
   "filesOf_as_attrs" = {
     expr = filesOf ./data {
-      withSuffix = ".c";
+      withExtension = "c";
       asAttrs = true;
     };
     expected = {
@@ -42,15 +42,25 @@ in
 
   "filesOf_excluded_paths" = {
     expr = filesOf ./data {
-      withSuffix = ".c";
-      excludedPaths = [ ./data/app.c ];
       asAttrs = true;
+      excludedPaths = [ ./data/app.c ];
+      withExtension = "c";
     };
     expected = {
       "main" = ./data/main.c;
     };
   };
 
+  "filesOf_strip_suffix" = {
+    expr = filesOf ./data {
+      withExtension = "c";
+      return = "stem";
+    };
+    expected = [
+      "app"
+      "main"
+    ];
+  };
 
   "relTo_path" = {
     expr = relTo ./data "abc";
