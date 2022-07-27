@@ -21,7 +21,7 @@ in
   };
 
   "mapListToAttrs" = {
-    expr = mapListToAttrs (e: { ${e.name} = e; }) [
+    expr = mapListToAttrs (e: { name = e.name; value = e; }) [
       {
         name = "a";
         value = 1;

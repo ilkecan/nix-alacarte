@@ -15,9 +15,7 @@ in
     let
       cargoLock = importTOML "${toString directory}/Cargo.lock";
     in
-    mapListToAttrs (p: {
-      ${p.name} = p;
-    }) cargoLock.package;
+    mapListToAttrs (p: { name = p.name; value = p; }) cargoLock.package;
 
   importCargoToml = directory:
     importTOML "${toString directory}/Cargo.toml";

@@ -3,15 +3,12 @@
 let
   inherit (builtins)
     foldl'
+    listToAttrs
   ;
 
   inherit (lib)
     concat
     mergeAttrs
-  ;
-
-  inherit (nix-utils)
-    mergeListOfAttrs
   ;
 in
 
@@ -19,7 +16,7 @@ in
   concatListOfLists = foldl' concat [ ];
 
   mapListToAttrs = f: list:
-    mergeListOfAttrs (map f list);
+    listToAttrs (map f list);
 
   mergeListOfAttrs = foldl' mergeAttrs { };
 }
