@@ -6,6 +6,7 @@ let
     filter
     getAttr
     listToAttrs
+    pathExists
     readDir
   ;
 
@@ -80,6 +81,9 @@ in
       files'''' = if asAttrs then listToAttrs files''' else files''';
     in
     files'''';
+
+  filterByRelPath = relPath:
+    filter (dir: pathExists (relTo dir relPath));
 
   relTo = dir: path:
     dir + "/${path}";
