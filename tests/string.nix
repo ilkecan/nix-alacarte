@@ -4,6 +4,7 @@ let
   inherit (nix-utils)
     lines
     unlines
+    unwords
     words
   ;
 
@@ -71,5 +72,10 @@ in
   "unlines_multi" = {
     expr = unlines [ "veni" "vidi" "vici" ];
     expected = "veni\nvidi\nvici";
+  };
+
+  "unwords" = {
+    expr = unwords [ "nix" "repl" "--file" "'<nixpkgs>'" ];
+    expected = "nix repl --file '<nixpkgs>'";
   };
 }

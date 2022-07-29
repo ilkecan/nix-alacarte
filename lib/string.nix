@@ -34,4 +34,5 @@ in
   words = splitString " ";
 
   unlines = concatStringsSep "\n";
+  unwords = concatStringsSep " ";
 }
