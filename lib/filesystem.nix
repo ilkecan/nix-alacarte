@@ -51,7 +51,11 @@ in
       f = getAttr return;
       f' = if withExtension == "" then const id else
         file: val: if hasSuffix suffix file.name then val else null;
-      f'' =
+      f'' = file: val:
+        if elem file.path excludedPaths then null
+        else if file.type == "directory" && recursive then filesOf file.path args
+        else val;
+      f''' =
         if asAttrs then
           file: val:
             if val != null then
@@ -64,16 +68,14 @@ in
         let
           path = relTo dir name;
           stem = removeSuffix suffix name;
-          file = { inherit name path stem; };
+          file = { inherit name path stem type; };
 
           val = f file;
           val' = f' file val;
           val'' = f'' file val';
+          val''' = f''' file val'';
         in
-        if elem path excludedPaths then null
-        else if type == "directory" && recursive then filesOf path args
-        else val'';
-
+        val''';
 
       files' = mapAttrsToList g files;
       files'' = if recursive then flatten files' else files';

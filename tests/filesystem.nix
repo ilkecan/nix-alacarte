@@ -40,6 +40,21 @@ in
     };
   };
 
+  "filesOf_recursive as_attrs" = {
+    expr = filesOf ./data {
+      asAttrs = true;
+      recursive = true;
+      withExtension = "c";
+    };
+    expected = {
+      app = ./data/app.c;
+      main = ./data/main.c;
+      subdir = {
+        log = ./data/subdir/log.c;
+      };
+    };
+  };
+
   "filesOf_excluded_paths" = {
     expr = filesOf ./data {
       asAttrs = true;
