@@ -31,6 +31,7 @@ in
   };
 
   lines = splitString "\n";
+  words = splitString " ";
 
   unlines = concatStringsSep "\n";
 }

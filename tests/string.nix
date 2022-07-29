@@ -4,6 +4,7 @@ let
   inherit (nix-utils)
     lines
     unlines
+    words
   ;
 
   inherit (nix-utils.letterCase)
@@ -55,6 +56,11 @@ in
   "lines_multi" = {
     expr = lines "veni\nvidi\nvici";
     expected = [ "veni" "vidi" "vici" ];
+  };
+
+  "words" = {
+    expr = words "nix repl --file '<nixpkgs>'";
+    expected = [ "nix" "repl" "--file" "'<nixpkgs>'" ];
   };
 
   "unlines_single" = {
