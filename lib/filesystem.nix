@@ -41,9 +41,11 @@ in
   }@args:
     assert assertOneOf "return" return [ "path" "name" "stem" ];
     assert assertMsg (return == "stem" -> withExtension != "")
-      "`withExtension` cannot be an empty string while `return` is \"stem\"";
+      "`withExtension` cannot be an empty string while `return` is \"stem\".";
+    assert assertMsg (asAttrs -> withExtension != "")
+      "`withExtension` cannot be an empty string while `asAttrs` is true.";
     assert assertMsg (recursive -> return == "path")
-      "`return` must be \"path\" while `recursive` is true";
+      "`return` must be \"path\" while `recursive` is true.";
 
     let
       suffix = ".${withExtension}";
