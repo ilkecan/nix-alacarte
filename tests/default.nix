@@ -9,7 +9,6 @@ let
     readDir
   ;
   inherit (lib)
-    filterAttrs
     flatten
     mapAttrsToList
     subtractLists
@@ -41,6 +40,6 @@ let
 in
 
 if failedTestNames == [ ] then
-  "All tests passed\n"
+  "All tests passed.\n"
 else
   "Following tests failed: ${sep}${concatStringsSep sep failedTestNames}\n"

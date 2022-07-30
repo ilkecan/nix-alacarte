@@ -1,4 +1,4 @@
-{ pkgs ? null, lib }@args:
+{ pkgs, lib, nix-utils }:
 
 let
   inherit (builtins)
@@ -8,24 +8,25 @@ let
   ;
 
   inherit (lib)
-    callPackageWith
     fix
-    optional
     subtractLists
   ;
 
-  callPackage = callPackageWith args;
+  inherit (pkgs)
+    callPackage
+  ;
+
   files = attrNames (readDir ./.);
   nonLibFiles = [
     "default.nix"
-  ] ++ optional (pkgs == null) "pkgs";
+  ];
   libFiles = subtractLists nonLibFiles files;
 in
 fix (self:
   let
     importLib = file:
       callPackage "${toString ./.}/${file}" {
-        nix-utils = self;
+        nix-utils = nix-utils // self;
       };
   in
   foldl' (l: r: l // r) {} (map importLib libFiles)

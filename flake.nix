@@ -3,18 +3,33 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs }: {
-    overlay = final: prev: {
-      nix-utils = import ./lib { inherit (final) lib; };
-    };
+  outputs = { self, nixpkgs, ... }@inputs:
+    nixpkgs.lib.recursiveUpdate {
+      overlays = rec {
+        default = nix-utils;
+        nix-utils = final: prev: {
+          nix-utils = final.callPackage ./lib { };
+        };
+      };
 
-    lib = import ./lib { inherit (nixpkgs) lib; };
+      lib = import ./lib { inherit (nixpkgs) lib; };
+    } (inputs.flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
+        inherit (pkgs) callPackage;
+      in
+      rec {
+        lib = callPackage ./lib { };
 
-    tests = import ./tests {
-      inherit (nixpkgs) lib;
-      nix-utils = self.lib;
-    };
-  };
+        packages = rec {
+          default = tests;
+          tests = callPackage ./tests {
+            nix-utils = lib;
+          };
+        };
+      }
+    ));
 }

@@ -1,4 +1,4 @@
 ## tests
-```shell
-nix eval --raw '.#tests'
+``` bash
+nix eval --raw '.'
 ```
