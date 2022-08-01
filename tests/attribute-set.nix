@@ -3,6 +3,7 @@
 let
   inherit (nix-utils)
     forEachAttr
+    getExistingAttrs
   ;
 in
 
@@ -12,5 +13,10 @@ in
       name + "-" + value
     );
     expected = { x = "x-foo"; y = "y-bar"; };
+  };
+
+  "getExistingAttrs" = {
+    expr = getExistingAttrs [ "y" "z" ] { x = "foo"; y = "bar"; };
+    expected = { y = "bar"; };
   };
 }
