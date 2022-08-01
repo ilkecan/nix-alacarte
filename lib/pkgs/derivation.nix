@@ -8,13 +8,13 @@
 let
   inherit (builtins)
     baseNameOf
-    isList
   ;
 
   inherit (lib)
     escapeShellArg
     mapAttrsToList
     optionalString
+    toList
   ;
 
   inherit (nix-utils)
@@ -29,9 +29,8 @@ let
     arg = name: value: "--${name} ${escapeShellArg value}";
     flag = name: enabled: optionalString enabled "--${name}";
     listOfArgs = name: values:
-      if !isList values then format.arg name values else
       let
-        args = map (value: "--${name} ${escapeShellArg value}") values;
+        args = map (format.arg name) (toList values);
       in
       unwords args;
     attrsOfArgs = argName: values:
