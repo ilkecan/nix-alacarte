@@ -19,6 +19,9 @@ let
 in
 
 {
+  addPassthru = passthru: drv:
+    drv // { passthru = (drv.passthru or { }) // passthru; };
+
   mkOverlay = inputs: drvFuncFile:
     (final: prev: {
       ${kebabToCamel (removeSuffix ".nix" (baseNameOf drvFuncFile))} =
