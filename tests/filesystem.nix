@@ -77,13 +77,22 @@ in
     ];
   };
 
-  "relTo_path" = {
+  "relTo_path_path" = {
+    expr = relTo ./data /abc;
+    expected = ./data/abc;
+  };
+
+  "relTo_path_string" = {
     expr = relTo ./data "abc";
     expected = ./data/abc;
   };
 
-  "relTo_string" = {
-    expr = relTo (toString ./data) "abc";
-    expected = toString ./data/abc;
+  "relTo_string_path" = {
+    expr = relTo "./data" /abc;
+    expected = "./data//abc";
+  };
+  "relTo_string_string" = {
+    expr = relTo "./data" "abc";
+    expected = "./data/abc";
   };
 }

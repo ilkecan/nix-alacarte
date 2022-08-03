@@ -90,5 +90,5 @@ in
     filter (dir: pathExists (relTo dir relPath));
 
   relTo = dir: path:
-    dir + "/${path}";
+    dir + "/${toString path}";
 }
