@@ -7,8 +7,9 @@ let
   ;
 
   inherit (lib)
-    removeSuffix
     forEach
+    getValues
+    removeSuffix
   ;
 
   inherit (nix-utils)
@@ -25,11 +26,10 @@ in
   addPassthru = passthru: drv:
     let
       drv' = drv // listToAttrs outputList // passthru // {
-        ${optionalValue (drv ? all) "all"} = all;
+        ${optionalValue (drv ? all) "all"} = getValues outputList;
         passthru = drv.passthru or { } // passthru;
       };
 
-      all = map (x: x.value) outputList;
       outputList = forEach (drv.outputs or [ ]) (outputName: {
         name = outputName;
         value = drv' // {
