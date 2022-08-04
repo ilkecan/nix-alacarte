@@ -66,6 +66,7 @@ in
     ## nullOr
     mkNullOr = type:
       mkOption' (types.nullOr type) null;
+    nullOrBool = mkNullOr types.bool;
     nullOrInt = mkNullOr types.int;
     nullOrPath = mkNullOr types.path;
     nullOrStr = mkNullOr types.str;
