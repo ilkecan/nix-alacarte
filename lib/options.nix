@@ -1,6 +1,12 @@
 { lib, nix-utils }:
 
 let
+  inherit (builtins)
+    concatStringsSep
+    isList
+    mapAttrs
+  ;
+
   inherit (lib)
     types
   ;
@@ -97,6 +103,10 @@ in
     attrsOfInt = mkAttrsOf types.int;
     attrsOfStr = mkAttrsOf types.str;
     settings = mkAttrsOf settingsValue;
+    envVars = lib.mkOption {
+      type = with types; attrsOf (either str (listOf str));
+      apply = mapAttrs (_n: v: if isList v then concatStringsSep ":" v else v);
+    };
 
     mkAttrsOf' = type:
       mkOption' (types.attrsOf type);
