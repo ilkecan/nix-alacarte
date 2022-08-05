@@ -45,10 +45,10 @@ in
       });
     in drv';
 
-  mkOverlay = inputs: drvFuncFile:
+  mkOverlay = args: drvFuncFile:
     (final: prev: {
       ${kebabToCamel (removeSuffix ".nix" (baseNameOf drvFuncFile))} =
-          final.callPackage drvFuncFile { inherit inputs; };
+          final.callPackage drvFuncFile args;
     });
 
   overridePackageWith = pkg: overrides:
