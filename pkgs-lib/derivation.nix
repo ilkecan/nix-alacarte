@@ -17,11 +17,11 @@ let
     toList
   ;
 
-  inherit (nix-utils)
+  inherit (nix-utils.lib)
     unwords
   ;
 
-  inherit (nix-utils.letterCase)
+  inherit (nix-utils.lib.letterCase)
     camelToKebab
   ;
 

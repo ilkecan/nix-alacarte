@@ -1,7 +1,7 @@
 { nix-utils }:
 
 let
-  inherit (nix-utils)
+  inherit (nix-utils.lib)
     filesOf
     relTo
   ;

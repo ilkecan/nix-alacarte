@@ -1,4 +1,6 @@
-{ pkgs ? null, lib }@args:
+{
+  lib,
+}@args:
 
 let
   inherit (builtins)
@@ -10,7 +12,6 @@ let
   inherit (lib)
     callPackageWith
     fix
-    optional
     subtractLists
   ;
 
@@ -18,7 +19,7 @@ let
   files = attrNames (readDir ./.);
   nonLibFiles = [
     "default.nix"
-  ] ++ optional (pkgs == null) "pkgs";
+  ];
   libFiles = subtractLists nonLibFiles files;
 in
 fix (self:
