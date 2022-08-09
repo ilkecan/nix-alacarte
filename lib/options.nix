@@ -11,12 +11,6 @@ let
     types
   ;
 
-  mkOption = type:
-    lib.mkOption { inherit type; };
-
-  mkOption' = type: default:
-    lib.mkOption { inherit type default; };
-
   settingsValue = with types; oneOf [
     bool
     int
@@ -30,6 +24,11 @@ in
 
 {
   options = rec {
+    mkOption = type:
+      lib.mkOption { inherit type; };
+    mkOption' = type: default:
+    lib.mkOption { inherit type default; };
+
     ## bool
     mkBool = mkOption' types.bool;
     bool = mkOption types.bool;
