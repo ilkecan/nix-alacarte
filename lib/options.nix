@@ -50,7 +50,6 @@ in
     ## str
     str = mkOption types.str;
     mkStr = mkOption' types.str;
-    pathOrStr = mkOption (types.coercedTo types.path toString types.str);
 
     ## int
     int = mkOption types.int;
