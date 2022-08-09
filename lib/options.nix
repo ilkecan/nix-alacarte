@@ -36,6 +36,7 @@ in
     disable = mkBool true;
 
     ## package
+    package = mkOption types.package;
     mkPackage = mkOption' types.package;
 
     ## settings
