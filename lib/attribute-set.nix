@@ -12,6 +12,8 @@ let
 
   inherit (lib)
     filterAttrs
+    mapAttrs'
+    nameValuePair
   ;
 
   inherit (nix-utils)
@@ -25,12 +27,15 @@ in
   forEachAttr = set: f:
     mapAttrs f set;
 
-  getExistingAttrs = names: attrs:
+  getExistingAttrs = names: set:
     let
-      getAttrIfExists = attrs: name:
-        { ${optionalValue (hasAttr name attrs) name} = attrs.${name}; };
+      getAttrIfExists = set: name:
+        { ${optionalValue (hasAttr name set) name} = set.${name}; };
     in
-    mergeListOfAttrs (map (getAttrIfExists attrs) names);
+    mergeListOfAttrs (map (getAttrIfExists set) names);
 
   removeNullAttrs = filterAttrs (_: notNull);
+
+  renameAttrs = f:
+    mapAttrs' (name: value: nameValuePair (f name value) value);
 }

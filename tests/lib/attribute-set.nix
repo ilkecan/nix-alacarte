@@ -8,6 +8,7 @@ let
     forEachAttr
     getExistingAttrs
     removeNullAttrs
+    renameAttrs
   ;
 in
 
@@ -27,5 +28,10 @@ in
   "removeNullAttrs" = {
     expr = removeNullAttrs { a = false; b = null; c = 2; };
     expected = { a = false; c = 2; };
+  };
+
+  "renameAttrs" = {
+    expr = renameAttrs (name: value: "${name}-${toString value}") { a = 1; b = 2; };
+    expected = { "a-1" = 1; "b-2" = 2; };
   };
 }
