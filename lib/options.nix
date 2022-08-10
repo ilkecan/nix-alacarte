@@ -26,6 +26,15 @@ in
     mkOption' = type: default:
     lib.mkOption { inherit type default; };
 
+    apply = f: option:
+      option // { apply = f; };
+    default = value: option:
+      option // { default = value; };
+    internal = option:
+      option // { internal = true; };
+    readOnly = option:
+      option // { readOnly = true; };
+
     ## bool
     mkBool = mkOption' types.bool;
     bool = mkOption types.bool;
