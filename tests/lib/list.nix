@@ -8,6 +8,7 @@ let
     concatListOfLists
     mapListToAttrs
     mergeListOfAttrs
+    removeNulls
   ;
 in
 
@@ -57,5 +58,10 @@ in
       "a" = 1;
       "b" = 2;
     };
+  };
+
+  "removeNulls" = {
+    expr = removeNulls [ false null 2 ];
+    expected = [ false 2 ];
   };
 }

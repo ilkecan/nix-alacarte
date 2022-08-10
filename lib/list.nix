@@ -6,6 +6,7 @@
 
 let
   inherit (builtins)
+    filter
     foldl'
     listToAttrs
   ;
@@ -13,6 +14,10 @@ let
   inherit (lib)
     concat
     mergeAttrs
+  ;
+
+  inherit (nix-utils)
+    notNull
   ;
 in
 
@@ -23,4 +28,6 @@ in
     listToAttrs (map f list);
 
   mergeListOfAttrs = foldl' mergeAttrs { };
+
+  removeNulls = filter notNull;
 }
