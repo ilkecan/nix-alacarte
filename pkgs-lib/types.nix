@@ -14,7 +14,7 @@ let
     mkOptionType
   ;
 
-  inherit (nix-utils.lib)
+  inherit (nix-utils)
     addPassthru
     options
   ;
@@ -23,11 +23,7 @@ let
     wrapPackage
   ;
 
-  types =
-    lib.types
-    // nix-utils.lib.types
-    // nix-utils.pkgs-lib.types
-  ;
+  types = lib.types // nix-utils.types;
 
   mkArgType = name:
     types.submodule {

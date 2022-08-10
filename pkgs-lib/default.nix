@@ -2,15 +2,16 @@
   inputs,
   system,
   lib ? inputs.nixpkgs.lib,
-  nix-utils ? { inherit (inputs.self) lib; },
+  nix-utils ? inputs.self.lib,
 }@args:
 
 let
   inherit (lib)
     fix
+    recursiveUpdate
   ;
 
-  inherit (nix-utils.lib)
+  inherit (nix-utils)
     filesOf
     mergeListOfAttrs
   ;
@@ -22,16 +23,13 @@ let
   args' = args // {
     inherit
       lib
-      nix-utils
     ;
   };
 in
 fix (self:
   let
     args'' = args' // {
-      nix-utils = nix-utils // {
-        pkgs-lib = self;
-      };
+      nix-utils = recursiveUpdate nix-utils self;
     };
     importLib = file:
       import file args'';

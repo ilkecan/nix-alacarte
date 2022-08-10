@@ -5,11 +5,11 @@
 }:
 
 let
-  inherit (nix-utils.pkgs-lib)
+  inherit (nix-utils)
     types
   ;
 
-  inherit (nix-utils.lib.options)
+  inherit (nix-utils.options)
     mkOption
   ;
 in
