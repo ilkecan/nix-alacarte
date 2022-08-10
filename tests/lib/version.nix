@@ -1,7 +1,10 @@
-{ nix-utils }:
+{
+  nix-utils,
+  ...
+}:
 
 let
-  inherit (nix-utils.lib)
+  inherit (nix-utils)
     getUnstableVersion
     getCmakeVersion
   ;

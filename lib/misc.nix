@@ -1,4 +1,8 @@
-{ lib, nix-utils }:
+{
+  lib,
+  nix-utils,
+  ...
+}:
 
 {
   optionalValue = condition: value:

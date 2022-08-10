@@ -1,30 +1,40 @@
-{ lib, nix-utils }:
+{
+  inputs,
+  system,
+  lib ? inputs.nixpkgs.lib,
+  nix-utils ? inputs.self.outputs.libs.${system},
+}:
 
 let
   inherit (builtins)
-    attrNames
     concatStringsSep
     filter
-    map
-    readDir
   ;
+
   inherit (lib)
     flatten
     mapAttrsToList
-    subtractLists
   ;
+
+  inherit (nix-utils)
+    filesOf
+  ;
+
+  testFiles = filesOf ./. {
+    excludedPaths = [ ./data ./default.nix ];
+  };
+  importTest = file:
+    import file {
+      inherit
+        lib
+        nix-utils
+      ;
+    };
+
+  testBlocks = map importTest testFiles;
 
   testPassed = { expr, expected }:
     expr == expected;
-
-  files = attrNames (readDir ./.);
-  nonTestFiles = [
-    "data"
-    "default.nix"
-  ];
-  testFiles = subtractLists nonTestFiles files;
-  testBlocks = map (f: import "${toString ./.}/${f}" { inherit nix-utils; }) testFiles;
-
   testCases = map (testBlock:
     mapAttrsToList (testName: testCase: {
       name = testName;

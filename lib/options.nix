@@ -1,12 +1,9 @@
-{ lib, nix-utils }:
+{
+  lib,
+  ...
+}:
 
 let
-  inherit (builtins)
-    concatStringsSep
-    isList
-    mapAttrs
-  ;
-
   inherit (lib)
     types
   ;

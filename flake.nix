@@ -4,56 +4,45 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
+    overlayln = {
+      url = "github:ilkecan/overlayln";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        # https://github.com/NixOS/nix/issues/4931
+        nix-utils.follows = "";
+      };
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
-      inherit (inputs.flake-utils.lib)
-        eachDefaultSystem
-        eachDefaultSystemMap
-      ;
-
-      inherit (nixpkgs.lib)
-        recursiveUpdate
-      ;
+      inherit (inputs.flake-utils.lib) eachDefaultSystem;
+      inherit (nixpkgs.lib) recursiveUpdate;
     in
     recursiveUpdate {
       overlays = rec {
         default = nix-utils;
 
-        nix-utils = final: prev: {
-          nix-utils = {
-            lib = final.callPackage ./lib { };
-            pkgs-lib = final.callPackage ./pkgs-lib { };
-          };
+        nix-utils = final: _prev: {
+          nix-utils =
+            final.recursiveUpdate
+              (final.callPackage ./lib { inherit inputs; })
+              (final.callPackage ./pkgs-lib { inherit inputs; })
+            ;
         };
       };
 
-      lib = import ./lib { inherit (nixpkgs) lib; };
-      libs = {
-        default = self.lib;
+      lib = import ./lib { inherit inputs; };
+      libs.default = self.lib;
+    } (eachDefaultSystem (system: {
+      pkgs-lib = import ./pkgs-lib { inherit inputs system; };
+
+      libs = recursiveUpdate self.lib self.pkgs-lib.${system};
+
+      packages = rec {
+        default = tests;
+        tests = import ./tests/lib { inherit inputs system; };
       };
-    } (eachDefaultSystem (system:
-      let
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
-        inherit (pkgs) callPackage;
-      in
-      {
-        pkgs-lib = callPackage ./pkgs-lib {
-          nix-utils = { inherit (self) lib; };
-        };
-
-        libs = recursiveUpdate self.lib self.pkgs-lib.${system};
-
-        packages = rec {
-          default = tests.lib;
-
-          tests = {
-            lib = callPackage ./tests/lib {
-              nix-utils = { inherit (self) lib; };
-            };
-          };
-        };
-      }
-    ));
+    }));
 }

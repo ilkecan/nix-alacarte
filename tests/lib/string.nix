@@ -1,14 +1,17 @@
-{ nix-utils }:
+{
+  nix-utils,
+  ...
+}:
 
 let
-  inherit (nix-utils.lib)
+  inherit (nix-utils)
     lines
     unlines
     unwords
     words
   ;
 
-  inherit (nix-utils.lib.letterCase)
+  inherit (nix-utils.letterCase)
     camelToKebab
     camelToSnake
     kebabToCamel

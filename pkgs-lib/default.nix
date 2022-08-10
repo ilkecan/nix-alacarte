@@ -1,8 +1,9 @@
 {
-  lib,
-  nix-utils,
-  pkgs,
-}:
+  inputs,
+  system,
+  lib ? inputs.nixpkgs.lib,
+  nix-utils ? { inherit (inputs.self) lib; },
+}@args:
 
 let
   inherit (lib)
@@ -14,22 +15,26 @@ let
     mergeListOfAttrs
   ;
 
-  inherit (pkgs)
-    callPackage
-  ;
-
   libFiles = filesOf ./. {
     excludedPaths = [ ./default.nix ];
+  };
+
+  args' = args // {
+    inherit
+      lib
+      nix-utils
+    ;
   };
 in
 fix (self:
   let
-    importLib = file:
-      callPackage file {
-        nix-utils = nix-utils // {
-          pkgs-lib = self;
-        };
+    args'' = args' // {
+      nix-utils = nix-utils // {
+        pkgs-lib = self;
       };
+    };
+    importLib = file:
+      import file args'';
   in
   mergeListOfAttrs (map importLib libFiles)
 )

@@ -1,5 +1,6 @@
 {
-  lib,
+  inputs,
+  lib ? inputs.nixpkgs.lib,
 }@args:
 
 let
@@ -10,12 +11,12 @@ let
   ;
 
   inherit (lib)
-    callPackageWith
     fix
     subtractLists
   ;
 
-  callPackage = callPackageWith args;
+  # https://github.com/NixOS/nix/issues/1461
+  args' = args // { inherit lib; };
   files = attrNames (readDir ./.);
   nonLibFiles = [
     "default.nix"
@@ -24,10 +25,11 @@ let
 in
 fix (self:
   let
+    args'' = args' // {
+      nix-utils = self;
+    };
     importLib = file:
-      callPackage "${toString ./.}/${file}" {
-        nix-utils = self;
-      };
+    import "${toString ./.}/${file}" args'';
   in
   foldl' (l: r: l // r) {} (map importLib libFiles)
 )

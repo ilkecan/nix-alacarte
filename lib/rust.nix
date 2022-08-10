@@ -1,4 +1,8 @@
-{ lib, nix-utils }:
+{
+  lib,
+  nix-utils,
+  ...
+}:
 
 let
   inherit (lib)

@@ -1,8 +1,10 @@
 {
+  inputs,
+  system,
   lib,
-  makeWrapper,
   nix-utils,
-  runCommandLocal,
+  pkgs ? inputs.nixpkgs.legacyPackages.${system},
+  ...
 }:
 
 let
@@ -23,6 +25,11 @@ let
 
   inherit (nix-utils.lib.letterCase)
     camelToKebab
+  ;
+
+  inherit (pkgs)
+    makeWrapper
+    runCommandLocal
   ;
 
   format = {
@@ -84,8 +91,8 @@ let
     chdir = arg;
     run = listOfArgs;
 
-    addFlags = arg;
-    appendFlags = arg;
+    addFlags = listOfArgs;
+    appendFlags = listOfArgs;
 
     prefix = listOfArgAttrs argValueIndices.prefix;
     suffix = listOfArgAttrs argValueIndices.prefix;
@@ -102,24 +109,24 @@ in
     name ? baseNameOf (if outPath == "" then exe else outPath),
 
     argv0 ? null,
-    inheritArgv0 ? null,
+    inheritArgv0 ? false,
 
-    set ? null,
-    setDefault ? null,
-    unset ? null,
+    set ? { },
+    setDefault ? { },
+    unset ? [ ],
 
     chdir ? null,
-    run ? null,
+    run ? [ ],
 
-    addFlags ? null,
-    appendFlags ? null,
+    addFlags ? [ ],
+    appendFlags ? [ ],
 
-    prefix ? null,
-    suffix ? null,
-    prefixEach ? null,
-    suffixEach ? null,
-    prefixContents ? null,
-    suffixContents ? null,
+    prefix ? [ ],
+    suffix ? [ ],
+    prefixEach ? [ ],
+    suffixEach ? [ ],
+    prefixContents ? [ ],
+    suffixContents ? [ ],
   }@args:
   let
     env = { nativeBuildInputs = [ makeWrapper ]; };
