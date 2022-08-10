@@ -10,8 +10,13 @@ let
     mapAttrs
   ;
 
+  inherit (lib)
+    filterAttrs
+  ;
+
   inherit (nix-utils)
     mergeListOfAttrs
+    notNull
     optionalValue
   ;
 in
@@ -26,4 +31,6 @@ in
         { ${optionalValue (hasAttr name attrs) name} = attrs.${name}; };
     in
     mergeListOfAttrs (map (getAttrIfExists attrs) names);
+
+  removeNullAttrs = filterAttrs (_: notNull);
 }

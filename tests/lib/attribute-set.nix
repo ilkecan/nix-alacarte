@@ -7,6 +7,7 @@ let
   inherit (nix-utils)
     forEachAttr
     getExistingAttrs
+    removeNullAttrs
   ;
 in
 
@@ -21,5 +22,10 @@ in
   "getExistingAttrs" = {
     expr = getExistingAttrs [ "y" "z" ] { x = "foo"; y = "bar"; };
     expected = { y = "bar"; };
+  };
+
+  "removeNullAttrs" = {
+    expr = removeNullAttrs { a = false; b = null; c = 2; };
+    expected = { a = false; c = 2; };
   };
 }
