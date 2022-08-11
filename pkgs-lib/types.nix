@@ -10,6 +10,7 @@
 let
   inherit (lib)
     getExe
+    mkDefault
     mkMerge
     mkOptionType
   ;
@@ -109,7 +110,7 @@ in
           };
 
           config = mkMerge [
-            default
+            (mkDefault default)
             {
               final = addPassthru {
                 exe = getExe wrapped;
