@@ -44,7 +44,7 @@ in
     package = mkOption types.package;
 
     ## settings
-    mkSettings = format:
+    format = format:
       mkOption' format { };
 
     ## lines
