@@ -10,6 +10,7 @@ let
     removeNullAttrs
     renameAttrs
     setAttr
+    setAttrByPath'
   ;
 in
 
@@ -44,5 +45,15 @@ in
   "setAttr_new" = {
     expr = setAttr "new" true { existing = false; };
     expected = { existing = false; new = true; };
+  };
+
+  "setAttrByPath'" = {
+    expr = setAttrByPath' [ "top" ] true { top = false; other = "hey"; };
+    expected = { top = true; other = "hey"; };
+  };
+
+  "setAttrByPath'_nested" = {
+    expr = setAttrByPath' [ "top" "middle" "bottom" ] 42 { top = { middle = { bottom = null; }; other = "hey"; }; };
+    expected = { top = { middle = { bottom = 42; }; other = "hey"; }; };
   };
 }
