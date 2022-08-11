@@ -32,6 +32,7 @@ let
   inherit (nix-utils)
     filesOf
     relTo
+    removeNulls
   ;
 in
 
@@ -85,7 +86,7 @@ in
 
       files' = mapAttrsToList g files;
       files'' = if recursive then flatten files' else files';
-      files''' = filter (x: x != null) files'';
+      files''' = removeNulls files'';
       files'''' = if asAttrs then listToAttrs files''' else files''';
     in
     files'''';

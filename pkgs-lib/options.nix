@@ -1,5 +1,4 @@
 {
-  lib,
   nix-utils,
   ...
 }:
@@ -10,14 +9,14 @@ let
   ;
 
   inherit (nix-utils.options)
-    mkOption
+    mkOption'
   ;
 in
 
 {
   options = {
-    smartPackage = mkOption (types.smartPackage { });
+    smartPackage = mkOption' (types.smartPackage { }) { };
     mkSmartPackage = default:
-      mkOption (types.smartPackage default);
+      mkOption' (types.smartPackage default) { };
   };
 }

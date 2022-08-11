@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    baseNameOf
     listToAttrs
   ;
 
