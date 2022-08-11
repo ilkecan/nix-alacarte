@@ -18,6 +18,7 @@ let
   inherit (nix-utils)
     addPassthru
     options
+    removeNullAttrs
   ;
 
   inherit (overlayln-lib)
@@ -69,10 +70,14 @@ in
 
     packageSubmodule = default:
       types.submodule (
-        { config, ... }:
+        args:
         let
-          wrapArgs = lib.filterAttrs (_name: value: value != null) config.wrap;
-          wrapped = wrapPackage config.drv wrapArgs;
+          cfg = args.config;
+          opt = args.options;
+
+          wrapArgs = removeNullAttrs cfg.wrap;
+          wrapped = wrapPackage cfg.drv wrapArgs;
+          pkg = if opt.wrap.highestPrio != 1500 then wrapped else cfg.drv;
         in
         {
           options = with options; {
@@ -113,8 +118,8 @@ in
             (mkDefault default)
             {
               final = addPassthru {
-                exe = getExe wrapped;
-              } wrapped;
+                exe = getExe pkg;
+              } pkg;
             }
           ];
         }
