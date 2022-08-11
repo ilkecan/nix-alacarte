@@ -38,4 +38,7 @@ in
 
   renameAttrs = f:
     mapAttrs' (name: value: nameValuePair (f name value) value);
+
+  setAttr = name: value: set:
+    set // { ${name} = value; };
 }

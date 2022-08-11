@@ -9,6 +9,7 @@ let
     getExistingAttrs
     removeNullAttrs
     renameAttrs
+    setAttr
   ;
 in
 
@@ -33,5 +34,15 @@ in
   "renameAttrs" = {
     expr = renameAttrs (name: value: "${name}-${toString value}") { a = 1; b = 2; };
     expected = { "a-1" = 1; "b-2" = 2; };
+  };
+
+  "setAttr_existing" = {
+    expr = setAttr "existing" true { existing = false; };
+    expected = { existing = true; };
+  };
+
+  "setAttr_new" = {
+    expr = setAttr "new" true { existing = false; };
+    expected = { existing = false; new = true; };
   };
 }
