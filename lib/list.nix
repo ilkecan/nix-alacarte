@@ -8,7 +8,9 @@ let
   inherit (builtins)
     filter
     foldl'
+    head
     listToAttrs
+    tail
   ;
 
   inherit (lib)
@@ -23,6 +25,12 @@ in
 
 {
   concatListOfLists = foldl' concat [ ];
+
+  headAndTails = list:
+    {
+      head = head list;
+      tail = tail list;
+    };
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);

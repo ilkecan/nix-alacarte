@@ -6,6 +6,7 @@
 let
   inherit (nix-utils)
     concatListOfLists
+    headAndTails
     mapListToAttrs
     mergeListOfAttrs
     removeNulls
@@ -22,6 +23,16 @@ in
     ];
 
     expected = [ 1 2 3 4 5 6 ];
+  };
+
+  "headAndTails" = {
+    expr = headAndTails [ 2 3 5 ];
+    expected = { head = 2; tail = [ 3 5 ]; };
+  };
+
+  "headAndTails_tail_empty" = {
+    expr = headAndTails [ true ];
+    expected = { head = true; tail = [ ]; };
   };
 
   "mapListToAttrs" = {
