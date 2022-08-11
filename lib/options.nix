@@ -32,6 +32,11 @@ in
       option // { default = value; };
     internal = option:
       option // { internal = true; };
+    optional = option:
+      option // {
+        default = option.default or null;
+        type = types.nullOr option.type;
+      };
     readOnly = option:
       option // { readOnly = true; };
 
@@ -66,16 +71,6 @@ in
     ## submodule
     submodule = module:
       mkOption' (types.submodule module) { };
-
-    ## nullOr
-    mkNullOr = type:
-      mkOption' (types.nullOr type) null;
-    nullOrBool = mkNullOr types.bool;
-    nullOrInt = mkNullOr types.int;
-    nullOrPath = mkNullOr types.path;
-    nullOrStr = mkNullOr types.str;
-    nullOrSubmodule = module:
-      mkNullOr (types.submodule module);
 
     ## listOf
     mkListOf = type:

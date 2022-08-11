@@ -13,6 +13,7 @@ let
     mkDefault
     mkMerge
     mkOptionType
+    pipe
   ;
 
   inherit (nix-utils)
@@ -84,16 +85,16 @@ in
             drv = package;
             wrap = submodule {
               options = {
-                exePath = nullOrStr;
+                exePath = pipe str [ optional ];
 
-                argv0 = nullOrStr;
+                argv0 = pipe str [ optional ];
                 inheritArgv0 = enable;
 
                 set = attrsOfStr;
                 setDefault = attrsOfStr;
                 unset = listOfStr;
 
-                chdir = nullOrStr;
+                chdir = pipe str [ optional ];
                 run = lines;
 
                 addFlags = listOfStr;
