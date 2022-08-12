@@ -6,6 +6,7 @@
 
 let
   inherit (lib)
+    pipe
     types
   ;
 
@@ -17,10 +18,9 @@ in
 {
   options = rec {
     mkOption = type:
-      lib.mkOption { inherit type; };
-    mkOption' = type: default:
-    lib.mkOption { inherit type default; };
+      pipe (lib.mkOption { inherit type; });
 
+    ## composer functions ##
     apply = setAttr "apply";
     default = setAttr "default";
     internal = setAttr "internal" true;
@@ -46,28 +46,41 @@ in
         default = { };
         type = types.attrsOf option.type;
       };
+    ## end ##
 
-    bool = mkOption types.bool;
-    enable = mkOption' types.bool false;
-    disable = mkOption' types.bool true;
+    mkBool = mkOption types.bool;
+    enable = mkBool [ (default false) ];
+    disable = mkBool [ (default true) ];
 
-    package = mkOption types.package;
-
+    mkFormat = format: fs:
+      mkOption format ([ (default { }) ] ++ fs);
     format = format:
-      mkOption' format { };
+      mkFormat format [ ];
 
-    lines = mkOption' types.lines "";
+    mkPackage = mkOption types.package;
+    package = mkPackage [ ];
 
-    str = mkOption types.str;
+    mkLines = fs:
+      mkOption types.lines ([ (default "") ] ++ fs);
+    lines = mkLines [ ];
 
-    int = mkOption types.int;
+    mkStr = mkOption types.str;
+    str = mkStr [ ];
 
-    path = mkOption types.path;
+    mkInt = mkOption types.int;
+    int = mkInt [ ];
 
-    enum = values:
+    mkPath = mkOption types.path;
+    path = mkPath [ ];
+
+    mkEnum = values:
       mkOption (types.enum values);
+    enum = values:
+      mkEnum values [ ];
 
+    mkSubmodule = module: fs:
+      mkOption (types.submodule module) ([ (default { }) ] ++ fs);
     submodule = module:
-      mkOption' (types.submodule module) { };
+      mkSubmodule module [ ];
   };
 }

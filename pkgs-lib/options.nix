@@ -6,17 +6,15 @@
 let
   inherit (nix-utils)
     types
-  ;
-
-  inherit (nix-utils.options)
-    mkOption'
+    options
   ;
 in
 
 {
-  options = {
-    smartPackage = mkOption' (types.smartPackage { }) { };
-    mkSmartPackage = default:
-      mkOption' (types.smartPackage default) { };
+  options = with options; {
+    mkSmartPackage = default': fs:
+      mkOption (types.smartPackage default') ([ (default { }) ] ++ fs);
+    smartPackage = default:
+      mkSmartPackage default [ ];
   };
 }

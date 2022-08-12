@@ -13,7 +13,6 @@ let
     mkDefault
     mkMerge
     mkOptionType
-    pipe
   ;
 
   inherit (nix-utils)
@@ -74,45 +73,44 @@ in
         args:
         let
           cfg = args.config;
-          opt = args.options;
 
           wrapArgs = removeNullAttrs cfg.wrap;
           wrapped = wrapPackage cfg.drv wrapArgs;
-          pkg = if opt.wrap.highestPrio != 1500 then wrapped else cfg.drv;
+          pkg = if cfg.wrap != null then wrapped else cfg.drv;
         in
         {
           options = with options; {
             drv = package;
-            wrap = submodule {
+            wrap = mkSubmodule {
               options = {
-                exePath = pipe str [ optional ];
+                exePath = mkStr [ optional ];
 
-                argv0 = pipe str [ optional ];
+                argv0 = mkStr [ optional ];
                 inheritArgv0 = enable;
 
-                set = pipe str [ set ];
-                setDefault = pipe str [ set ];
-                unset = pipe str [ list ];
+                set = mkStr [ set ];
+                setDefault = mkStr [ set ];
+                unset = mkStr [ list ];
 
-                chdir = pipe str [ optional ];
+                chdir = mkStr [ optional ];
                 run = lines;
 
-                addFlags = pipe str [ list ];
-                appendFlags = pipe str [ list ];
+                addFlags = mkStr [ list ];
+                appendFlags = mkStr [ list ];
 
-                prefix = pipe (mkOption prefixArg) [ list ];
-                suffix = pipe (mkOption prefixArg) [ list ];
-                prefixEach = pipe (mkOption prefixEachArg) [ list ];
-                suffixEach = pipe (mkOption prefixEachArg) [ list ];
-                prefixContents = pipe (mkOption prefixContentsArg) [ list ];
-                suffixContents = pipe (mkOption prefixContentsArg) [ list ];
+                prefix = mkOption prefixArg [ list ];
+                suffix = mkOption prefixArg [ list ];
+                prefixEach = mkOption prefixEachArg [ list ];
+                suffixEach = mkOption prefixEachArg [ list ];
+                prefixContents = mkOption prefixContentsArg [ list ];
+                suffixContents = mkOption prefixContentsArg [ list ];
               };
-            };
+            } [ optional ];
 
-            final = package // {
-              internal = true;
-              readOnly = true;
-            };
+            final = mkPackage [
+              internal
+              readOnly
+            ];
           };
 
           config = mkMerge [
