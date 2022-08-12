@@ -10,9 +10,11 @@
 let
   inherit (lib)
     getExe
+    id
     mkDefault
     mkMerge
     mkOptionType
+    pipe
   ;
 
   inherit (nix-utils)
@@ -74,13 +76,22 @@ in
         let
           cfg = args.config;
 
-          wrapArgs = removeNullAttrs cfg.wrap;
-          wrapped = wrapPackage cfg.drv wrapArgs;
-          pkg = if cfg.wrap != null then wrapped else cfg.drv;
+          override = drv:
+            drv.override cfg.override;
+          wrap = drv:
+            let
+              wrapArgs = removeNullAttrs cfg.wrap;
+            in
+            wrapPackage drv wrapArgs;
+          addExe = drv:
+            addPassthru {
+              exe = getExe drv;
+            } drv;
         in
         {
           options = with options; {
             drv = package;
+
             wrap = mkSubmodule {
               options = {
                 exePath = mkStr [ optional ];
@@ -107,6 +118,11 @@ in
               };
             } [ optional ];
 
+            override = mkOption types.raw [
+              set
+              optional
+            ];
+
             final = mkPackage [
               internal
               readOnly
@@ -116,9 +132,11 @@ in
           config = mkMerge [
             (mkDefault default)
             {
-              final = addPassthru {
-                exe = getExe pkg;
-              } pkg;
+              final = pipe cfg.drv [
+                (if cfg.override != null then override else id)
+                (if cfg.wrap != null then wrap else id)
+                addExe
+              ];
             }
           ];
         }
