@@ -41,43 +41,33 @@ in
         default = option.default or null;
         type = types.nullOr option.type;
       };
+    set = option:
+      option // {
+        default = option.default or { };
+        type = types.attrsOf option.type;
+      };
 
-    ## bool
     bool = mkOption types.bool;
     enable = mkOption' types.bool false;
     disable = mkOption' types.bool true;
 
-    ## package
     package = mkOption types.package;
 
-    ## settings
     format = format:
       mkOption' format { };
 
-    ## lines
     lines = mkOption' types.lines "";
 
-    ## str
     str = mkOption types.str;
 
-    ## int
     int = mkOption types.int;
 
-    ## path
     path = mkOption types.path;
 
-    ## enum
     enum = values:
       mkOption (types.enum values);
 
-    ## submodule
     submodule = module:
       mkOption' (types.submodule module) { };
-
-    ## attrsOf
-    mkAttrsOf = type:
-      mkOption' (types.attrsOf type) { };
-    attrsOfInt = mkAttrsOf types.int;
-    attrsOfStr = mkAttrsOf types.str;
   };
 }

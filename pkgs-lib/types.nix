@@ -90,8 +90,8 @@ in
                 argv0 = pipe str [ optional ];
                 inheritArgv0 = enable;
 
-                set = attrsOfStr;
-                setDefault = attrsOfStr;
+                set = pipe str [ set ];
+                setDefault = pipe str [ set ];
                 unset = pipe str [ list ];
 
                 chdir = pipe str [ optional ];
