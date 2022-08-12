@@ -12,16 +12,6 @@ let
   inherit (nix-utils)
     setAttr
   ;
-
-  settingsValue = with types; oneOf [
-    bool
-    int
-    float
-    str
-    path
-    (attrsOf settingsValue)
-    (listOf settingsValue)
-  ];
 in
 
 {
@@ -89,6 +79,5 @@ in
       mkOption' (types.attrsOf type) { };
     attrsOfInt = mkAttrsOf types.int;
     attrsOfStr = mkAttrsOf types.str;
-    settings = mkAttrsOf settingsValue;
   };
 }
