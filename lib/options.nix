@@ -36,6 +36,11 @@ in
     internal = setAttr "internal" true;
     readOnly = setAttr "readOnly" true;
 
+    addCheck = check: option:
+      setAttr "type" (types.addCheck option.type check) option;
+    between = lowest: highest:
+      setAttr "type" (types.ints.between lowest highest);
+
     list = option:
       option // {
         default = option.default or [ ];
