@@ -92,20 +92,20 @@ in
 
                 set = attrsOfStr;
                 setDefault = attrsOfStr;
-                unset = listOfStr;
+                unset = pipe str [ list ];
 
                 chdir = pipe str [ optional ];
                 run = lines;
 
-                addFlags = listOfStr;
-                appendFlags = listOfStr;
+                addFlags = pipe str [ list ];
+                appendFlags = pipe str [ list ];
 
-                prefix = mkListOf prefixArg;
-                suffix = mkListOf prefixArg;
-                prefixEach = mkListOf prefixEachArg;
-                suffixEach = mkListOf prefixEachArg;
-                prefixContents = mkListOf prefixContentsArg;
-                suffixContents = mkListOf prefixContentsArg;
+                prefix = pipe (mkOption prefixArg) [ list ];
+                suffix = pipe (mkOption prefixArg) [ list ];
+                prefixEach = pipe (mkOption prefixEachArg) [ list ];
+                suffixEach = pipe (mkOption prefixEachArg) [ list ];
+                prefixContents = pipe (mkOption prefixContentsArg) [ list ];
+                suffixContents = pipe (mkOption prefixContentsArg) [ list ];
               };
             };
 

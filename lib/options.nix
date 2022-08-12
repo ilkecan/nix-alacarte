@@ -1,11 +1,16 @@
 {
   lib,
+  nix-utils,
   ...
 }:
 
 let
   inherit (lib)
     types
+  ;
+
+  inherit (nix-utils)
+    setAttr
   ;
 
   settingsValue = with types; oneOf [
@@ -26,19 +31,21 @@ in
     mkOption' = type: default:
     lib.mkOption { inherit type default; };
 
-    apply = f: option:
-      option // { apply = f; };
-    default = value: option:
-      option // { default = value; };
-    internal = option:
-      option // { internal = true; };
+    apply = setAttr "apply";
+    default = setAttr "default";
+    internal = setAttr "internal" true;
+    readOnly = setAttr "readOnly" true;
+
+    list = option:
+      option // {
+        default = option.default or [ ];
+        type = types.listOf option.type;
+      };
     optional = option:
       option // {
         default = option.default or null;
         type = types.nullOr option.type;
       };
-    readOnly = option:
-      option // { readOnly = true; };
 
     ## bool
     bool = mkOption types.bool;
@@ -71,13 +78,6 @@ in
     ## submodule
     submodule = module:
       mkOption' (types.submodule module) { };
-
-    ## listOf
-    mkListOf = type:
-      mkOption' (types.listOf type) [ ];
-    listOfInt = mkListOf types.int;
-    listOfStr = mkListOf types.str;
-    listOfPackages = mkListOf types.package;
 
     ## attrsOf
     mkAttrsOf = type:
