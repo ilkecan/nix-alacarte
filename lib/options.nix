@@ -33,17 +33,17 @@ in
 
     list = option:
       option // {
-        default = option.default or [ ];
+        default = [ ];
         type = types.listOf option.type;
       };
     optional = option:
       option // {
-        default = option.default or null;
+        default = null;
         type = types.nullOr option.type;
       };
     set = option:
       option // {
-        default = option.default or { };
+        default = { };
         type = types.attrsOf option.type;
       };
 
