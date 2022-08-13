@@ -8,6 +8,7 @@ let
   inherit (builtins)
     filter
     foldl'
+    genList
     head
     listToAttrs
     tail
@@ -15,6 +16,7 @@ let
 
   inherit (lib)
     concat
+    const
     mergeAttrs
   ;
 
@@ -38,4 +40,7 @@ in
   mergeListOfAttrs = foldl' mergeAttrs { };
 
   removeNulls = filter notNull;
+
+  replicate = n: val:
+    genList (const val) n;
 }

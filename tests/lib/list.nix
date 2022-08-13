@@ -10,6 +10,7 @@ let
     mapListToAttrs
     mergeListOfAttrs
     removeNulls
+    replicate
   ;
 in
 
@@ -74,5 +75,10 @@ in
   "removeNulls" = {
     expr = removeNulls [ false null 2 ];
     expected = [ false 2 ];
+  };
+
+  "replicate" = {
+    expr = replicate 3 true;
+    expected = [ true true true ];
   };
 }
