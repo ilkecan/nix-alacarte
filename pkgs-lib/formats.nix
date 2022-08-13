@@ -2,6 +2,7 @@
   inputs,
   system,
   lib,
+  nix-utils,
   pkgs ? inputs.nixpkgs.legacyPackages.${system},
   ...
 }:
@@ -9,33 +10,28 @@
 let
   inherit (lib)
     generators
+  ;
+
+  inherit (nix-utils)
     types
   ;
 
   inherit (pkgs)
-    formats
     writeText
   ;
+
+  formats = pkgs.formats // nix-utils.formats;
 in
 {
   formats = {
-    generic = args: {
+    fromGenerator = generator: {
       generate = name: value:
-        writeText name (generators.toKeyValue args value);
-      type =
-        let
-          genericValue = with types; oneOf [
-            bool
-            int
-            float
-            str
-            path
-            (attrsOf genericValue)
-            (listOf genericValue)
-          ];
-        in
-        genericValue;
+        writeText name (generator value);
+      type = types.genericValue;
     };
+
+    generic = args:
+      formats.fromGenerator (generators.toKeyValue args);
 
     glibKeyFile =
       # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html
