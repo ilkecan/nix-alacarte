@@ -49,6 +49,7 @@ in
     ## end ##
 
     mkBool = mkOption types.bool;
+    bool = mkBool [ ];
     enable = mkBool [ (default false) ];
     disable = mkBool [ (default true) ];
 
