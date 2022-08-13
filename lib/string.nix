@@ -11,9 +11,14 @@ let
   ;
 
   inherit (lib)
+    concatStrings
     lowerChars
     splitString
     upperChars
+  ;
+
+  inherit (nix-utils)
+    replicate
   ;
 
   snakeSep = "_";
@@ -35,8 +40,11 @@ in
   };
 
   lines = splitString "\n";
-  words = splitString " ";
-
   unlines = concatStringsSep "\n";
+
+  repeat = n: str:
+    concatStrings (replicate n str);
+
+  words = splitString " ";
   unwords = concatStringsSep " ";
 }
