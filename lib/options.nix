@@ -71,6 +71,9 @@ in
     mkInt = mkOption types.int;
     int = mkInt [ ];
 
+    mkFloat = mkOption types.float;
+    float = mkFloat [ ];
+
     mkPath = mkOption types.path;
     path = mkPath [ ];
 
