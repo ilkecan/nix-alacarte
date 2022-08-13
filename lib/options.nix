@@ -50,8 +50,12 @@ in
 
     mkBool = mkOption types.bool;
     bool = mkBool [ ];
-    enable = mkBool [ (default false) ];
-    disable = mkBool [ (default true) ];
+    mkEnable = fs:
+      mkBool ([ (default false) ] ++ fs);
+    enable = mkEnable [ ];
+    mkDisable = fs:
+      mkBool ([ (default true) ] ++ fs);
+    disable = mkDisable [ ];
 
     mkFormat = format: fs:
       mkOption format ([ (default { }) ] ++ fs);
