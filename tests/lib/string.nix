@@ -5,11 +5,12 @@
 
 let
   inherit (nix-utils)
+    fmtValue
     lines
-    unlines
     repeat
-    words
+    unlines
     unwords
+    words
   ;
 
   inherit (nix-utils.letterCase)
@@ -23,6 +24,16 @@ let
 in
 
 {
+  "fmtValue_default" = {
+    expr = fmtValue { } true;
+    expected = "true";
+  };
+
+  "fmtValue_custom" = {
+    expr = fmtValue { bool = v: if v then "yes" else "no"; } true;
+    expected = "yes";
+  };
+
   "camelToKebab" = {
     expr = camelToKebab "fooBar";
     expected = "foo-bar";
