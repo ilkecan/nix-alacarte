@@ -58,7 +58,7 @@ in
     disable = mkDisable [ ];
 
     mkFormat = format: fs:
-      mkOption format ([ (default { }) ] ++ fs);
+      mkOption format.type ([ (default { }) ] ++ fs);
     format = format:
       mkFormat format [ ];
 
