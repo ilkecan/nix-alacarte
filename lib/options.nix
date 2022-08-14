@@ -7,12 +7,13 @@
 let
   inherit (lib)
     pipe
-    types
   ;
 
   inherit (nix-utils)
     setAttr
   ;
+
+  types = lib.types // nix-utils.types;
 in
 
 {
@@ -65,6 +66,10 @@ in
       mkOption format.type ([ (default { }) ] ++ fs);
     format = format:
       mkFormat format [ ];
+
+    mkSettings = fs:
+      mkOption types.genericValue ([ (default { }) ] ++ fs);
+    settings = mkSettings [ ];
 
     mkPackage = mkOption types.package;
     package = mkPackage [ ];
