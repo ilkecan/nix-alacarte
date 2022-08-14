@@ -6,8 +6,10 @@
 
 let
   inherit (builtins)
+    attrNames
     hasAttr
     mapAttrs
+    removeAttrs
   ;
 
   inherit (lib)
@@ -36,6 +38,13 @@ in
         { ${optionalValue (hasAttr name set) name} = set.${name}; };
     in
     mergeListOfAttrs (map (getAttrIfExists set) names);
+
+  partitionAttrs = f: set:
+    let
+      right = filterAttrs f set;
+      wrong = removeAttrs set (attrNames right);
+    in
+    { inherit right wrong; };
 
   removeNullAttrs = filterAttrs (_: notNull);
 

@@ -7,6 +7,7 @@ let
   inherit (nix-utils)
     forEachAttr
     getExistingAttrs
+    partitionAttrs
     removeNullAttrs
     renameAttrs
     setAttr
@@ -25,6 +26,11 @@ in
   "getExistingAttrs" = {
     expr = getExistingAttrs [ "y" "z" ] { x = "foo"; y = "bar"; };
     expected = { y = "bar"; };
+  };
+
+  "partitionAttrs" = {
+    expr = partitionAttrs (name: value: name != "foo" && value > 10) { foo = 12; bar = 20; };
+    expected = { right = { bar = 20; }; wrong = { foo = 12; }; };
   };
 
   "removeNullAttrs" = {
