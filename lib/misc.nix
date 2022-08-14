@@ -5,6 +5,9 @@
 }:
 
 {
+  callWith = val: f:
+    f val;
+
   isNull = value:
     value == null;
 
