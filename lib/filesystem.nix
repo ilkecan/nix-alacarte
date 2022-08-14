@@ -20,6 +20,7 @@ let
     hasSuffix
     id
     mapAttrsToList
+    mapNullable
     nameValuePair
     removeSuffix
   ;
@@ -65,9 +66,7 @@ in
       f''' =
         if asAttrs then
           file: val:
-            if val != null then
-              nameValuePair file.stem val
-            else null
+            mapNullable (nameValuePair file.stem) val
         else
           const id
         ;
