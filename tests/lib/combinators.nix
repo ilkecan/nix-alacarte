@@ -6,10 +6,16 @@
 let
   inherit (nix-utils)
     combinators
+    concatListOfLists
   ;
 in
 
 {
+  "mkCombinator" = {
+    expr = combinators.mkCombinator concatListOfLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
+    expected = [ 1 2 3 3 4 5 ];
+  };
+
   "and_without_args" = {
     expr = combinators.and [ true false ];
     expected = false;

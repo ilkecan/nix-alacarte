@@ -22,20 +22,23 @@ let
   ;
 
   booleanCombinator = f:
-    let
-      self = fs:
-        if isFunction (head fs) then
-          val:
-            self (map (callWith val) fs)
-        else
-          f id fs
-        ;
-    in
-    self;
+    combinators.mkCombinator (f id);
 in
 
 {
   combinators = {
+    mkCombinator = combineFunc:
+      let
+        self = fs:
+          if isFunction (head fs) then
+            val:
+              self (map (callWith val) fs)
+          else
+            combineFunc fs
+          ;
+      in
+      self;
+
     and = booleanCombinator all;
     or = booleanCombinator any;
   };
