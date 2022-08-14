@@ -41,6 +41,10 @@ in
         default = null;
         type = types.nullOr option.type;
       };
+    optionalList = option:
+      option // {
+        type = types.either option.type (types.listOf option.type);
+      };
     set = option:
       option // {
         default = { };
