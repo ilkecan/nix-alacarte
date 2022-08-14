@@ -118,7 +118,7 @@ in
               };
             } [ optional ];
 
-            override = mkOption types.raw [
+            override = mkOption types.genericValue [
               set
               optional
             ];
