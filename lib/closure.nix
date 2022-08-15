@@ -20,10 +20,14 @@ let
     unique
   ;
 
+  inherit (nix-utils)
+    combinators
+  ;
+
   wrap = drv: { key = drv.outPath; inherit drv; };
   unwrap = { key, drv }: drv;
 
-  isDependencyKey = key: hasPrefix "deps" key || hasSuffix "Inputs" key;
+  isDependencyKey = combinators.or [ (hasPrefix "deps") (hasSuffix "Inputs") ];
   getDependencies = drv: attrValues (filterAttrs (key: _: isDependencyKey key) drv.drvAttrs);
   reduceToDerivations = deps: unique (filter isAttrs (flatten deps));
 in
