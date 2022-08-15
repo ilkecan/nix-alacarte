@@ -7,6 +7,7 @@
 let
   inherit (lib)
     const
+    getExe
     pipe
   ;
 
@@ -90,6 +91,11 @@ in
 
     mkStr = mkOption types.str;
     str = mkStr [ ];
+    exe = drv:
+      mkStr [
+        (default (getExe drv))
+        readOnly
+      ];
 
     mkInt = mkOption types.int;
     int = mkInt [ ];
