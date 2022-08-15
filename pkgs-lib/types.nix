@@ -8,9 +8,16 @@
 }:
 
 let
+  inherit (builtins)
+    foldl'
+  ;
+
   inherit (lib)
+    const
     getExe
+    getValues
     id
+    isFunction
     mkDefault
     mkMerge
     mkOptionType
@@ -19,6 +26,7 @@ let
 
   inherit (nix-utils)
     addPassthru
+    combinators
     options
     removeNullAttrs
   ;
@@ -54,21 +62,11 @@ let
 in
 {
   types = {
-    smartPackage = default:
-      let
-        packageSubmodule = types.packageSubmodule (toPackageSubmoduleConfig default);
-      in
-      mkOptionType {
-        name = "(package -> )packageSubmodule -> package";
-        check = x:
-          types.package.check x || packageSubmodule.check x;
-        merge = loc: defs:
-          let
-            defs' = map toPackageSubmoduleDef defs;
-            package = packageSubmodule.merge loc defs';
-          in
-          package.final;
-      };
+    overrideAttrsArgs = mkOptionType {
+      name = "overrideAttrs args";
+      check = isFunction;
+      merge = const getValues;
+    };
 
     packageSubmodule = default:
       types.submodule (
@@ -76,6 +74,8 @@ in
         let
           cfg = args.config;
 
+          overrideAttrs = drv:
+            foldl' (drv: drv.overrideAttrs) drv cfg.overrideAttrs;
           override = drv:
             drv.override cfg.override;
           wrap = drv:
@@ -123,6 +123,10 @@ in
               optional
             ];
 
+            overrideAttrs = mkOption types.overrideAttrsArgs [
+              optional
+            ];
+
             final = mkPackage [
               internal
               readOnly
@@ -133,6 +137,7 @@ in
             (mkDefault default)
             {
               final = pipe cfg.drv [
+                (if cfg.overrideAttrs != null then overrideAttrs else id)
                 (if cfg.override != null then override else id)
                 (if cfg.wrap != null then wrap else id)
                 addExe
@@ -141,5 +146,20 @@ in
           ];
         }
     );
+
+    smartPackage = default:
+      let
+        packageSubmodule = types.packageSubmodule (toPackageSubmoduleConfig default);
+      in
+      mkOptionType {
+        name = "(package -> )packageSubmodule -> package";
+        check = combinators.or [ types.package.check packageSubmodule.check ];
+        merge = loc: defs:
+          let
+            defs' = map toPackageSubmoduleDef defs;
+            package = packageSubmodule.merge loc defs';
+          in
+          package.final;
+      };
   };
 }
