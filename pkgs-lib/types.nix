@@ -98,7 +98,7 @@ in
                 unset = mkStr [ list ];
 
                 chdir = mkStr [ optional ];
-                run = lines;
+                run = mkStr [ list ];
 
                 addFlags = mkStr [ list ];
                 appendFlags = mkStr [ list ];
