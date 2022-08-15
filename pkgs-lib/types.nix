@@ -14,7 +14,6 @@ let
 
   inherit (lib)
     const
-    getExe
     getValues
     id
     isFunction
@@ -25,7 +24,6 @@ let
   ;
 
   inherit (nix-utils)
-    addPassthru
     combinators
     options
     removeNullAttrs
@@ -83,10 +81,6 @@ in
               wrapArgs = removeNullAttrs cfg.wrap;
             in
             wrapPackage drv wrapArgs;
-          addExe = drv:
-            addPassthru {
-              exe = getExe drv;
-            } drv;
         in
         {
           options = with options; {
@@ -140,7 +134,6 @@ in
                 (if cfg.overrideAttrs != null then overrideAttrs else id)
                 (if cfg.override != null then override else id)
                 (if cfg.wrap != null then wrap else id)
-                addExe
               ];
             }
           ];
