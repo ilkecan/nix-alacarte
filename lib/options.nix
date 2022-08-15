@@ -6,10 +6,12 @@
 
 let
   inherit (lib)
+    const
     pipe
   ;
 
   inherit (nix-utils)
+    optionalValue
     setAttr
   ;
 
@@ -32,6 +34,14 @@ in
     between = lowest: highest:
       setAttr "type" (types.ints.between lowest highest);
 
+    lambda = option:
+      let
+        default = option.default or option.type.emptyValue.value or null;
+      in
+      option // {
+        ${optionalValue (default != null) "default"} = const default;
+        type = types.functionTo option.type;
+      };
     list = option:
       option // {
         default = [ ];
