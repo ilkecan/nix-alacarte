@@ -16,7 +16,6 @@ let
   ;
 
   inherit (nix-utils)
-    mergeListOfAttrs
     optionalValue
   ;
 
@@ -53,9 +52,6 @@ in
       ${kebabToCamel (removeSuffix ".nix" (baseNameOf drvFuncFile))} =
           final.callPackage drvFuncFile args;
     });
-
-  overridePackageWith = pkg: overrides:
-    pkg.override (mergeListOfAttrs overrides);
 
   sourceOf = pkg:
     pkg.src or pkg;
