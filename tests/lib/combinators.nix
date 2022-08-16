@@ -16,6 +16,11 @@ in
     expected = [ 1 2 3 3 4 5 ];
   };
 
+  "and_empty" = {
+    expr = combinators.and [ ];
+    expected = true;
+  };
+
   "and_without_args" = {
     expr = combinators.and [ true false ];
     expected = false;
@@ -24,6 +29,11 @@ in
   "and_with_args" = {
     expr = combinators.and [ (x: y: x + y > 10) (x: y: x < y) (x: y: x * y < 100) ] 4 7;
     expected = true;
+  };
+
+  "or_empty" = {
+    expr = combinators.or [ ];
+    expected = false;
   };
 
   "or_without_args" = {

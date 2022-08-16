@@ -9,6 +9,7 @@ let
     all
     any
     head
+    length
   ;
 
   inherit (lib)
@@ -37,7 +38,12 @@ in
             combineFunc fs
           ;
       in
-      self;
+      list:
+        if length list == 0 then
+          combineFunc [ ]
+        else
+          self list
+        ;
 
     and = booleanCombinator all;
     or = booleanCombinator any;
