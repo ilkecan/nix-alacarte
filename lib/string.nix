@@ -27,6 +27,7 @@ let
 
   inherit (nix-utils)
     replicate
+    mkToString
   ;
 
   snakeSep = "_";
@@ -36,32 +37,8 @@ let
 in
 
 {
-  fmtValue = {
-    bool ? null,
-    float ? null,
-    int ? null,
-    lambda ? null,
-    list ? null,
-    null ? null,
-    path ? null,
-    set ? null,
-    string ? null,
-  }@args: value:
-    let
-      fmts = {
-        bool = boolToString;
-        float = floatToString;
-        int = toString;
-        lambda = toString;
-        list = toString;
-        null = const "";
-        path = toString;
-        set = toString;
-        string = id;
-      } // args;
-      fmt = fmts.${typeOf value} or toString;
-    in
-    fmt value;
+  fmtValue = args:
+    mkToString ({ bool = boolToString; } // args);
 
   letterCase = {
     camelToKebab = replaceStrings upperChars kebabChars;
@@ -76,6 +53,28 @@ in
 
   lines = splitString "\n";
   unlines = concatStringsSep "\n";
+
+  mkToString = {
+    bool ? null,
+    float ? null,
+    int ? null,
+    lambda ? null,
+    list ? null,
+    null ? null,
+    path ? null,
+    set ? null,
+    string ? null,
+  }@fs: value:
+    let
+      fs' = {
+        bool = v: if v then "1" else "";
+        float = floatToString;
+        null = const "";
+        string = id;
+      } // fs;
+      f = fs'.${typeOf value} or toString;
+    in
+    f value;
 
   repeat = n: str:
     concatStrings (replicate n str);
