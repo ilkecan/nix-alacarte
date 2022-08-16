@@ -16,7 +16,7 @@ let
     writeTextFile
   ;
 
-  addToFile = append: file: text:
+  addToFile = append: text: file:
     let
       tempFile = writeTextFile {
         name = "temp";
