@@ -16,7 +16,7 @@ let
     writeTextFile
   ;
 
-  addTo = append: file: text:
+  addToFile = append: file: text:
     let
       tempFile = writeTextFile {
         name = "temp";
@@ -45,6 +45,6 @@ in
       cat $(cat $filesPath) > $out
     '';
 
-  appendTo = addTo true;
-  prependTo = addTo false;
+  appendToFile = addToFile true;
+  prependToFile = addToFile false;
 }
