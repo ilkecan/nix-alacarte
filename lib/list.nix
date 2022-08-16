@@ -6,10 +6,12 @@
 
 let
   inherit (builtins)
+    all
     filter
     foldl'
     genList
     head
+    length
     listToAttrs
     tail
   ;
@@ -21,11 +23,15 @@ let
   ;
 
   inherit (nix-utils)
+    equals
     notNull
   ;
 in
 
 {
+  allEqual = list:
+    all (equals (head list)) list;
+
   concatListOfLists = foldl' concat [ ];
 
   headAndTails = list:

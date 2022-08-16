@@ -5,6 +5,7 @@
 
 let
   inherit (nix-utils)
+    allEqual
     concatListOfLists
     headAndTails
     mapListToAttrs
@@ -15,6 +16,26 @@ let
 in
 
 {
+  "allEqual_zero_elem" = {
+    expr = allEqual [ ];
+    expected = true;
+  };
+
+  "allEqual_one_elem" = {
+    expr = allEqual [ 2 ];
+    expected = true;
+  };
+
+  "allEqual_many_elems_true" = {
+    expr = allEqual [ 2 2 2 ];
+    expected = true;
+  };
+
+  "allEqual_many_elems_false" = {
+    expr = allEqual [ 2 3 2 ];
+    expected = false;
+  };
+
   "concatListOfLists" = {
     expr = concatListOfLists [
       [ 1 2 ]
