@@ -6,7 +6,9 @@
 let
   inherit (nix-utils)
     callWith
+    equals
     isNull
+    notEquals
     notNull
   ;
 in
@@ -17,6 +19,16 @@ in
     expected = 15;
   };
 
+  "equals_true" = {
+    expr = equals 2 2;
+    expected = true;
+  };
+
+  "equals_false" = {
+    expr = equals "a" "b";
+    expected = false;
+  };
+
   "isNull_true" = {
     expr = isNull null;
     expected = true;
@@ -24,6 +36,16 @@ in
 
   "isNull_false" = {
     expr = isNull true;
+    expected = false;
+  };
+
+  "notEquals_true" = {
+    expr = notEquals [ 2 ] 2;
+    expected = true;
+  };
+
+  "notEquals_false" = {
+    expr = notEquals { v = 2; } { v = 2; };
     expected = false;
   };
 
