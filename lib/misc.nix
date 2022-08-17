@@ -16,12 +16,10 @@ in
 
   equals = lhs: rhs:
     lhs == rhs;
-
-  isNull = equals null;
-
   notEquals = lhs: rhs:
     lhs != rhs;
 
+  isNull = equals null;
   notNull = notEquals null;
 
   optionalValue = condition: value:

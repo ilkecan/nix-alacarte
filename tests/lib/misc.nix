@@ -29,16 +29,6 @@ in
     expected = false;
   };
 
-  "isNull_true" = {
-    expr = isNull null;
-    expected = true;
-  };
-
-  "isNull_false" = {
-    expr = isNull true;
-    expected = false;
-  };
-
   "notEquals_true" = {
     expr = notEquals [ 2 ] 2;
     expected = true;
@@ -46,6 +36,16 @@ in
 
   "notEquals_false" = {
     expr = notEquals { v = 2; } { v = 2; };
+    expected = false;
+  };
+
+  "isNull_true" = {
+    expr = isNull null;
+    expected = true;
+  };
+
+  "isNull_false" = {
+    expr = isNull true;
     expected = false;
   };
 
