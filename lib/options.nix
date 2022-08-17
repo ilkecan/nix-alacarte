@@ -17,6 +17,9 @@ let
   ;
 
   types = lib.types // nix-utils.types;
+
+  withDefault = defaultFs: mkF: fs:
+    mkF (defaultFs ++ fs);
 in
 
 {
@@ -66,27 +69,32 @@ in
 
     mkBool = mkOption types.bool;
     bool = mkBool [ ];
-    mkEnable = fs:
-      mkBool ([ (default false) ] ++ fs);
+    mkEnable =
+      withDefault [ (default false) ]
+        mkBool;
     enable = mkEnable [ ];
-    mkDisable = fs:
-      mkBool ([ (default true) ] ++ fs);
+    mkDisable =
+      withDefault [ (default true) ]
+        mkBool;
     disable = mkDisable [ ];
 
-    mkFormat = format: fs:
-      mkOption format.type ([ (default { }) ] ++ fs);
+    mkFormat = format:
+      withDefault [ (default { }) ]
+        (mkOption format.type);
     format = format:
       mkFormat format [ ];
 
-    mkSettings = fs:
-      mkOption types.genericValue ([ (default { }) ] ++ fs);
+    mkSettings =
+      withDefault [ (default { }) ]
+        (mkOption types.genericValue);
     settings = mkSettings [ ];
 
     mkPackage = mkOption types.package;
     package = mkPackage [ ];
 
-    mkLines = fs:
-      mkOption types.lines ([ (default "") ] ++ fs);
+    mkLines =
+      withDefault [ (default "") ]
+        (mkOption types.lines);
     lines = mkLines [ ];
 
     mkStr = mkOption types.str;
@@ -111,8 +119,9 @@ in
     enum = values:
       mkEnum values [ ];
 
-    mkSubmodule = module: fs:
-      mkOption (types.submodule module) ([ (default { }) ] ++ fs);
+    mkSubmodule = module:
+      withDefault [ (default { }) ]
+        (mkOption (types.submodule module));
     submodule = module:
       mkSubmodule module [ ];
   };
