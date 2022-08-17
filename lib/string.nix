@@ -7,7 +7,9 @@
 let
   inherit (builtins)
     concatStringsSep
+    stringLength
     replaceStrings
+    substring
     typeOf
   ;
 
@@ -18,6 +20,7 @@ let
     id
     lowerChars
     splitString
+    toUpper
     upperChars
   ;
 
@@ -37,6 +40,13 @@ let
 in
 
 {
+  capitalize = string:
+    let
+      first = substring 0 1 string;
+      rest = substring 1 (stringLength string) string;
+    in
+    (toUpper first) + rest;
+
   fmtValue = args:
     mkToString ({ bool = boolToString; } // args);
 

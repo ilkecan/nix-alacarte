@@ -5,6 +5,7 @@
 
 let
   inherit (nix-utils)
+    capitalize
     fmtValue
     lines
     repeat
@@ -24,6 +25,11 @@ let
 in
 
 {
+  "capitalize" = {
+    expr = capitalize "hellO";
+    expected = "HellO";
+  };
+
   "fmtValue_default" = {
     expr = fmtValue { } true;
     expected = "true";
