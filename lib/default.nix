@@ -1,5 +1,6 @@
 {
   inputs,
+  internal ? inputs.self.internal,
   lib ? inputs.nixpkgs.lib,
 }@args:
 
@@ -16,7 +17,12 @@ let
   ;
 
   # https://github.com/NixOS/nix/issues/1461
-  args' = args // { inherit lib; };
+  args' = args // {
+    inherit
+      internal
+      lib
+    ;
+  };
   files = attrNames (readDir ./.);
   nonLibFiles = [
     "default.nix"

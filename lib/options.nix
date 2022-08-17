@@ -1,12 +1,14 @@
 {
   lib,
   nix-utils,
+  internal,
   ...
 }:
 
 let
   inherit (lib)
     const
+    genAttrs
     getExe
     pipe
   ;
@@ -16,18 +18,22 @@ let
     setAttr
   ;
 
+  inherit (nix-utils.options)
+    default
+    mkBool
+    mkOption
+    mkStr
+    readOnly
+  ;
+
+  inherit (internal.options)
+    generateOptions
+    withDefault
+  ;
+
   types = lib.types // nix-utils.types;
 
-  withDefault = defaultFs: mkF: fs:
-    mkF (defaultFs ++ fs);
-in
-
-{
-  options = rec {
-    mkOption = type:
-      pipe (lib.mkOption { inherit type; });
-
-    ## composer functions ##
+  composerFunctions = {
     apply = setAttr "apply";
     default = setAttr "default";
     internal = setAttr "internal" true;
@@ -65,64 +71,49 @@ in
         default = { };
         type = types.attrsOf option.type;
       };
-    ## end ##
+  };
 
-    mkBool = mkOption types.bool;
-    bool = mkBool [ ];
-    mkEnable =
-      withDefault [ (default false) ]
-        mkBool;
-    enable = mkEnable [ ];
-    mkDisable =
-      withDefault [ (default true) ]
-        mkBool;
-    disable = mkDisable [ ];
+  typeNames = [
+    "bool"
+    "float"
+    "int"
+    "package"
+    "path"
+    "str"
+  ];
 
-    mkFormat = format:
+  optionFunctions = {
+    option = type:
+      pipe (lib.mkOption { inherit type; });
+
+    # bool
+    enable = withDefault [ (default false) ]
+      mkBool;
+    disable = withDefault [ (default true) ]
+      mkBool;
+
+    # str
+    exe = drv:
+      withDefault [ (default (getExe drv)) readOnly ]
+        mkStr;
+
+    enum = values:
+      mkOption (types.enum values);
+    format = format:
       withDefault [ (default { }) ]
         (mkOption format.type);
-    format = format:
-      mkFormat format [ ];
-
-    mkSettings =
-      withDefault [ (default { }) ]
-        (mkOption types.genericValue);
-    settings = mkSettings [ ];
-
-    mkPackage = mkOption types.package;
-    package = mkPackage [ ];
-
-    mkLines =
+    lines =
       withDefault [ (default "") ]
         (mkOption types.lines);
-    lines = mkLines [ ];
-
-    mkStr = mkOption types.str;
-    str = mkStr [ ];
-    exe = drv:
-      mkStr [
-        (default (getExe drv))
-        readOnly
-      ];
-
-    mkInt = mkOption types.int;
-    int = mkInt [ ];
-
-    mkFloat = mkOption types.float;
-    float = mkFloat [ ];
-
-    mkPath = mkOption types.path;
-    path = mkPath [ ];
-
-    mkEnum = values:
-      mkOption (types.enum values);
-    enum = values:
-      mkEnum values [ ];
-
-    mkSubmodule = module:
+    settings =
+      withDefault [ (default { }) ]
+        (mkOption types.genericValue);
+    submodule = module:
       withDefault [ (default { }) ]
         (mkOption (types.submodule module));
-    submodule = module:
-      mkSubmodule module [ ];
-  };
+  } // genAttrs typeNames (name: mkOption types.${name});
+in
+
+{
+  options = composerFunctions // generateOptions optionFunctions;
 }

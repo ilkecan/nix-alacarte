@@ -33,6 +33,7 @@
         };
       };
 
+      internal = import ./internal { inherit inputs; };
       lib = import ./lib { inherit inputs; };
       libs.default = self.lib;
     } (eachDefaultSystem (system: {

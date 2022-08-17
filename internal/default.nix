@@ -1,7 +1,5 @@
 {
   inputs,
-  system,
-  internal ? inputs.self.internal,
   lib ? inputs.nixpkgs.lib,
   nix-utils ? inputs.self.lib,
 }@args:
@@ -9,7 +7,6 @@
 let
   inherit (lib)
     fix
-    recursiveUpdate
   ;
 
   inherit (nix-utils)
@@ -24,14 +21,14 @@ let
   args' = args // {
     inherit
       lib
-      internal
+      nix-utils
     ;
   };
 in
 fix (self:
   let
     args'' = args' // {
-      nix-utils = recursiveUpdate nix-utils self;
+      internal = self;
     };
     importLib = file:
       import file args'';

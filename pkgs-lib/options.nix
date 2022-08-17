@@ -1,20 +1,31 @@
 {
   nix-utils,
+  internal,
   ...
 }:
 
 let
   inherit (nix-utils)
     types
-    options
   ;
+
+  inherit (nix-utils.options)
+    default
+    mkOption
+  ;
+
+  inherit (internal.options)
+    generateOptions
+    withDefault
+  ;
+
+  optionFunctions = {
+    smartPackage = default':
+      withDefault [ (default { }) ]
+        (mkOption (types.smartPackage default'));
+  };
 in
 
 {
-  options = with options; {
-    mkSmartPackage = default': fs:
-      mkOption (types.smartPackage default') ([ (default { }) ] ++ fs);
-    smartPackage = default:
-      mkSmartPackage default [ ];
-  };
+  options = generateOptions optionFunctions;
 }
