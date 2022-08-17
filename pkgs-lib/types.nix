@@ -145,7 +145,7 @@ in
         packageSubmodule = types.packageSubmodule (toPackageSubmoduleConfig default);
       in
       mkOptionType {
-        name = "(package -> )packageSubmodule -> package";
+        name = "smartPackage";
         check = combinators.or [ types.package.check packageSubmodule.check ];
         merge = loc: defs:
           let
