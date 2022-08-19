@@ -93,6 +93,11 @@ in
     };
   };
 
+  "mergeListOfAttrs_recursive_merge" = {
+    expr = mergeListOfAttrs [ { a = { b = 3; };} { a = { c = 4; }; } ];
+    expected = { a = { b = 3; c = 4; }; };
+  };
+
   "removeNulls" = {
     expr = removeNulls [ false null 2 ];
     expected = [ false 2 ];

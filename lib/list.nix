@@ -19,7 +19,7 @@ let
   inherit (lib)
     concat
     const
-    mergeAttrs
+    recursiveUpdate
   ;
 
   inherit (nix-utils)
@@ -43,7 +43,7 @@ in
   mapListToAttrs = f: list:
     listToAttrs (map f list);
 
-  mergeListOfAttrs = foldl' mergeAttrs { };
+  mergeListOfAttrs = foldl' recursiveUpdate { };
 
   removeNulls = filter notNull;
 
