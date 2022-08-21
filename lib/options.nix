@@ -11,6 +11,7 @@ let
     genAttrs
     getExe
     pipe
+    toList
   ;
 
   inherit (nix-utils)
@@ -64,7 +65,7 @@ let
       };
     optionalList = option:
       option // {
-        type = types.either option.type (types.listOf option.type);
+        type = types.coercedTo option.type toList (types.listOf option.type);
       };
     set = option:
       option // {
