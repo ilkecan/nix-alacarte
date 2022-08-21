@@ -48,6 +48,9 @@ in
   commands = splitString ";";
   uncommands = concatStringsSep ";";
 
+  elements = splitString ",";
+  unelements = concatStringsSep ",";
+
   fmtValue = {
     bool ? null,
     float ? null,

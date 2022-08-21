@@ -8,6 +8,8 @@ let
     capitalize
     commands
     uncommands
+    elements
+    unelements
     fmtValue
     lines
     unlines
@@ -40,6 +42,16 @@ in
   "uncommands" = {
     expr = uncommands [ "touch a" "ls -al" ];
     expected = "touch a;ls -al";
+  };
+
+  "elements" = {
+    expr = elements "apple,orange";
+    expected = [ "apple" "orange" ];
+  };
+
+  "unelements" = {
+    expr = unelements [ "apple" "orange" ];
+    expected = "apple,orange";
   };
 
   "fmtValue_default" = {
