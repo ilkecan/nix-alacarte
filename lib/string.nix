@@ -45,6 +45,9 @@ in
     in
     (toUpper first) + rest;
 
+  commands = splitString ";";
+  uncommands = concatStringsSep ";";
+
   fmtValue = {
     bool ? null,
     float ? null,

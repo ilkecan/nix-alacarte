@@ -6,12 +6,14 @@
 let
   inherit (nix-utils)
     capitalize
+    commands
+    uncommands
     fmtValue
     lines
-    repeat
     unlines
-    unwords
+    repeat
     words
+    unwords
   ;
 
   inherit (nix-utils.letterCase)
@@ -28,6 +30,16 @@ in
   "capitalize" = {
     expr = capitalize "hellO";
     expected = "HellO";
+  };
+
+  "commands" = {
+    expr = commands "touch a;ls -al";
+    expected = [ "touch a" "ls -al" ];
+  };
+
+  "uncommands" = {
+    expr = uncommands [ "touch a" "ls -al" ];
+    expected = "touch a;ls -al";
   };
 
   "fmtValue_default" = {
