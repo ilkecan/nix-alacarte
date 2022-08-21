@@ -32,7 +32,7 @@ in
 
   "fmtValue_default" = {
     expr = fmtValue { } true;
-    expected = "true";
+    expected = "1";
   };
 
   "fmtValue_custom" = {

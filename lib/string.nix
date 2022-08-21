@@ -14,7 +14,6 @@ let
   ;
 
   inherit (lib)
-    boolToString
     concatStrings
     const
     id
@@ -30,7 +29,6 @@ let
 
   inherit (nix-utils)
     replicate
-    mkToString
   ;
 
   snakeSep = "_";
@@ -47,8 +45,28 @@ in
     in
     (toUpper first) + rest;
 
-  fmtValue = args:
-    mkToString ({ bool = boolToString; } // args);
+  fmtValue = {
+    bool ? null,
+    float ? null,
+    int ? null,
+    lambda ? null,
+    list ? null,
+    null ? null,
+    path ? null,
+    set ? null,
+    string ? null,
+  }@fmtFs: value:
+    let
+      fmtFs' = {
+        bool = v: if v then "1" else "";
+        float = floatToString;
+        null = const "";
+        string = id;
+      } // fmtFs;
+      fmt = fmtFs'.${typeOf value} or toString;
+    in
+    fmt value;
+
 
   letterCase = {
     camelToKebab = replaceStrings upperChars kebabChars;
@@ -63,28 +81,6 @@ in
 
   lines = splitString "\n";
   unlines = concatStringsSep "\n";
-
-  mkToString = {
-    bool ? null,
-    float ? null,
-    int ? null,
-    lambda ? null,
-    list ? null,
-    null ? null,
-    path ? null,
-    set ? null,
-    string ? null,
-  }@fs: value:
-    let
-      fs' = {
-        bool = v: if v then "1" else "";
-        float = floatToString;
-        null = const "";
-        string = id;
-      } // fs;
-      f = fs'.${typeOf value} or toString;
-    in
-    f value;
 
   repeat = n: str:
     concatStrings (replicate n str);
