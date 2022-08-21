@@ -25,6 +25,7 @@ let
     mkOption
     mkStr
     readOnly
+    set
   ;
 
   inherit (internal.options)
@@ -100,6 +101,9 @@ let
 
     enum = values:
       mkOption (types.enum values);
+    envVars = fs:
+      withDefault [ set ]
+        (mkOption (types.coercibleToString fs));
     format = format:
       withDefault [ (default { }) ]
         (mkOption format.type);
