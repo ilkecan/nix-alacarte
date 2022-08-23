@@ -34,12 +34,13 @@
       };
 
       internal = import ./internal { inherit inputs; };
+      static = import ./static { inherit inputs; };
       lib = import ./lib { inherit inputs; };
-      libs.default = self.lib;
+      libs.default = recursiveUpdate self.static self.lib;
     } (eachDefaultSystem (system: {
       pkgs-lib = import ./pkgs-lib { inherit inputs system; };
 
-      libs = recursiveUpdate self.lib self.pkgs-lib.${system};
+      libs = recursiveUpdate self.libs.default self.pkgs-lib.${system};
 
       packages = rec {
         default = tests;

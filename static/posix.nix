@@ -1,0 +1,49 @@
+{
+  ...
+}:
+
+{
+  posix = {
+    # https://man.archlinux.org/man/signal.7.en#Standard_signals
+    signals = [
+      "SIGABRT"
+      "SIGALRM"
+      "SIGBUS"
+      "SIGCHLD"
+      "SIGCLD"
+      "SIGCONT"
+      "SIGEMT"
+      "SIGFPE"
+      "SIGHUP"
+      "SIGILL"
+      "SIGINFO"
+      "SIGINT"
+      "SIGIO"
+      "SIGIOT"
+      "SIGKILL"
+      "SIGLOST"
+      "SIGPIPE"
+      "SIGPOLL"
+      "SIGPROF"
+      "SIGPWR"
+      "SIGQUIT"
+      "SIGSEGV"
+      "SIGSTKFLT"
+      "SIGSTOP"
+      "SIGTSTP"
+      "SIGSYS"
+      "SIGTERM"
+      "SIGTRAP"
+      "SIGTTIN"
+      "SIGTTOU"
+      "SIGUNUSED"
+      "SIGURG"
+      "SIGUSR1"
+      "SIGUSR2"
+      "SIGVTALRM"
+      "SIGXCPU"
+      "SIGXFSZ"
+      "SIGWINCH"
+    ];
+  };
+}
