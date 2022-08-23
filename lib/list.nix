@@ -1,6 +1,7 @@
 {
   lib,
   nix-utils,
+  bootstrap,
   ...
 }:
 
@@ -29,6 +30,8 @@ let
 in
 
 {
+  inherit (bootstrap) mergeListOfAttrs;
+
   allEqual = list:
     all (equals (head list)) list;
 
@@ -42,8 +45,6 @@ in
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);
-
-  mergeListOfAttrs = foldl' recursiveUpdate { };
 
   removeNulls = filter notNull;
 

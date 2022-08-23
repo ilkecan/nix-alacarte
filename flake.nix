@@ -1,6 +1,4 @@
 {
-  description = "small code snippets to reduce code duplication";
-
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
@@ -21,8 +19,8 @@
       inherit (nixpkgs.lib) recursiveUpdate;
     in
     recursiveUpdate {
-      overlays = rec {
-        default = nix-utils;
+      overlays = {
+        default = self.overlays.nix-utils;
 
         nix-utils = final: _prev: {
           nix-utils =
@@ -33,18 +31,19 @@
         };
       };
 
-      internal = import ./internal { inherit inputs; };
-      static = import ./static { inherit inputs; };
+      bootstrap = import ./bootstrap { inherit inputs; };
+
       lib = import ./lib { inherit inputs; };
-      libs.default = recursiveUpdate self.static self.lib;
+      libs.default = self.lib;
     } (eachDefaultSystem (system: {
       pkgs-lib = import ./pkgs-lib { inherit inputs system; };
+      libs = recursiveUpdate self.lib self.pkgs-lib.${system};
 
-      libs = recursiveUpdate self.libs.default self.pkgs-lib.${system};
-
-      packages = rec {
-        default = tests;
-        tests = import ./tests/lib { inherit inputs system; };
+      packages = {
+        default = self.packages.${system}.tests.lib;
+        tests = {
+          lib = import ./tests/lib { inherit inputs system; };
+        };
       };
     }));
 }

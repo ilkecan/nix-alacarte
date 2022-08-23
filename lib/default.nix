@@ -1,41 +1,23 @@
 {
   inputs,
-  internal ? inputs.self.internal,
+  bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,
 }@args:
 
 let
-  inherit (builtins)
-    attrNames
-    foldl'
-    readDir
-  ;
+  inherit (bootstrap) mergeLibDirectory;
 
-  inherit (lib)
-    fix
-    subtractLists
-  ;
-
-  # https://github.com/NixOS/nix/issues/1461
   args' = args // {
     inherit
-      internal
+      bootstrap
       lib
+
+      internal
+      nix-utils
     ;
   };
-  files = attrNames (readDir ./.);
-  nonLibFiles = [
-    "default.nix"
-  ];
-  libFiles = subtractLists nonLibFiles files;
+
+  internal = import ./internal args';
+  nix-utils = mergeLibDirectory ./. args';
 in
-fix (self:
-  let
-    args'' = args' // {
-      nix-utils = self;
-    };
-    importLib = file:
-    import "${toString ./.}/${file}" args'';
-  in
-  foldl' (l: r: l // r) {} (map importLib libFiles)
-)
+nix-utils
