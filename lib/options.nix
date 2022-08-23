@@ -98,6 +98,8 @@ let
     exe = drv:
       withDefault [ (default (getExe drv)) readOnly ]
         mkStr;
+    strMatching = pattern:
+      mkOption (types.strMatching pattern);
 
     enum = values:
       mkOption (types.enum values);
