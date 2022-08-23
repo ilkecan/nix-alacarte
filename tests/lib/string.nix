@@ -14,6 +14,7 @@ let
     lines
     unlines
     repeat
+    splitAt
     words
     unwords
   ;
@@ -117,6 +118,14 @@ in
   "repeat" = {
     expr = repeat 4 " |";
     expected = " | | | |";
+  };
+
+  "splitAt" = {
+    expr = splitAt 3 "fooBar";
+    expected = {
+      left = "foo";
+      right = "Bar";
+    };
   };
 
   "words" = {

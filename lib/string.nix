@@ -28,6 +28,7 @@ let
   ;
 
   inherit (nix-utils)
+    nix
     replicate
   ;
 
@@ -90,6 +91,11 @@ in
 
   repeat = n: str:
     concatStrings (replicate n str);
+
+  splitAt = index: str: {
+    left = substring 0 index str;
+    right = substring index nix.int.max str;
+  };
 
   words = splitString " ";
   unwords = concatStringsSep " ";
