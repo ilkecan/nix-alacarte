@@ -73,6 +73,10 @@ let
         default = { };
         type = types.attrsOf option.type;
       };
+    unique = option:
+      option // {
+        type = types.uniq option.type;
+      };
   };
 
   typeNames = [
