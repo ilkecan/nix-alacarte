@@ -27,6 +27,8 @@ let
   inherit (nix-utils.options)
     default
     mkBool
+    mkCoercibleToString
+    mkGenericValue
     mkOption
     mkStr
     readOnly
@@ -102,6 +104,9 @@ let
     "shellPackage"
     "str"
     "strMatching"
+
+    "coercibleToString"
+    "genericValue"
   ];
 
   option = type:
@@ -126,9 +131,9 @@ let
       withDefault [ (default (getExe drv)) readOnly ]
         mkStr;
 
-    envVars = fs:
+    envVars =
       withDefault [ set ]
-        (mkOption (types.coercibleToString fs));
+        mkCoercibleToString;
     format = format:
       withDefault [ (default { }) ]
         mkOption format.type;
@@ -137,10 +142,10 @@ let
         mkOption types.lines;
     settings =
       withDefault [ set ]
-        (mkOption types.genericValue);
-    submodule = module:
+        mkGenericValue;
+    submodule =
       withDefault [ (default { }) ]
-        (mkOption (types.submodule module));
+        mkOption types.submodule;
   } // genAttrs typeNames (name: mkOption types.${name});
 in
 
