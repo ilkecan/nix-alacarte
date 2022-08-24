@@ -20,9 +20,9 @@ let
   ;
 
   optionFunctions = {
-    smartPackage = default':
+    smartPackage =
       withDefault [ (default { }) ]
-        (mkOption (types.smartPackage default'));
+        mkOption types.smartPackage;
   };
 in
 

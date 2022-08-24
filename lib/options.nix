@@ -14,6 +14,7 @@ let
     const
     genAttrs
     getExe
+    isOptionType
     pipe
     toList
   ;
@@ -93,16 +94,25 @@ let
 
   typeNames = [
     "bool"
+    "enum"
     "float"
     "int"
     "package"
     "path"
     "str"
+    "strMatching"
   ];
 
+  option = type:
+    if isOptionType type then
+      pipe (lib.mkOption { inherit type; })
+    else
+      arg:
+        option (type arg)
+    ;
+
   optionFunctions = {
-    option = type:
-      pipe (lib.mkOption { inherit type; });
+    inherit option;
 
     # bool
     enable = withDefault [ (default false) ]
@@ -114,20 +124,16 @@ let
     exe = drv:
       withDefault [ (default (getExe drv)) readOnly ]
         mkStr;
-    strMatching = pattern:
-      mkOption (types.strMatching pattern);
 
-    enum = values:
-      mkOption (types.enum values);
     envVars = fs:
       withDefault [ set ]
         (mkOption (types.coercibleToString fs));
     format = format:
       withDefault [ (default { }) ]
-        (mkOption format.type);
+        mkOption format.type;
     lines =
       withDefault [ (default "") ]
-        (mkOption types.lines);
+        mkOption types.lines;
     settings =
       withDefault [ (default { }) ]
         (mkOption types.genericValue);

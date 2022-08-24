@@ -1,5 +1,6 @@
 {
   nix-utils,
+  internal,
   ...
 }:
 
@@ -12,6 +13,10 @@ let
   inherit (nix-utils)
     capitalize
     renameAttrs
+  ;
+
+  inherit (internal.options)
+    withDefault
   ;
 
   toOption = mkOptionFunction:
@@ -28,8 +33,15 @@ in
 
 {
   options = {
-    withDefault = defaultFs: mkF: fs:
-      mkF (defaultFs ++ fs);
+    withDefault = defaultFs: mkOptionFunction: arg:
+      let
+        maybeOption = mkOptionFunction [ ];
+      in
+      if isFunction maybeOption then
+        withDefault defaultFs (mkOptionFunction arg)
+      else
+        mkOptionFunction (defaultFs ++ arg)
+      ;
 
     generateOptions = optionFunctions:
       mapAttrs (_name: toOption) optionFunctions
