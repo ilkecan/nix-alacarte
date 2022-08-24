@@ -67,7 +67,9 @@ in
           path
           (attrsOf type)
           (listOf type)
-        ];
+        ] // {
+          description = "genericValue";
+        };
       in
       type;
   };
