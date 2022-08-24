@@ -6,6 +6,10 @@
 }:
 
 let
+  inherit (builtins)
+    mapAttrs
+  ;
+
   inherit (lib)
     const
     genAttrs
@@ -55,7 +59,11 @@ let
         type = types.functionTo option.type;
       };
     list = option:
+      let
+        apply = option.apply or null;
+      in
       option // {
+        ${optionalValue (apply != null) "apply"} = map apply;
         default = [ ];
         type = types.listOf option.type;
       };
@@ -69,7 +77,11 @@ let
         type = types.coercedTo option.type toList (types.listOf option.type);
       };
     set = option:
+      let
+        apply = option.apply or null;
+      in
       option // {
+        ${optionalValue (apply != null) "apply"} = mapAttrs (_: apply);
         default = { };
         type = types.attrsOf option.type;
       };
