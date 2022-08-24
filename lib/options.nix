@@ -99,6 +99,7 @@ let
     "int"
     "package"
     "path"
+    "shellPackage"
     "str"
     "strMatching"
   ];
