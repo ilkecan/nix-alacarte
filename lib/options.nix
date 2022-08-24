@@ -136,7 +136,7 @@ let
       withDefault [ (default "") ]
         mkOption types.lines;
     settings =
-      withDefault [ (default { }) ]
+      withDefault [ set ]
         (mkOption types.genericValue);
     submodule = module:
       withDefault [ (default { }) ]
