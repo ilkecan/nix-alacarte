@@ -25,6 +25,7 @@ let
   ;
 
   inherit (nix-utils.options)
+    coerceTo
     default
     mkBool
     mkCoercibleToString
@@ -53,6 +54,14 @@ let
     between = lowest: highest:
       setAttr "type" (types.ints.between lowest highest);
 
+    coerceTo = option: type: coerceFunc:
+      let
+        setDefault = !option ? default && type ? emptyValue;
+      in
+      option // {
+        ${optionalValue (setDefault) "default"} = type.emptyValue.value;
+        type = types.coercedTo option.type coerceFunc type;
+      };
     lambda = option:
       let
         default = option.default or option.type.emptyValue.value or null;
@@ -76,9 +85,7 @@ let
         type = types.nullOr option.type;
       };
     optionalList = option:
-      option // {
-        type = types.coercedTo option.type toList (types.listOf option.type);
-      };
+      coerceTo option (types.listOf option.type) toList;
     set = option:
       let
         apply = option.apply or null;
