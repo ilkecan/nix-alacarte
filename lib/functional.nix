@@ -7,18 +7,15 @@
 let
   inherit (lib)
     foldr
-    id
+    flip
   ;
 
   inherit (nix-utils)
-    compose
+    callWith
   ;
 in
 
 {
-  compose = f: g: x:
-    f (g x);
-
-  composeMany = fs:
-    foldr compose id fs;
+  compose = fs: val:
+    foldr (flip callWith) val fs;
 }

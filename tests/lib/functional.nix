@@ -6,7 +6,6 @@
 let
   inherit (nix-utils)
     compose
-    composeMany
   ;
 
   double = x: 2 * x;
@@ -16,12 +15,7 @@ in
 
 {
   "compose" = {
-    expr = compose double addFive 2;
-    expected = 14;
-  };
-
-  "composeMany" = {
-    expr = composeMany [ double addFive subtractNine ] 2;
+    expr = compose [ double addFive subtractNine ] 2;
     expected = -4;
   };
 }
