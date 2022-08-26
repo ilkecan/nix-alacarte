@@ -6,7 +6,6 @@
 let
   inherit (nix-utils)
     allEqual
-    concatListOfLists
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
@@ -34,17 +33,6 @@ in
   "allEqual_many_elems_false" = {
     expr = allEqual [ 2 3 2 ];
     expected = false;
-  };
-
-  "concatListOfLists" = {
-    expr = concatListOfLists [
-      [ 1 2 ]
-      []
-      [ 3 ]
-      [ 4 5 6 ]
-    ];
-
-    expected = [ 1 2 3 4 5 6 ];
   };
 
   "headAndTails" = {

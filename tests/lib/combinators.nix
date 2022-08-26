@@ -4,15 +4,18 @@
 }:
 
 let
+  inherit (builtins)
+    concatLists
+  ;
+
   inherit (nix-utils)
     combinators
-    concatListOfLists
   ;
 in
 
 {
   "mkCombinator" = {
-    expr = combinators.mkCombinator concatListOfLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
+    expr = combinators.mkCombinator concatLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
     expected = [ 1 2 3 3 4 5 ];
   };
 
