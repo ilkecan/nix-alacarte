@@ -161,6 +161,7 @@ let
       format = format:
         withDefault [ (default { }) ]
           mkOption format.type;
+      line = mkOption types.singleLineStr;
       lines =
         withDefault [ (default "") ]
           mkOption types.lines;
