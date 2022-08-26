@@ -21,6 +21,7 @@ let
   ;
 
   inherit (nix-utils)
+    compose
     mergeListOfAttrs
     optionalValue
     setAttr
@@ -41,6 +42,7 @@ let
 
   inherit (internal.options)
     generateOptions
+    mkOptionConstructor
     withDefault
   ;
 
@@ -130,10 +132,9 @@ let
 
   option = type:
     if isOptionType type then
-      pipe (lib.mkOption { inherit type; })
+      mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
     else
-      arg:
-        option (type arg)
+      compose [ option type ]
     ;
 
   optionFunctions = mergeListOfAttrs [

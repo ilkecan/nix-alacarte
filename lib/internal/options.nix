@@ -1,34 +1,39 @@
 {
-  nix-utils,
   internal,
+  lib,
+  nix-utils,
   ...
 }:
 
 let
   inherit (builtins)
-    isFunction
     mapAttrs
+  ;
+
+  inherit (lib)
+    concat
+    isType
   ;
 
   inherit (nix-utils)
     capitalize
+    compose
     mergeListOfAttrs
     renameAttrs
   ;
 
   inherit (internal.options)
+    mkOptionConstructor
     withDefault
   ;
 
+  optionConstructorType = "option-constructor";
+  isOptionConstructor = isType optionConstructorType;
   toOption = mkOptionFunction:
-    let
-      maybeOption = mkOptionFunction [ ];
-    in
-    if isFunction maybeOption then
-      arg:
-        toOption (mkOptionFunction arg)
+    if isOptionConstructor mkOptionFunction then
+      mkOptionFunction [ ]
     else
-      maybeOption
+      compose [ toOption mkOptionFunction ]
     ;
 in
 
@@ -40,14 +45,17 @@ in
         (renameAttrs (name: _value: "mk${capitalize name}") optionFunctions)
       ];
 
-    withDefault = defaultFs: mkOptionFunction: arg:
-      let
-        maybeOption = mkOptionFunction [ ];
-      in
-      if isFunction maybeOption then
-        withDefault defaultFs (mkOptionFunction arg)
+    mkOptionConstructor = unaryFunction:
+      {
+        _type = optionConstructorType;
+        __functor = _self: unaryFunction;
+      };
+
+    withDefault = defaultFs: mkOptionFunction:
+      if isOptionConstructor mkOptionFunction then
+        mkOptionConstructor (compose [ mkOptionFunction (concat defaultFs) ])
       else
-        mkOptionFunction (defaultFs ++ arg)
+        compose [ (withDefault defaultFs) mkOptionFunction ]
       ;
   };
 }
