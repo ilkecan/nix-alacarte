@@ -34,6 +34,7 @@ let
     mkOption
     mkStr
     readOnly
+    unsetDefault
     set
   ;
 
@@ -84,6 +85,10 @@ let
         ${optionalValue (apply != null) "apply"} = map apply;
         default = [ ];
         type = types.listOf option.type;
+      };
+    nonEmptyList = option:
+      unsetDefault option // {
+        type = types.nonEmptyListOf option.type;
       };
     optional = option:
       option // {
