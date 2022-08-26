@@ -8,6 +8,7 @@
 let
   inherit (builtins)
     mapAttrs
+    removeAttrs
   ;
 
   inherit (lib)
@@ -43,11 +44,16 @@ let
 
   types = lib.types // nix-utils.types;
 
+  unsetAttr = name: set:
+    removeAttrs set [ name ];
+
   composerFunctions = {
     apply = setAttr "apply";
     default = setAttr "default";
     internal = setAttr "internal" true;
     readOnly = setAttr "readOnly" true;
+
+    unsetDefault = unsetAttr "default";
 
     addCheck = check: option:
       setAttr "type" (types.addCheck option.type check) option;
