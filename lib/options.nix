@@ -121,6 +121,7 @@ let
     "enum"
     "float"
     "int"
+    "oneOf"
     "package"
     "path"
     "shellPackage"
