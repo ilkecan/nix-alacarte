@@ -117,6 +117,7 @@ let
 
   typeNames = [
     "bool"
+    "either"
     "enum"
     "float"
     "int"
