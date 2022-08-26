@@ -124,6 +124,7 @@ let
     "oneOf"
     "package"
     "path"
+    "port"
     "shellPackage"
     "str"
     "strMatching"
