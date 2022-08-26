@@ -92,7 +92,7 @@ in
   repeat = n: str:
     concatStrings (replicate n str);
 
-  splitAt = index: str: {
+  splitStringAt = index: str: {
     left = substring 0 index str;
     right = substring index nix.int.max str;
   };

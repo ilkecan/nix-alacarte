@@ -14,7 +14,7 @@ let
     lines
     unlines
     repeat
-    splitAt
+    splitStringAt
     words
     unwords
   ;
@@ -120,8 +120,8 @@ in
     expected = " | | | |";
   };
 
-  "splitAt" = {
-    expr = splitAt 3 "fooBar";
+  "splitStringAt" = {
+    expr = splitStringAt 3 "fooBar";
     expected = {
       left = "foo";
       right = "Bar";
