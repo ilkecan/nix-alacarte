@@ -21,6 +21,7 @@ let
   ;
 
   inherit (nix-utils)
+    mergeListOfAttrs
     optionalValue
     setAttr
   ;
@@ -135,38 +136,44 @@ let
         option (type arg)
     ;
 
-  optionFunctions = {
-    inherit option;
+  optionFunctions = mergeListOfAttrs [
+    {
+      inherit option;
 
-    # bool
-    enable = withDefault [ (default false) ]
-      mkBool;
-    disable = withDefault [ (default true) ]
-      mkBool;
+      # bool
+      enable = withDefault [ (default false) ]
+        mkBool;
+      disable = withDefault [ (default true) ]
+        mkBool;
 
-    # str
-    exe = drv:
-      withDefault [ (default (getExe drv)) readOnly ]
-        mkStr;
+      # str
+      exe = drv:
+        withDefault [ (default (getExe drv)) readOnly ]
+          mkStr;
 
-    envVars =
-      withDefault [ set ]
-        mkCoercibleToString;
-    format = format:
-      withDefault [ (default { }) ]
-        mkOption format.type;
-    lines =
-      withDefault [ (default "") ]
-        mkOption types.lines;
-    settings =
-      withDefault [ set ]
-        mkGenericValue;
-    submodule =
-      withDefault [ (default { }) ]
-        mkOption types.submodule;
-  } // genAttrs typeNames (name: mkOption types.${name});
+      envVars =
+        withDefault [ set ]
+          mkCoercibleToString;
+      format = format:
+        withDefault [ (default { }) ]
+          mkOption format.type;
+      lines =
+        withDefault [ (default "") ]
+          mkOption types.lines;
+      settings =
+        withDefault [ set ]
+          mkGenericValue;
+      submodule =
+        withDefault [ (default { }) ]
+          mkOption types.submodule;
+    }
+    (genAttrs typeNames (name: mkOption types.${name}))
+  ];
 in
 
 {
-  options = composerFunctions // generateOptions optionFunctions;
+  options = mergeListOfAttrs [
+    composerFunctions
+    (generateOptions optionFunctions)
+  ];
 }

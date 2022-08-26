@@ -16,6 +16,7 @@ let
   ;
 
   inherit (nix-utils)
+    mergeListOfAttrs
     optionalValue
   ;
 
@@ -27,10 +28,15 @@ in
 {
   addPassthru = passthru: drv:
     let
-      drv' = drv // listToAttrs outputList // passthru // {
-        ${optionalValue (drv ? all) "all"} = getValues outputList;
-        passthru = drv.passthru or { } // passthru;
-      };
+      drv' = mergeListOfAttrs [
+        drv
+        (listToAttrs outputList)
+        passthru
+        {
+          ${optionalValue (drv ? all) "all"} = getValues outputList;
+          passthru = drv.passthru or { } // passthru;
+        }
+      ];
 
       outputList = forEach (drv.outputs or [ ]) (outputName: {
         name = outputName;

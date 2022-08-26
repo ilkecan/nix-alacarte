@@ -12,6 +12,7 @@ let
 
   inherit (nix-utils)
     capitalize
+    mergeListOfAttrs
     renameAttrs
   ;
 
@@ -33,6 +34,12 @@ in
 
 {
   options = {
+    generateOptions = optionFunctions:
+      mergeListOfAttrs [
+        (mapAttrs (_name: toOption) optionFunctions)
+        (renameAttrs (name: _value: "mk${capitalize name}") optionFunctions)
+      ];
+
     withDefault = defaultFs: mkOptionFunction: arg:
       let
         maybeOption = mkOptionFunction [ ];
@@ -42,9 +49,5 @@ in
       else
         mkOptionFunction (defaultFs ++ arg)
       ;
-
-    generateOptions = optionFunctions:
-      mapAttrs (_name: toOption) optionFunctions
-      // renameAttrs (name: _value: "mk${capitalize name}") optionFunctions;
   };
 }
