@@ -11,6 +11,7 @@ let
     mergeListOfAttrs
     removeNulls
     replicate
+    splitAt
   ;
 in
 
@@ -94,5 +95,21 @@ in
   "replicate" = {
     expr = replicate 3 true;
     expected = [ true true true ];
+  };
+
+  "splitAt" = {
+    expr = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
+    expected = {
+      left = [ "equal" "to" "the" "value" ];
+      right = [ "returned" ];
+    };
+  };
+
+  "splitAt_right_empty" = {
+    expr = splitAt 4 [ "equal" "to" "the"  ];
+    expected = {
+      left = [ "equal" "to" "the" ];
+      right = [ ];
+    };
   };
 }
