@@ -128,6 +128,14 @@ in
     };
   };
 
+  "splitStringAt_right_empty" = {
+    expr = splitStringAt 3 "fo";
+    expected = {
+      left = "fo";
+      right = "";
+    };
+  };
+
   "words" = {
     expr = words "nix repl --file '<nixpkgs>'";
     expected = [ "nix" "repl" "--file" "'<nixpkgs>'" ];
