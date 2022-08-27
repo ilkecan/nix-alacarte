@@ -25,18 +25,18 @@
         nix-utils = final: _prev: {
           nix-utils =
             final.recursiveUpdate
-              (final.callPackage ./lib { inherit inputs; })
-              (final.callPackage ./pkgs-lib { inherit inputs; })
+              (final.callPackage ./src/lib { inherit inputs; })
+              (final.callPackage ./src/pkgs-lib { inherit inputs; })
             ;
         };
       };
 
-      bootstrap = import ./bootstrap { inherit inputs; };
+      bootstrap = import ./src/bootstrap { inherit inputs; };
 
-      lib = import ./lib { inherit inputs; };
+      lib = import ./src/lib { inherit inputs; };
       libs.default = self.lib;
     } (eachDefaultSystem (system: {
-      pkgs-lib = import ./pkgs-lib { inherit inputs system; };
+      pkgs-lib = import ./src/pkgs-lib { inherit inputs system; };
       libs = recursiveUpdate self.lib self.pkgs-lib.${system};
 
       packages = {
