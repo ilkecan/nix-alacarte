@@ -55,12 +55,12 @@ in
   };
 
   "append" = {
-    expr = append [ 1 ] [ 2 ];
+    expr = append [ 2 ] [ 1 ];
     expected = [ 1 2 ];
   };
 
   "prepend" = {
-    expr = prepend [ 1 ] [ 2 ];
+    expr = prepend [ 2 ] [ 1 ];
     expected = [ 2 1 ];
   };
 

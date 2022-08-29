@@ -50,8 +50,8 @@ in
   allEqual = list:
     all (equals (head list)) list;
 
-  append = concat;
-  prepend = flip concat;
+  append = flip concat;
+  prepend = concat;
 
   headAndTails = list:
     {

@@ -36,12 +36,12 @@ in
 {
   "appendString" = {
     expr = appendString "foo" "bar";
-    expected = "foobar";
+    expected = "barfoo";
   };
 
   "prependString" = {
     expr = prependString "foo" "bar";
-    expected = "barfoo";
+    expected = "foobar";
   };
 
   "capitalize" = {

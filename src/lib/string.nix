@@ -29,12 +29,12 @@ let
   ;
 
   inherit (nix-utils)
-    appendString
     concatString
     indentByWith
     lines
     nix
     pipe'
+    prependString
     repeat
     replicate
     unlines
@@ -47,8 +47,8 @@ let
 in
 
 {
-  appendString = concatString;
-  prependString = flip concatString;
+  appendString = flip concatString;
+  prependString = concatString;
 
   capitalize = string:
     let
@@ -95,7 +95,7 @@ in
     in
     pipe' [
       lines
-      (map (appendString indentation))
+      (map (prependString indentation))
       unlines
     ];
 
