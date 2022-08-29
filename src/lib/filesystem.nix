@@ -1,4 +1,5 @@
 {
+  bootstrap,
   lib,
   nix-utils,
   ...
@@ -30,6 +31,10 @@ let
     assertOneOf
   ;
 
+  inherit (bootstrap)
+    mergeLibFiles
+  ;
+
   inherit (nix-utils)
     filesOf
     relTo
@@ -38,6 +43,8 @@ let
 in
 
 {
+  inherit mergeLibFiles;
+
   filesOf = dir: {
     asAttrs ? false,
     excludedPaths ? [],
