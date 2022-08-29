@@ -13,6 +13,8 @@ let
     elements
     unelements
     fmtValue
+    indentBy
+    indentByWith
     lines
     unlines
     repeat
@@ -75,6 +77,27 @@ in
   "fmtValue_custom" = {
     expr = fmtValue { bool = v: if v then "yes" else "no"; } true;
     expected = "yes";
+  };
+
+  "indentBy" = {
+    expr = indentBy 4 "alice";
+    expected = "    alice";
+  };
+
+  "indentBy_multiline" = {
+    expr = indentBy 2 ''
+      if this then
+        that
+      end'';
+    expected =
+"  if this then
+    that
+  end";
+  };
+
+  "indentByWith" = {
+    expr = indentByWith "|" 2 "bob";
+    expected = "||bob";
   };
 
   "camelToKebab" = {

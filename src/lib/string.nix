@@ -29,9 +29,15 @@ let
   ;
 
   inherit (nix-utils)
+    appendString
     concatString
+    indentByWith
+    lines
     nix
+    pipe'
+    repeat
     replicate
+    unlines
   ;
 
   snakeSep = "_";
@@ -82,6 +88,16 @@ in
     in
     fmt value;
 
+  indentBy = indentByWith " ";
+  indentByWith = char: count:
+    let
+      indentation = repeat count char;
+    in
+    pipe' [
+      lines
+      (map (appendString indentation))
+      unlines
+    ];
 
   letterCase = {
     camelToKebab = replaceStrings upperChars kebabChars;
