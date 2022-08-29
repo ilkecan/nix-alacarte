@@ -16,6 +16,7 @@ let
   inherit (lib)
     concatStrings
     const
+    flip
     id
     lowerChars
     splitString
@@ -28,6 +29,7 @@ let
   ;
 
   inherit (nix-utils)
+    concatString
     nix
     replicate
   ;
@@ -39,6 +41,9 @@ let
 in
 
 {
+  appendString = concatString;
+  prependString = flip concatString;
+
   capitalize = string:
     let
       first = substring 0 1 string;
@@ -48,6 +53,9 @@ in
 
   commands = splitString ";";
   uncommands = concatStringsSep ";";
+
+  concatString = a: b:
+    a + b;
 
   elements = splitString ",";
   unelements = concatStringsSep ",";

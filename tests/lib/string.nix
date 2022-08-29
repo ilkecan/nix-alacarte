@@ -5,6 +5,8 @@
 
 let
   inherit (nix-utils)
+    appendString
+    prependString
     capitalize
     commands
     uncommands
@@ -30,6 +32,16 @@ let
 in
 
 {
+  "appendString" = {
+    expr = appendString "foo" "bar";
+    expected = "foobar";
+  };
+
+  "prependString" = {
+    expr = prependString "foo" "bar";
+    expected = "barfoo";
+  };
+
   "capitalize" = {
     expr = capitalize "hellO";
     expected = "HellO";
