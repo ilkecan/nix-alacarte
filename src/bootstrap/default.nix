@@ -34,7 +34,7 @@ let
 in
 
 {
-  mergeLibDirectory = dir: args:
+  mergeLibFiles = dir: args:
     let
       libFiles = getLibFiles dir;
       importLib = file:

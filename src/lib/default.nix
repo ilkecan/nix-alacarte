@@ -5,7 +5,9 @@
 }@args:
 
 let
-  inherit (bootstrap) mergeLibDirectory;
+  inherit (bootstrap)
+    mergeLibFiles
+  ;
 
   args' = args // {
     inherit
@@ -18,6 +20,7 @@ let
   };
 
   internal = import ./internal args';
-  nix-utils = mergeLibDirectory ./. args';
+  nix-utils = mergeLibFiles ./. args';
 in
+
 nix-utils

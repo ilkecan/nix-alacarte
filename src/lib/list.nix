@@ -43,7 +43,9 @@ let
 in
 
 {
-  inherit (bootstrap) mergeListOfAttrs;
+  inherit (bootstrap)
+    mergeListOfAttrs
+  ;
 
   allEqual = list:
     all (equals (head list)) list;

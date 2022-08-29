@@ -4,7 +4,9 @@
 }@args:
 
 let
-  inherit (bootstrap) mergeLibDirectory;
+  inherit (bootstrap)
+    mergeLibFiles
+  ;
 in
 
-mergeLibDirectory ./. args
+mergeLibFiles ./. args

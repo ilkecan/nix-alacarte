@@ -15,8 +15,13 @@
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
-      inherit (inputs.flake-utils.lib) eachDefaultSystem;
-      inherit (nixpkgs.lib) recursiveUpdate;
+      inherit (inputs.flake-utils.lib)
+        eachDefaultSystem
+      ;
+
+      inherit (nixpkgs.lib)
+        recursiveUpdate
+      ;
     in
     recursiveUpdate {
       overlays = {

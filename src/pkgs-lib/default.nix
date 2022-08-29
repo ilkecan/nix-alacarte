@@ -7,8 +7,13 @@
 }@args:
 
 let
-  inherit (lib) recursiveUpdate;
-  inherit (bootstrap) mergeLibDirectory;
+  inherit (lib)
+    recursiveUpdate
+  ;
+
+  inherit (bootstrap)
+    mergeLibFiles
+  ;
 
   args' = args // {
     inherit
@@ -22,6 +27,7 @@ let
   };
 
   internal = import ./../lib/internal args';
-  pkgs-lib = mergeLibDirectory ./. args';
+  pkgs-lib = mergeLibFiles ./. args';
 in
+
 pkgs-lib
