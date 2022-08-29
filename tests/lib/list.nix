@@ -1,9 +1,14 @@
 {
+  lib,
   nix-utils,
   ...
 }:
 
 let
+  inherit (lib)
+    range
+  ;
+
   inherit (nix-utils)
     allEqual
     append
@@ -14,6 +19,7 @@ let
     removeNulls
     replicate
     splitAt
+    sum
   ;
 in
 
@@ -123,5 +129,25 @@ in
       left = [ "equal" "to" "the" ];
       right = [ ];
     };
+  };
+
+  "sum_empty" = {
+    expr = sum [ ];
+    expected = 0;
+  };
+
+  "sum_single_elem" = {
+    expr = sum [ 42 ];
+    expected = 42;
+  };
+
+  "sum_multi_elems" = {
+    expr = sum (range 1 10);
+    expected = 55;
+  };
+
+  "sum_floats" = {
+    expr = sum [ 4.1 2.0 1.7 ];
+    expected = 7.8;
   };
 }

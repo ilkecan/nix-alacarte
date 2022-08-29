@@ -7,8 +7,10 @@
 
 let
   inherit (builtins)
+    add
     all
     filter
+    foldl'
     genList
     head
     length
@@ -56,4 +58,6 @@ in
     left = sublist 0 index list;
     right = sublist index (length list - index) list;
   };
+
+  sum = foldl' add 0;
 }
