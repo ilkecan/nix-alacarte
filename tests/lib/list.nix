@@ -6,6 +6,8 @@
 let
   inherit (nix-utils)
     allEqual
+    append
+    prepend
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
@@ -34,6 +36,16 @@ in
   "allEqual_many_elems_false" = {
     expr = allEqual [ 2 3 2 ];
     expected = false;
+  };
+
+  "append" = {
+    expr = append [ 1 ] [ 2 ];
+    expected = [ 1 2 ];
+  };
+
+  "prepend" = {
+    expr = prepend [ 1 ] [ 2 ];
+    expected = [ 2 1 ];
   };
 
   "headAndTails" = {

@@ -17,7 +17,9 @@ let
   ;
 
   inherit (lib)
+    concat
     const
+    flip
     sublist
   ;
 
@@ -32,6 +34,9 @@ in
 
   allEqual = list:
     all (equals (head list)) list;
+
+  append = concat;
+  prepend = flip concat;
 
   headAndTails = list:
     {
