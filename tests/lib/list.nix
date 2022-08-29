@@ -20,6 +20,7 @@ let
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
+    maximum
     minimum
     product
     removeNulls
@@ -112,6 +113,26 @@ in
   "mergeListOfAttrs_recursive_merge" = {
     expr = mergeListOfAttrs [ { a = { b = 3; };} { a = { c = 4; }; } ];
     expected = { a = { b = 3; c = 4; }; };
+  };
+
+  "maximum_empty" = {
+    expr = tryEval (maximum [ ]);
+    expected = { success = false; value = false; };
+  };
+
+  "maximum_single_elem" = {
+    expr = maximum [ 4 ];
+    expected = 4;
+  };
+
+  "maximum_multi_elems" = {
+    expr = maximum firstTenPositiveNumbers;
+    expected = 10;
+  };
+
+  "maximum_floats" = {
+    expr = maximum listOfFloats;
+    expected = 4.1;
   };
 
   "minimum_empty" = {

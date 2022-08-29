@@ -24,6 +24,7 @@ let
     concat
     const
     flip
+    max
     min
     sublist
   ;
@@ -32,6 +33,13 @@ let
     equals
     notNull
   ;
+
+  foldStartingWithHead = f: list:
+    assert assertMsg (list != [ ]) "nix-utils.minimum: empty list";
+    let
+      initial = head list;
+    in
+    foldl' f initial list;
 in
 
 {
@@ -52,12 +60,8 @@ in
   mapListToAttrs = f: list:
     listToAttrs (map f list);
 
-  minimum = list:
-    assert assertMsg (list != [ ]) "nix-utils.minimum: empty list";
-    let
-      initial = head list;
-    in
-    foldl' min initial list;
+  maximum = foldStartingWithHead max;
+  minimum = foldStartingWithHead min;
 
   product = foldl' mul 1;
 
