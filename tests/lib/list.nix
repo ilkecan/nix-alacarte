@@ -16,11 +16,14 @@ let
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
+    product
     removeNulls
     replicate
     splitAt
     sum
   ;
+
+  firstTenPositiveNumbers = range 1 10;
 in
 
 {
@@ -105,6 +108,26 @@ in
     expected = { a = { b = 3; c = 4; }; };
   };
 
+  "product_empty" = {
+    expr = product [ ];
+    expected = 1;
+  };
+
+  "product_single_elem" = {
+    expr = product [ 42 ];
+    expected = 42;
+  };
+
+  "product_multi_elems" = {
+    expr = product firstTenPositiveNumbers;
+    expected = 3628800;
+  };
+
+  "product_floats" = {
+    expr = product [ 4.1 2.0 1.7 ];
+    expected = 13.939999999999998;
+  };
+
   "removeNulls" = {
     expr = removeNulls [ false null 2 ];
     expected = [ false 2 ];
@@ -142,7 +165,7 @@ in
   };
 
   "sum_multi_elems" = {
-    expr = sum (range 1 10);
+    expr = sum firstTenPositiveNumbers;
     expected = 55;
   };
 

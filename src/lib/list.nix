@@ -15,6 +15,7 @@ let
     head
     length
     listToAttrs
+    mul
     tail
   ;
 
@@ -48,6 +49,8 @@ in
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);
+
+  product = foldl' mul 1;
 
   removeNulls = filter notNull;
 
