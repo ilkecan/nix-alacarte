@@ -6,6 +6,7 @@
 let
   inherit (nix-utils)
     compose
+    pipe'
   ;
 
   double = x: 2 * x;
@@ -17,5 +18,10 @@ in
   "compose" = {
     expr = compose [ double addFive subtractNine ] 2;
     expected = -4;
+  };
+
+  "pipe'" = {
+    expr = pipe' [ double subtractNine addFive ] 5;
+    expected = 6;
   };
 }

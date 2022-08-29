@@ -6,8 +6,9 @@
 
 let
   inherit (lib)
-    foldr
     flip
+    foldr
+    pipe
   ;
 
   inherit (nix-utils)
@@ -18,4 +19,6 @@ in
 {
   compose = fs: val:
     foldr (flip callWith) val fs;
+
+  pipe' = flip pipe;
 }
