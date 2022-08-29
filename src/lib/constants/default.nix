@@ -9,4 +9,4 @@ let
   ;
 in
 
-mergeLibFiles ./. args
+mergeLibFiles ./. args { }

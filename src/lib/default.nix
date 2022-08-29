@@ -20,7 +20,7 @@ let
   };
 
   internal = import ./internal args';
-  nix-utils = mergeLibFiles ./. args';
+  nix-utils = mergeLibFiles ./. args' { };
 in
 
 nix-utils

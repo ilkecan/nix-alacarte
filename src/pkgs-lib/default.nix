@@ -27,7 +27,7 @@ let
   };
 
   internal = import ./../lib/internal args';
-  pkgs-lib = mergeLibFiles ./. args';
+  pkgs-lib = mergeLibFiles ./. args' { };
 in
 
 pkgs-lib

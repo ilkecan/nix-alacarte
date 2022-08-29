@@ -12,6 +12,7 @@ let
   ;
 
   inherit (lib)
+    pipe
     recursiveUpdate
     subtractLists
   ;
@@ -20,28 +21,36 @@ let
     mergeListOfAttrs
   ;
 
-  getLibFiles = dir:
+  getFiles = dir: { exclude ? [ ] }:
     let
-      files = attrNames (readDir dir);
-      nonLibFiles = [
-        "default.nix"
-        "internal"
-      ];
-      libFiles = subtractLists nonLibFiles files;
       dir' = toString dir;
+      mkFilepath = filename:
+        "${dir'}/${filename}";
     in
-    map (file: "${dir'}/${file}") libFiles;
+    pipe dir [
+      readDir
+      attrNames
+      (subtractLists exclude)
+      (map mkFilepath)
+    ];
 in
 
 {
-  mergeLibFiles = dir: args:
+  mergeLibFiles = dir: args: {
+    exclude ? [
+      "default.nix"
+      "internal"
+    ]
+  }:
     let
-      libFiles = getLibFiles dir;
       importLib = file:
         import file args;
-      libs = map importLib libFiles;
+      files = getFiles dir { inherit exclude; };
     in
-    mergeListOfAttrs libs;
+    pipe files [
+      (map importLib)
+      mergeListOfAttrs
+    ];
 
   mergeListOfAttrs = foldl' recursiveUpdate { };
 }
