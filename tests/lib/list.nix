@@ -5,6 +5,10 @@
 }:
 
 let
+  inherit (builtins)
+    tryEval
+  ;
+
   inherit (lib)
     range
   ;
@@ -16,6 +20,7 @@ let
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
+    minimum
     product
     removeNulls
     replicate
@@ -24,6 +29,7 @@ let
   ;
 
   firstTenPositiveNumbers = range 1 10;
+  listOfFloats = [ 4.1 2.0 1.7 ];
 in
 
 {
@@ -108,6 +114,26 @@ in
     expected = { a = { b = 3; c = 4; }; };
   };
 
+  "minimum_empty" = {
+    expr = tryEval (minimum [ ]);
+    expected = { success = false; value = false; };
+  };
+
+  "minimum_single_elem" = {
+    expr = minimum [ 4 ];
+    expected = 4;
+  };
+
+  "minimum_multi_elems" = {
+    expr = minimum firstTenPositiveNumbers;
+    expected = 1;
+  };
+
+  "minimum_floats" = {
+    expr = minimum listOfFloats;
+    expected = 1.7;
+  };
+
   "product_empty" = {
     expr = product [ ];
     expected = 1;
@@ -124,7 +150,7 @@ in
   };
 
   "product_floats" = {
-    expr = product [ 4.1 2.0 1.7 ];
+    expr = product listOfFloats;
     expected = 13.939999999999998;
   };
 
@@ -170,7 +196,7 @@ in
   };
 
   "sum_floats" = {
-    expr = sum [ 4.1 2.0 1.7 ];
+    expr = sum listOfFloats;
     expected = 7.8;
   };
 }

@@ -20,9 +20,11 @@ let
   ;
 
   inherit (lib)
+    assertMsg
     concat
     const
     flip
+    min
     sublist
   ;
 
@@ -49,6 +51,13 @@ in
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);
+
+  minimum = list:
+    assert assertMsg (list != [ ]) "nix-utils.minimum: empty list";
+    let
+      initial = head list;
+    in
+    foldl' min initial list;
 
   product = foldl' mul 1;
 
