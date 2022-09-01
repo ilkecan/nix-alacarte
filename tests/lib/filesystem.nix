@@ -65,10 +65,21 @@ in
       };
     };
 
-    excluded_paths = assertEqual {
+    exclude_paths = assertEqual {
       actual = filesOf ./fixtures/example-project {
         asAttrs = true;
         excludedPaths = [ ./fixtures/example-project/app.c ];
+        withExtension = "c";
+      };
+      expected = {
+        "main" = ./fixtures/example-project/main.c;
+      };
+    };
+
+    exclude_relative_paths = assertEqual {
+      actual = filesOf ./fixtures/example-project {
+        asAttrs = true;
+        excludedPaths = [ "app.c" ];
         withExtension = "c";
       };
       expected = {

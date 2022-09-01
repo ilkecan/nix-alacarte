@@ -10,6 +10,7 @@ let
     elem
     filter
     getAttr
+    isString
     listToAttrs
     pathExists
     readDir
@@ -52,7 +53,7 @@ in
 
   filesOf = dir: {
     asAttrs ? false,
-    excludedPaths ? [],
+    excludedPaths ? [ ],
     recursive ? false,
     return ? "path",
     withExtension ? "",
@@ -68,11 +69,12 @@ in
     let
       suffix = ".${withExtension}";
       files = readDir dir;
+      excludedPaths' = map (path: if isString path then relTo dir path else path) excludedPaths;
       f = getAttr return;
       f' = if withExtension == "" then const id else
         file: val: if hasSuffix suffix file.name then val else null;
       f'' = file: val:
-        if elem file.path excludedPaths then null
+        if elem file.path excludedPaths' then null
         else if file.type == "directory" && recursive then filesOf file.path args
         else val;
       f''' =
