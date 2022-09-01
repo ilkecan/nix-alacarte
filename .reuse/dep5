@@ -1,13 +1,18 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: nix-utils
+Upstream-Name: nix-alacarte
 Upstream-Contact: ilkecan <ilkecan@protonmail.com>
-Source: https://git.sr.ht/~ilkecan/nix-utils
+Source: https://github.com/ilkecan/nix-alacarte
 
-Files: *.lock
+Files:
+  *.lock
+  tests/*/data/*
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: Unlicense
 
-Files: *.md
+Files:
+  *.gitignore
+  *.md
+  .editorconfig
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: CC-BY-SA-4.0
 

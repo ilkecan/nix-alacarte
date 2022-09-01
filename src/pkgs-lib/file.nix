@@ -1,7 +1,5 @@
 {
-  inputs,
-  system,
-  pkgs ? inputs.nixpkgs.legacyPackages.${system},
+  pkgs,
   ...
 }:
 

@@ -1,15 +1,15 @@
 {
-  nix-utils,
+  alacarte,
   internal,
   ...
 }:
 
 let
-  inherit (nix-utils)
+  inherit (alacarte)
     types
   ;
 
-  inherit (nix-utils.options)
+  inherit (alacarte.options)
     default
     mkOption
   ;

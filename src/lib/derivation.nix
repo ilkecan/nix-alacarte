@@ -1,6 +1,6 @@
 {
+  alacarte,
   lib,
-  nix-utils,
   ...
 }:
 
@@ -15,12 +15,12 @@ let
     removeSuffix
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     mergeListOfAttrs
     optionalValue
   ;
 
-  inherit (nix-utils.letterCase)
+  inherit (alacarte.letterCase)
     kebabToCamel
   ;
 in
@@ -54,7 +54,7 @@ in
     in drv';
 
   mkOverlay = args: drvFuncFile:
-    (final: prev: {
+    (final: _prev: {
       ${kebabToCamel (removeSuffix ".nix" (baseNameOf drvFuncFile))} =
           final.callPackage drvFuncFile args;
     });

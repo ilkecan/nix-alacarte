@@ -1,11 +1,11 @@
 {
   dnm,
-  nix-utils,
+  alacarte,
   ...
 }:
 
 let
-  inherit (nix-utils)
+  inherit (alacarte)
     appendString
     prependString
     capitalize
@@ -24,7 +24,7 @@ let
     unwords
   ;
 
-  inherit (nix-utils.letterCase)
+  inherit (alacarte.letterCase)
     camelToKebab
     camelToSnake
     kebabToCamel

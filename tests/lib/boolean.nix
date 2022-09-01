@@ -1,11 +1,11 @@
 {
-  nix-utils,
+  alacarte,
   dnm,
   ...
 }:
 
 let
-  inherit (nix-utils)
+  inherit (alacarte)
     boolToInt
   ;
 

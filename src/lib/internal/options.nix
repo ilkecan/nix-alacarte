@@ -1,7 +1,7 @@
 {
+  alacarte,
   internal,
   lib,
-  nix-utils,
   ...
 }:
 
@@ -15,7 +15,7 @@ let
     isType
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     capitalize
     compose
     mergeListOfAttrs

@@ -1,11 +1,11 @@
 {
   dnm,
-  nix-utils,
+  alacarte,
   ...
 }:
 
 let
-  inherit (nix-utils)
+  inherit (alacarte)
     callWith
     equals
     isNull

@@ -1,9 +1,7 @@
 {
-  inputs,
-  system,
+  alacarte,
   lib,
-  nix-utils,
-  pkgs ? inputs.nixpkgs.legacyPackages.${system},
+  pkgs,
   ...
 }:
 
@@ -19,11 +17,11 @@ let
     toList
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     unwords
   ;
 
-  inherit (nix-utils.letterCase)
+  inherit (alacarte.letterCase)
     camelToKebab
   ;
 

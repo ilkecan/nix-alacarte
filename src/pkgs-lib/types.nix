@@ -1,8 +1,8 @@
 {
   inputs,
   system,
+  alacarte,
   lib,
-  nix-utils,
   overlayln-lib ? inputs.overlayln.libs.${system},
   ...
 }:
@@ -23,7 +23,7 @@ let
     pipe
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     combinators
     options
     removeNullAttrs
@@ -33,7 +33,7 @@ let
     wrapPackage
   ;
 
-  types = lib.types // nix-utils.types;
+  types = lib.types // alacarte.types;
 
   mkArgType = name:
     types.submodule {

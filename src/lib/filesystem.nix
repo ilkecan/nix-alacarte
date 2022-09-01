@@ -1,7 +1,7 @@
 {
+  alacarte,
   bootstrap,
   lib,
-  nix-utils,
   ...
 }:
 
@@ -35,7 +35,7 @@ let
     mergeLibFiles
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     filesOf
     relTo
     removeNulls
@@ -72,8 +72,8 @@ in
         else val;
       f''' =
         if asAttrs then
-          file: val:
-            mapNullable (nameValuePair file.stem) val
+          file:
+            mapNullable (nameValuePair file.stem)
         else
           const id
         ;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(nix-utils CXX)
+project(nix-alacarte CXX)
 
 set(NIX_UTILS_VERSION_MAJOR 2)
 set(NIX_UTILS_VERSION_MINOR 7)

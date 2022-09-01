@@ -1,7 +1,7 @@
 {
   dnm,
   lib,
-  nix-utils,
+  alacarte,
   ...
 }:
 
@@ -11,7 +11,7 @@ let
     range
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     allEqual
     append
     prepend

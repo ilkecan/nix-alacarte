@@ -1,6 +1,4 @@
 {
-  lib,
-  nix-utils,
   ...
 }:
 

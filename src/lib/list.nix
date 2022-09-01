@@ -1,7 +1,7 @@
 {
-  lib,
-  nix-utils,
+  alacarte,
   bootstrap,
+  lib,
   ...
 }:
 
@@ -29,13 +29,13 @@ let
     sublist
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     equals
     notNull
   ;
 
   foldStartingWithHead = f: list:
-    assert assertMsg (list != [ ]) "nix-utils.minimum: empty list";
+    assert assertMsg (list != [ ]) "alacarte.minimum: empty list";
     let
       initial = head list;
     in

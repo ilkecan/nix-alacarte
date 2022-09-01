@@ -1,7 +1,7 @@
 {
-  lib,
-  nix-utils,
+  alacarte,
   internal,
+  lib,
   ...
 }:
 
@@ -20,14 +20,14 @@ let
     toList
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     compose
     mergeListOfAttrs
     optionalValue
     setAttr
   ;
 
-  inherit (nix-utils.options)
+  inherit (alacarte.options)
     coerceTo
     default
     mkBool
@@ -46,7 +46,7 @@ let
     withDefault
   ;
 
-  types = lib.types // nix-utils.types;
+  types = lib.types // alacarte.types;
 
   unsetAttr = name: set:
     removeAttrs set [ name ];
@@ -69,7 +69,7 @@ let
         setDefault = !option ? default && type ? emptyValue;
       in
       option // {
-        ${optionalValue (setDefault) "default"} = type.emptyValue.value;
+        ${optionalValue setDefault "default"} = type.emptyValue.value;
         type = types.coercedTo option.type coerceFunc type;
       };
     lambda = option:

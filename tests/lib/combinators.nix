@@ -1,5 +1,5 @@
 {
-  nix-utils,
+  alacarte,
   dnm,
   ...
 }:
@@ -9,7 +9,7 @@ let
     concatLists
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     combinators
   ;
 

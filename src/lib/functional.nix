@@ -1,6 +1,6 @@
 {
+  alacarte,
   lib,
-  nix-utils,
   ...
 }:
 
@@ -11,7 +11,7 @@ let
     pipe
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     callWith
   ;
 in

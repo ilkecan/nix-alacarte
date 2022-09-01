@@ -1,9 +1,7 @@
 {
-  inputs,
-  system,
+  alacarte,
   lib,
-  nix-utils,
-  pkgs ? inputs.nixpkgs.legacyPackages.${system},
+  pkgs,
   ...
 }:
 
@@ -12,7 +10,7 @@ let
     generators
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     types
   ;
 
@@ -20,7 +18,7 @@ let
     writeText
   ;
 
-  formats = pkgs.formats // nix-utils.formats;
+  formats = pkgs.formats // alacarte.formats;
 in
 {
   formats = {

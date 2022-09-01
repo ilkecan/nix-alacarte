@@ -14,13 +14,13 @@ let
       bootstrap
       lib
 
+      alacarte
       internal
-      nix-utils
     ;
   };
 
+  alacarte = mergeLibFiles ./. args' { };
   internal = import ./internal args';
-  nix-utils = mergeLibFiles ./. args' { };
 in
 
-nix-utils
+alacarte

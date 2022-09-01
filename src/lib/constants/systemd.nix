@@ -1,10 +1,10 @@
 {
-  nix-utils,
+  alacarte,
   ...
 }:
 
 let
-  inherit (nix-utils)
+  inherit (alacarte)
     bsd
     libc
     lsb

@@ -1,6 +1,6 @@
 {
+  alacarte,
   lib,
-  nix-utils,
   ...
 }:
 
@@ -21,12 +21,12 @@ let
     isCoercibleToString
   ;
 
-  inherit (nix-utils)
+  inherit (alacarte)
     allEqual
     fmtValue
   ;
 
-  types = lib.types // nix-utils.types;
+  types = lib.types // alacarte.types;
 in
 
 {

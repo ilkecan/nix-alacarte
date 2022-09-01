@@ -35,10 +35,10 @@
     in
     recursiveUpdate {
       overlays = {
-        default = self.overlays.nix-utils;
+        default = self.overlays.nix-alacarte;
 
-        nix-utils = final: _prev: {
-          nix-utils =
+        nix-alacarte = final: _prev: {
+          nix-alacarte =
             final.recursiveUpdate
               (final.callPackage ./src/lib { inherit inputs; })
               (final.callPackage ./src/pkgs-lib { inherit inputs; })
