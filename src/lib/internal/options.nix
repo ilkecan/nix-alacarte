@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -14,14 +14,14 @@ let
     isType
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     capitalize
     compose
     mergeListOfAttrs
     renameAttrs
   ;
 
-  inherit (alacarte.internal.options)
+  inherit (nix-alacarte.internal.options)
     mkOptionConstructor
     withDefault
   ;

@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -21,12 +21,12 @@ let
     isCoercibleToString
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     allEqual
     fmtValue
   ;
 
-  types = lib.types // alacarte.types;
+  types = lib.types // nix-alacarte.types;
 in
 
 {

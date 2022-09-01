@@ -1,19 +1,19 @@
 {
-  alacarte,
+  nix-alacarte,
   ...
 }:
 
 let
-  inherit (alacarte)
+  inherit (nix-alacarte)
     types
   ;
 
-  inherit (alacarte.options)
+  inherit (nix-alacarte.options)
     default
     mkOption
   ;
 
-  inherit (alacarte.internal.options)
+  inherit (nix-alacarte.internal.options)
     generateOptions
     withDefault
   ;

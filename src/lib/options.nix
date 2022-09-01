@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -19,14 +19,14 @@ let
     toList
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     compose
     mergeListOfAttrs
     optionalValue
     setAttr
   ;
 
-  inherit (alacarte.options)
+  inherit (nix-alacarte.options)
     coerceTo
     default
     mkBool
@@ -39,13 +39,13 @@ let
     set
   ;
 
-  inherit (alacarte.internal.options)
+  inherit (nix-alacarte.internal.options)
     generateOptions
     mkOptionConstructor
     withDefault
   ;
 
-  types = lib.types // alacarte.types;
+  types = lib.types // nix-alacarte.types;
 
   unsetAttr = name: set:
     removeAttrs set [ name ];

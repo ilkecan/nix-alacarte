@@ -1,10 +1,10 @@
 {
-  alacarte,
+  nix-alacarte,
   ...
 }:
 
 let
-  inherit (alacarte)
+  inherit (nix-alacarte)
     bsd
     libc
     lsb

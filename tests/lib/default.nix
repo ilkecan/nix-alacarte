@@ -1,9 +1,10 @@
 {
   inputs,
   system,
-  alacarte ? inputs.self.libs.${system},
+
   dnm ? inputs.dnm.lib,
   lib ? inputs.nixpkgs.lib,
+  nix-alacarte ? inputs.self.libs.${system},
 }:
 
 let
@@ -13,9 +14,9 @@ let
 
   args = {
     inherit
-      alacarte
       dnm
       lib
+      nix-alacarte
     ;
   };
 in

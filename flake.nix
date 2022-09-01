@@ -23,13 +23,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, ... }@inputs:
     let
       inherit (inputs.flake-utils.lib)
         eachDefaultSystem
       ;
 
-      inherit (nixpkgs.lib)
+      inherit (inputs.nixpkgs.lib)
         recursiveUpdate
       ;
     in

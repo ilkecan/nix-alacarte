@@ -1,6 +1,6 @@
 {
-  alacarte,
   dnm,
+  nix-alacarte,
   ...
 }:
 
@@ -9,7 +9,7 @@ let
     concatLists
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     combinators
   ;
 

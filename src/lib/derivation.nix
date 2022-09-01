@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -15,12 +15,12 @@ let
     removeSuffix
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     mergeListOfAttrs
     optionalValue
   ;
 
-  inherit (alacarte.letterCase)
+  inherit (nix-alacarte.letterCase)
     kebabToCamel
   ;
 in

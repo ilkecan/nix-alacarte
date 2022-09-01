@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -17,7 +17,7 @@ let
     isFunction
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     combinators
     callWith
   ;

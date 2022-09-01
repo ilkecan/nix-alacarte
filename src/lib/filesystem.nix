@@ -1,7 +1,7 @@
 {
-  alacarte,
   bootstrap,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -37,7 +37,7 @@ let
     mergeLibFiles
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     filesOf
     nixFiles
     relTo
@@ -45,7 +45,7 @@ let
     renameAttrs
   ;
 
-  inherit (alacarte.letterCase)
+  inherit (nix-alacarte.letterCase)
     kebabToCamel
   ;
 in

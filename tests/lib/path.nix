@@ -1,11 +1,11 @@
 {
   dnm,
-  alacarte,
+  nix-alacarte,
   ...
 }:
 
 let
-  inherit (alacarte)
+  inherit (nix-alacarte)
     isAbsolutePath
   ;
 

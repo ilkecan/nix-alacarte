@@ -1,7 +1,7 @@
 {
-  alacarte,
   bootstrap,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -29,7 +29,7 @@ let
     sublist
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     equals
     notNull
   ;

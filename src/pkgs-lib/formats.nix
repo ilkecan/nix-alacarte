@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   pkgs,
   ...
 }:
@@ -10,7 +10,7 @@ let
     generators
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     types
   ;
 
@@ -18,7 +18,7 @@ let
     writeText
   ;
 
-  formats = pkgs.formats // alacarte.formats;
+  formats = pkgs.formats // nix-alacarte.formats;
 in
 {
   formats = {

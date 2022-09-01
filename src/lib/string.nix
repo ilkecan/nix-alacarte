@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -28,7 +28,7 @@ let
     floatToString
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     concatString
     indentByWith
     lines

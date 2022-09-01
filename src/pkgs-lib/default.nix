@@ -1,7 +1,8 @@
 {
   inputs,
   system,
-  alacarte ? inputs.self.libs.default,
+
+  nix-alacarte ? inputs.self.libs.default,
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,
   pkgs ? inputs.nixpkgs.legacyPackages.${system},
@@ -23,7 +24,7 @@ let
       pkgs
     ;
 
-    alacarte = recursiveUpdate alacarte pkgs-lib // { inherit internal; };
+    nix-alacarte = recursiveUpdate nix-alacarte pkgs-lib // { inherit internal; };
   };
 
   internal = import ./../lib/internal args';

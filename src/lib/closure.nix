@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -20,7 +20,7 @@ let
     unique
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     combinators
   ;
 

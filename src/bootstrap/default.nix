@@ -36,12 +36,13 @@ let
 in
 
 {
-  mergeLibFiles = dir: args: {
-    exclude ? [
-      "default.nix"
-      "internal"
-    ]
-  }:
+  mergeLibFiles = dir: args:
+    {
+      exclude ? [
+        "default.nix"
+        "internal"
+      ]
+    }:
     let
       importLib = file:
         import file args;

@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -18,7 +18,7 @@ let
     nameValuePair
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     headAndTails
     mergeListOfAttrs
     notNull

@@ -1,6 +1,6 @@
 {
-  alacarte,
   lib,
+  nix-alacarte,
   pkgs,
   ...
 }:
@@ -17,11 +17,11 @@ let
     toList
   ;
 
-  inherit (alacarte)
+  inherit (nix-alacarte)
     unwords
   ;
 
-  inherit (alacarte.letterCase)
+  inherit (nix-alacarte.letterCase)
     camelToKebab
   ;
 
