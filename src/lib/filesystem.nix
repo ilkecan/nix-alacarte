@@ -12,6 +12,7 @@ let
     getAttr
     isString
     listToAttrs
+    mapAttrs
     pathExists
     readDir
   ;
@@ -21,7 +22,6 @@ let
     flatten
     hasSuffix
     id
-    mapAttrs'
     mapAttrsToList
     mapNullable
     nameValuePair
@@ -39,8 +39,10 @@ let
 
   inherit (alacarte)
     filesOf
+    nixFiles
     relTo
     removeNulls
+    renameAttrs
   ;
 
   inherit (alacarte.letterCase)
@@ -50,6 +52,28 @@ in
 
 {
   inherit mergeLibFiles;
+
+  nixFiles = dir:
+    {
+      convertNameToCamel ? true,
+      excludedPaths ? [ "default.nix" ],
+      recursive ? false,
+    }:
+    let
+      files = filesOf dir {
+        inherit
+          excludedPaths
+          recursive
+        ;
+        withExtension = "nix";
+        asAttrs = true;
+      };
+    in
+    if convertNameToCamel then
+      renameAttrs (name: _path: kebabToCamel name) files
+    else
+      files
+    ;
 
   filesOf = dir: {
     asAttrs ? false,
@@ -112,13 +136,9 @@ in
       recursive ? false,
     }:
     let
-      files = filesOf dir {
-        inherit recursive;
-        asAttrs = true;
-        withExtension = "nix";
-      };
+      files = nixFiles dir { inherit recursive; };
     in
-    mapAttrs' (name: path: nameValuePair (kebabToCamel name) (import path args)) files;
+    mapAttrs (_: path: import path args) files;
 
   relTo = dir: path:
     dir + "/${toString path}";

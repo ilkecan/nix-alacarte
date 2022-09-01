@@ -8,6 +8,7 @@ let
   inherit (alacarte)
     filesOf
     importDirectory
+    nixFiles
     relTo
   ;
 
@@ -102,6 +103,11 @@ in
   importDirectory = assertEqual {
     actual = importDirectory ./fixtures/nix-files { x = 5; y = 10; z = 12; } { };
     expected = { fooBar = 12; baz = 5; };
+  };
+
+  nixFiles = assertEqual {
+    actual = nixFiles ./fixtures/nix-files { };
+    expected = { fooBar = ./fixtures/nix-files/foo-bar.nix; baz = ./fixtures/nix-files/baz.nix; };
   };
 
   relTo = {
