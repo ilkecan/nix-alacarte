@@ -1,4 +1,5 @@
 {
+  dnm,
   nix-utils,
   ...
 }:
@@ -31,153 +32,157 @@ let
     snakeToCamel
     snakeToKebab
   ;
+
+  inherit (dnm)
+    assertEqual
+  ;
 in
 
 {
-  "appendString" = {
-    expr = appendString "foo" "bar";
+  appendString = assertEqual {
+    actual = appendString "foo" "bar";
     expected = "barfoo";
   };
 
-  "prependString" = {
-    expr = prependString "foo" "bar";
+  prependString = assertEqual {
+    actual = prependString "foo" "bar";
     expected = "foobar";
   };
 
-  "capitalize" = {
-    expr = capitalize "hellO";
+  capitalize = assertEqual {
+    actual = capitalize "hellO";
     expected = "HellO";
   };
 
-  "commands" = {
-    expr = commands "touch a;ls -al";
+  commands = assertEqual {
+    actual = commands "touch a;ls -al";
     expected = [ "touch a" "ls -al" ];
   };
 
-  "uncommands" = {
-    expr = uncommands [ "touch a" "ls -al" ];
+  uncommands = assertEqual {
+    actual = uncommands [ "touch a" "ls -al" ];
     expected = "touch a;ls -al";
   };
 
-  "elements" = {
-    expr = elements "apple,orange";
+  elements = assertEqual {
+    actual = elements "apple,orange";
     expected = [ "apple" "orange" ];
   };
 
-  "unelements" = {
-    expr = unelements [ "apple" "orange" ];
+  unelements = assertEqual{
+    actual = unelements [ "apple" "orange" ];
     expected = "apple,orange";
   };
 
-  "fmtValue_default" = {
-    expr = fmtValue { } true;
-    expected = "1";
+  fmtValue = {
+    default = assertEqual {
+      actual = fmtValue { } true;
+      expected = "1";
+    };
+
+    custom = assertEqual {
+      actual = fmtValue { bool = v: if v then "yes" else "no"; } true;
+      expected = "yes";
+    };
   };
 
-  "fmtValue_custom" = {
-    expr = fmtValue { bool = v: if v then "yes" else "no"; } true;
-    expected = "yes";
+  indentBy = {
+    single_line = assertEqual {
+      actual = indentBy 4 "alice";
+      expected = "    alice";
+    };
+
+    multiline = assertEqual {
+      actual = indentBy 2 "  if this then\n    that\n  end";
+      expected = "    if this then\n      that\n    end";
+    };
   };
 
-  "indentBy" = {
-    expr = indentBy 4 "alice";
-    expected = "    alice";
-  };
-
-  "indentBy_multiline" = {
-    expr = indentBy 2 ''
-      if this then
-        that
-      end'';
-    expected =
-"  if this then
-    that
-  end";
-  };
-
-  "indentByWith" = {
-    expr = indentByWith "|" 2 "bob";
+  indentByWith = assertEqual {
+    actual = indentByWith "|" 2 "bob";
     expected = "||bob";
   };
 
-  "camelToKebab" = {
-    expr = camelToKebab "fooBar";
-    expected = "foo-bar";
+  letterCase = {
+    camelToKebab = assertEqual {
+      actual = camelToKebab "fooBar";
+      expected = "foo-bar";
+    };
+
+    camelToSnake = assertEqual {
+      actual = camelToSnake "fooBar";
+      expected = "foo_bar";
+    };
+
+    kebabToCamel = assertEqual {
+      actual = kebabToCamel "foo-bar";
+      expected = "fooBar";
+    };
+
+    kebabToSnake = assertEqual {
+      actual = kebabToSnake "foo-bar";
+      expected = "foo_bar";
+    };
+
+    snakeToCamel = assertEqual {
+      actual = snakeToCamel "foo_bar";
+      expected = "fooBar";
+    };
+
+    snakeToKebab = assertEqual {
+      actual = snakeToKebab "foo_bar";
+      expected = "foo-bar";
+    };
   };
 
-  "camelToSnake" = {
-    expr = camelToSnake "fooBar";
-    expected = "foo_bar";
+  lines = {
+    single = assertEqual {
+      actual = lines "apple";
+      expected = [ "apple" ];
+    };
+
+    lines_multi = assertEqual {
+      actual = lines "veni\nvidi\nvici";
+      expected = [ "veni" "vidi" "vici" ];
+    };
   };
 
-  "kebabToCamel" = {
-    expr = kebabToCamel "foo-bar";
-    expected = "fooBar";
+  unlines = {
+    single = assertEqual {
+      actual = unlines [ "apple" ];
+      expected = "apple";
+    };
+
+    multi = assertEqual {
+      actual = unlines [ "veni" "vidi" "vici" ];
+      expected = "veni\nvidi\nvici";
+    };
   };
 
-  "kebabToSnake" = {
-    expr = kebabToSnake "foo-bar";
-    expected = "foo_bar";
-  };
-
-  "snakeToCamel" = {
-    expr = snakeToCamel "foo_bar";
-    expected = "fooBar";
-  };
-
-  "snakeToKebab" = {
-    expr = snakeToKebab "foo_bar";
-    expected = "foo-bar";
-  };
-
-  "lines_single" = {
-    expr = lines "apple";
-    expected = [ "apple" ];
-  };
-
-  "lines_multi" = {
-    expr = lines "veni\nvidi\nvici";
-    expected = [ "veni" "vidi" "vici" ];
-  };
-
-  "unlines_single" = {
-    expr = unlines [ "apple" ];
-    expected = "apple";
-  };
-
-  "unlines_multi" = {
-    expr = unlines [ "veni" "vidi" "vici" ];
-    expected = "veni\nvidi\nvici";
-  };
-
-  "repeat" = {
-    expr = repeat 4 " |";
+  repeat = assertEqual {
+    actual = repeat 4 " |";
     expected = " | | | |";
   };
 
-  "splitStringAt" = {
-    expr = splitStringAt 3 "fooBar";
-    expected = {
-      left = "foo";
-      right = "Bar";
+  splitStringAt = {
+   left_and_right_non_empty = assertEqual {
+      actual = splitStringAt 3 "fooBar";
+      expected = { left = "foo"; right = "Bar"; };
+    };
+
+    right_empty = assertEqual {
+      actual = splitStringAt 3 "fo";
+      expected = { left = "fo"; right = ""; };
     };
   };
 
-  "splitStringAt_right_empty" = {
-    expr = splitStringAt 3 "fo";
-    expected = {
-      left = "fo";
-      right = "";
-    };
-  };
-
-  "words" = {
-    expr = words "nix repl --file '<nixpkgs>'";
+  words = assertEqual {
+    actual = words "nix repl --file '<nixpkgs>'";
     expected = [ "nix" "repl" "--file" "'<nixpkgs>'" ];
   };
 
-  "unwords" = {
-    expr = unwords [ "nix" "repl" "--file" "'<nixpkgs>'" ];
+  unwords = assertEqual {
+    actual = unwords [ "nix" "repl" "--file" "'<nixpkgs>'" ];
     expected = "nix repl --file '<nixpkgs>'";
   };
 }

@@ -1,4 +1,5 @@
 {
+  dnm,
   nix-utils,
   ...
 }:
@@ -7,21 +8,17 @@ let
   inherit (nix-utils)
     isAbsolutePath
   ;
+
+  inherit (dnm)
+    assertFalse
+    assertTrue
+  ;
 in
 
 {
-  "isAbsolutePath_path" = {
-    expr = isAbsolutePath ./data;
-    expected = true;
-  };
-
-  "isAbsolutePath_string_true" = {
-    expr = isAbsolutePath "/var/root";
-    expected = true;
-  };
-
-  "isAbsolutePath_string_false" = {
-    expr = isAbsolutePath ".git/config";
-    expected = false;
+  isAbsolutePath = {
+    path = assertTrue (isAbsolutePath ./data);
+    string_absolute = assertTrue (isAbsolutePath "/var/root");
+    string_relative = assertFalse (isAbsolutePath ".git/config");
   };
 }

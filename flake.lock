@@ -16,6 +16,27 @@
         "type": "github"
       }
     },
+    "dnm": {
+      "inputs": {
+        "nix-utils": [],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1662032112,
+        "narHash": "sha256-srPpt+ijMKnQvpkkG8n0/53zRmFu6odBLokQQpnH9TQ=",
+        "owner": "ilkecan",
+        "repo": "dnm",
+        "rev": "f2dafb5c02807c17f09abacf5d634c61b2300ccf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ilkecan",
+        "repo": "dnm",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1656928814,
@@ -89,6 +110,7 @@
     },
     "root": {
       "inputs": {
+        "dnm": "dnm",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "overlayln": "overlayln"

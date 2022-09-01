@@ -1,5 +1,6 @@
 {
   nix-utils,
+  dnm,
   ...
 }:
 
@@ -11,41 +12,35 @@ let
   inherit (nix-utils)
     combinators
   ;
+
+  inherit (dnm)
+    assertEqual
+    assertFalse
+    assertTrue
+  ;
+
+  fs = [
+    (x: y: x + y > 10)
+    (x: y: x < y)
+    (x: y: x * y < 100)
+  ];
 in
 
 {
-  "mkCombinator" = {
-    expr = combinators.mkCombinator concatLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
+  mkCombinator = assertEqual {
+    actual = combinators.mkCombinator concatLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
     expected = [ 1 2 3 3 4 5 ];
   };
 
-  "and_empty" = {
-    expr = combinators.and [ ];
-    expected = true;
+  and = {
+    empty = assertTrue (combinators.and [ ]);
+    without_args = assertFalse (combinators.and [ true false ]);
+    with_args = assertTrue (combinators.and fs 4 7);
   };
 
-  "and_without_args" = {
-    expr = combinators.and [ true false ];
-    expected = false;
-  };
-
-  "and_with_args" = {
-    expr = combinators.and [ (x: y: x + y > 10) (x: y: x < y) (x: y: x * y < 100) ] 4 7;
-    expected = true;
-  };
-
-  "or_empty" = {
-    expr = combinators.or [ ];
-    expected = false;
-  };
-
-  "or_without_args" = {
-    expr = combinators.or [ true false ];
-    expected = true;
-  };
-
-  "or_with_args" = {
-    expr = combinators.or [ (x: y: x + y > 10) (x: y: x < y) (x: y: x * y < 100) ] 4 2;
-    expected = true;
+  or = {
+    empty = assertFalse (combinators.or [ ]);
+    without_args = assertTrue (combinators.or [ true false ]);
+    with_args = assertTrue (combinators.or fs 4 2);
   };
 }

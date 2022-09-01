@@ -1,15 +1,13 @@
 {
+  dnm,
   lib,
   nix-utils,
   ...
 }:
 
 let
-  inherit (builtins)
-    tryEval
-  ;
-
   inherit (lib)
+    nameValuePair
     range
   ;
 
@@ -29,195 +27,186 @@ let
     sum
   ;
 
+  inherit (dnm)
+    assertEqual
+    assertFailure
+    assertFalse
+    assertTrue
+  ;
+
   firstTenPositiveNumbers = range 1 10;
   listOfFloats = [ 4.1 2.0 1.7 ];
 in
 
 {
-  "allEqual_zero_elem" = {
-    expr = allEqual [ ];
-    expected = true;
+  allEqual = {
+    zero_elem = assertTrue (allEqual [ ]);
+    one_elem = assertTrue (allEqual [ 2 ]);
+    many_elems_true = assertTrue (allEqual [ 2 2 2 ]);
+    many_elems_false = assertFalse (allEqual [ 2 3 2 ]);
   };
 
-  "allEqual_one_elem" = {
-    expr = allEqual [ 2 ];
-    expected = true;
-  };
-
-  "allEqual_many_elems_true" = {
-    expr = allEqual [ 2 2 2 ];
-    expected = true;
-  };
-
-  "allEqual_many_elems_false" = {
-    expr = allEqual [ 2 3 2 ];
-    expected = false;
-  };
-
-  "append" = {
-    expr = append [ 2 ] [ 1 ];
+  append = assertEqual {
+    actual = append [ 2 ] [ 1 ];
     expected = [ 1 2 ];
   };
 
-  "prepend" = {
-    expr = prepend [ 2 ] [ 1 ];
+  prepend = assertEqual {
+    actual = prepend [ 2 ] [ 1 ];
     expected = [ 2 1 ];
   };
 
-  "headAndTails" = {
-    expr = headAndTails [ 2 3 5 ];
-    expected = { head = 2; tail = [ 3 5 ]; };
-  };
+  headAndTails = {
+    tail_not_empty = assertEqual {
+      actual = headAndTails [ 2 3 5 ];
+      expected = { head = 2; tail = [ 3 5 ]; };
+    };
 
-  "headAndTails_tail_empty" = {
-    expr = headAndTails [ true ];
-    expected = { head = true; tail = [ ]; };
-  };
-
-  "mapListToAttrs" = {
-    expr = mapListToAttrs (e: { name = e.name; value = e; }) [
-      {
-        name = "a";
-        value = 1;
-      }
-      {
-        name = "b";
-        value = 2;
-      }
-    ];
-
-    expected = {
-      "a" = {
-        name = "a";
-        value = 1;
-      };
-      "b" = {
-        name = "b";
-        value = 2;
-      };
+    tail_empty = assertEqual {
+      actual = headAndTails [ true ];
+      expected = { head = true; tail = [ ]; };
     };
   };
 
-  "mergeListOfAttrs" = {
-    expr = mergeListOfAttrs [
-      { "a" = 1; }
-      { "b" = 2; }
+
+  mapListToAttrs = assertEqual {
+    actual = mapListToAttrs (e: nameValuePair e.name e) [
+      { name = "a"; value = 1; }
+      { name = "b"; value = 2; }
     ];
 
     expected = {
-      "a" = 1;
-      "b" = 2;
+      "a" = { name = "a"; value = 1; };
+      "b" = { name = "b"; value = 2; };
     };
   };
 
-  "mergeListOfAttrs_recursive_merge" = {
-    expr = mergeListOfAttrs [ { a = { b = 3; };} { a = { c = 4; }; } ];
-    expected = { a = { b = 3; c = 4; }; };
+  mergeListOfAttrs = {
+    merge_leafs = assertEqual {
+      actual = mergeListOfAttrs [
+        { "a" = 1; }
+        { "b" = 2; }
+      ];
+
+      expected = {
+        "a" = 1;
+        "b" = 2;
+      };
+    };
+
+    recursive_merge = assertEqual {
+      actual = mergeListOfAttrs [ { a = { b = 3; }; } { a = { c = 4; }; } ];
+      expected = { a = { b = 3; c = 4; }; };
+    };
   };
 
-  "maximum_empty" = {
-    expr = tryEval (maximum [ ]);
-    expected = { success = false; value = false; };
+  maximum = {
+    empty = assertFailure (maximum [ ]);
+
+    single_elem = assertEqual {
+      actual = maximum [ 4 ];
+      expected = 4;
+    };
+
+    multi_elems = assertEqual {
+      actual = maximum firstTenPositiveNumbers;
+      expected = 10;
+    };
+
+    floats = assertEqual {
+      actual = maximum listOfFloats;
+      expected = 4.1;
+    };
   };
 
-  "maximum_single_elem" = {
-    expr = maximum [ 4 ];
-    expected = 4;
+  minimum = {
+    empty = assertFailure (minimum [ ]);
+
+    single_elem = assertEqual {
+      actual = minimum [ 4 ];
+      expected = 4;
+    };
+
+    multi_elems = assertEqual {
+      actual = minimum firstTenPositiveNumbers;
+      expected = 1;
+    };
+
+    floats = assertEqual {
+      actual = minimum listOfFloats;
+      expected = 1.7;
+    };
   };
 
-  "maximum_multi_elems" = {
-    expr = maximum firstTenPositiveNumbers;
-    expected = 10;
+  product = {
+    empty = assertEqual {
+      actual = product [ ];
+      expected = 1;
+    };
+
+    single_elem = assertEqual {
+      actual = product [ 42 ];
+      expected = 42;
+    };
+
+    multi_elems = assertEqual {
+      actual = product firstTenPositiveNumbers;
+      expected = 3628800;
+    };
+
+    floats = assertEqual {
+      actual = product listOfFloats;
+      expected = 13.939999999999998;
+    };
   };
 
-  "maximum_floats" = {
-    expr = maximum listOfFloats;
-    expected = 4.1;
-  };
-
-  "minimum_empty" = {
-    expr = tryEval (minimum [ ]);
-    expected = { success = false; value = false; };
-  };
-
-  "minimum_single_elem" = {
-    expr = minimum [ 4 ];
-    expected = 4;
-  };
-
-  "minimum_multi_elems" = {
-    expr = minimum firstTenPositiveNumbers;
-    expected = 1;
-  };
-
-  "minimum_floats" = {
-    expr = minimum listOfFloats;
-    expected = 1.7;
-  };
-
-  "product_empty" = {
-    expr = product [ ];
-    expected = 1;
-  };
-
-  "product_single_elem" = {
-    expr = product [ 42 ];
-    expected = 42;
-  };
-
-  "product_multi_elems" = {
-    expr = product firstTenPositiveNumbers;
-    expected = 3628800;
-  };
-
-  "product_floats" = {
-    expr = product listOfFloats;
-    expected = 13.939999999999998;
-  };
-
-  "removeNulls" = {
-    expr = removeNulls [ false null 2 ];
+  removeNulls = assertEqual {
+    actual = removeNulls [ false null 2 ];
     expected = [ false 2 ];
   };
 
-  "replicate" = {
-    expr = replicate 3 true;
+  replicate = assertEqual {
+    actual = replicate 3 true;
     expected = [ true true true ];
   };
 
-  "splitAt" = {
-    expr = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
-    expected = {
-      left = [ "equal" "to" "the" "value" ];
-      right = [ "returned" ];
+  splitAt = {
+    left_and_right_non_empty = assertEqual {
+      actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
+      expected = {
+        left = [ "equal" "to" "the" "value" ];
+        right = [ "returned" ];
+      };
+    };
+
+    right_empty = assertEqual {
+      actual = splitAt 4 [ "equal" "to" "the"  ];
+      expected = {
+        left = [ "equal" "to" "the" ];
+        right = [ ];
+      };
     };
   };
 
-  "splitAt_right_empty" = {
-    expr = splitAt 4 [ "equal" "to" "the"  ];
-    expected = {
-      left = [ "equal" "to" "the" ];
-      right = [ ];
+  sum = {
+    empty = assertEqual {
+      actual = sum [ ];
+      expected = 0;
     };
-  };
 
-  "sum_empty" = {
-    expr = sum [ ];
-    expected = 0;
-  };
+    single_elem = assertEqual {
+      actual = sum [ 42 ];
+      expected = 42;
+    };
 
-  "sum_single_elem" = {
-    expr = sum [ 42 ];
-    expected = 42;
-  };
+    multi_elems = assertEqual {
+      actual = sum firstTenPositiveNumbers;
+      expected = 55;
+    };
 
-  "sum_multi_elems" = {
-    expr = sum firstTenPositiveNumbers;
-    expected = 55;
-  };
-
-  "sum_floats" = {
-    expr = sum listOfFloats;
-    expected = 7.8;
+    floats = assertEqual {
+      actual = sum listOfFloats;
+      expected = 7.8;
+    };
   };
 }

@@ -2,6 +2,16 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     flake-utils.url = "github:numtide/flake-utils";
+
+    dnm = {
+      url = "github:ilkecan/dnm";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        # https://github.com/NixOS/nix/issues/4931
+        nix-utils.follows = "";
+      };
+    };
+
     overlayln = {
       url = "github:ilkecan/overlayln";
       inputs = {

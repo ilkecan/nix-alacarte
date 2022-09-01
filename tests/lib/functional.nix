@@ -1,4 +1,5 @@
 {
+  dnm,
   nix-utils,
   ...
 }:
@@ -9,19 +10,23 @@ let
     pipe'
   ;
 
+  inherit (dnm)
+    assertEqual
+  ;
+
   double = x: 2 * x;
   addFive = x: x + 5;
   subtractNine = x: x - 9;
 in
 
 {
-  "compose" = {
-    expr = compose [ double addFive subtractNine ] 2;
+  compose = assertEqual {
+    actual = compose [ double addFive subtractNine ] 2;
     expected = -4;
   };
 
-  "pipe'" = {
-    expr = pipe' [ double subtractNine addFive ] 5;
+  pipe' = assertEqual {
+    actual = pipe' [ double subtractNine addFive ] 5;
     expected = 6;
   };
 }

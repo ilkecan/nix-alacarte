@@ -1,4 +1,5 @@
 {
+  dnm,
   nix-utils,
   ...
 }:
@@ -7,11 +8,15 @@ let
   inherit (nix-utils)
     importCargoLock
   ;
+
+  inherit (dnm)
+    assertEqual
+  ;
 in
 
 {
-  "importCargoLock" = {
-    expr = importCargoLock ./data;
+  importCargoLock = assertEqual {
+    actual = importCargoLock ./data;
     expected = {
       aho-corasick = {
         checksum = "1e37cfd5e7657ada45f742d6e99ca5788580b5c529dc78faf11ece6dc702656f";
