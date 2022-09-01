@@ -5,7 +5,7 @@
   nix-alacarte,
   lib,
 
-  overlayln-lib ? inputs.overlayln.libs.${system},
+  wrapPackage ? inputs.overlayln.libs.${system}.wrapPackage,
   ...
 }:
 
@@ -29,10 +29,6 @@ let
     combinators
     options
     removeNullAttrs
-  ;
-
-  inherit (overlayln-lib)
-    wrapPackage
   ;
 
   types = lib.types // nix-alacarte.types;

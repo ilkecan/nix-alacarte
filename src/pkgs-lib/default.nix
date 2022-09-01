@@ -2,9 +2,9 @@
   inputs,
   system,
 
-  nix-alacarte ? inputs.self.libs.default,
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,
+  nix-alacarte ? inputs.self.libs.default,
   pkgs ? inputs.nixpkgs.legacyPackages.${system},
 }@args:
 

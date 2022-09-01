@@ -1,7 +1,6 @@
 {
   inputs,
   lib ? inputs.nixpkgs.lib,
-  bootstrap ? inputs.self.bootstrap,
 }:
 
 let
@@ -33,25 +32,27 @@ let
       (subtractLists exclude)
       (map mkFilepath)
     ];
+
+  bootstrap = {
+    mergeLibFiles = dir: args:
+      {
+        exclude ? [
+          "default.nix"
+          "internal"
+        ]
+      }:
+      let
+        importLib = file:
+          import file args;
+        files = getFiles dir { inherit exclude; };
+      in
+      pipe files [
+        (map importLib)
+        mergeListOfAttrs
+      ];
+
+    mergeListOfAttrs = foldl' recursiveUpdate { };
+  };
 in
 
-{
-  mergeLibFiles = dir: args:
-    {
-      exclude ? [
-        "default.nix"
-        "internal"
-      ]
-    }:
-    let
-      importLib = file:
-        import file args;
-      files = getFiles dir { inherit exclude; };
-    in
-    pipe files [
-      (map importLib)
-      mergeListOfAttrs
-    ];
-
-  mergeListOfAttrs = foldl' recursiveUpdate { };
-}
+bootstrap
