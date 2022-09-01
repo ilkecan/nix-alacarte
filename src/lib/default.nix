@@ -1,5 +1,5 @@
 {
-  inputs,
+  inputs ? assert false; "must be called with either 'inputs' or all of [ 'bootstrap' 'lib' ]",
 
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,

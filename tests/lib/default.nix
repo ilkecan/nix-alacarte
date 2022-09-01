@@ -1,6 +1,6 @@
 {
-  inputs,
-  system,
+  inputs ? assert false; "must be called with either 'inputs' or all of [ 'dnm' 'lib' 'nix-alacarte' ]",
+  system ? assert false; "must be called with either 'system' or all of [ 'pkgs' ]",
 
   dnm ? inputs.dnm.lib,
   lib ? inputs.nixpkgs.lib,

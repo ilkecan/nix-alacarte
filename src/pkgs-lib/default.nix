@@ -1,6 +1,6 @@
 {
-  inputs,
-  system,
+  inputs ? assert false; "must be called with either 'inputs' or all of [ 'bootstrap' 'lib' 'nix-alacarte' 'pkgs' ]",
+  system ? assert false; "must be called with either 'system' or all of [ 'pkgs' ]",
 
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,

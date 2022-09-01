@@ -1,5 +1,6 @@
 {
-  inputs,
+  inputs ? assert false; "must be called with either 'inputs' or all of [ 'lib' ]",
+
   lib ? inputs.nixpkgs.lib,
 }:
 
