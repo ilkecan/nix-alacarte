@@ -3,6 +3,7 @@
 
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,
+  ...
 }@args:
 
 let

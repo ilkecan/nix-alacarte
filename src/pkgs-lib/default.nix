@@ -6,6 +6,7 @@
   lib ? inputs.nixpkgs.lib,
   nix-alacarte ? inputs.self.libs.default,
   pkgs ? inputs.nixpkgs.legacyPackages.${system},
+  ...
 }@args:
 
 let
