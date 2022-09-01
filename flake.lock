@@ -18,17 +18,17 @@
     },
     "dnm": {
       "inputs": {
-        "nix-utils": [],
+        "nix-alacarte": [],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1662032112,
-        "narHash": "sha256-srPpt+ijMKnQvpkkG8n0/53zRmFu6odBLokQQpnH9TQ=",
+        "lastModified": 1662036592,
+        "narHash": "sha256-+ltP4liCT2UiZFAdjJy6ZAnT3STU7pkbKz5ubcqJ/io=",
         "owner": "ilkecan",
         "repo": "dnm",
-        "rev": "f2dafb5c02807c17f09abacf5d634c61b2300ccf",
+        "rev": "5d2df0e3a058f826c209260dae24fa4c511ce028",
         "type": "github"
       },
       "original": {
@@ -88,18 +88,18 @@
         "flake-utils": [
           "flake-utils"
         ],
+        "nix-alacarte": [],
         "nix-filter": "nix-filter",
-        "nix-utils": [],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1659740367,
-        "narHash": "sha256-PQt9r8BUQB3ZFz9s71Fo22TRqrhKIGJ2VajA4qjweOM=",
+        "lastModified": 1662036067,
+        "narHash": "sha256-5X9g8rUY++XlucizqTJx3QiZAhaD9n/gKzDmNMWoIbw=",
         "owner": "ilkecan",
         "repo": "overlayln",
-        "rev": "b833ac988c247b4fcdca2ccc90cb65f8ae393209",
+        "rev": "bb17b1010bce931dca72a6aab608db3b736c431e",
         "type": "github"
       },
       "original": {

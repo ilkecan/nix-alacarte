@@ -1,6 +1,5 @@
 {
   alacarte,
-  internal,
   lib,
   ...
 }:
@@ -22,7 +21,7 @@ let
     renameAttrs
   ;
 
-  inherit (internal.options)
+  inherit (alacarte.internal.options)
     mkOptionConstructor
     withDefault
   ;

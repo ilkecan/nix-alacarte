@@ -13,10 +13,9 @@ let
     inherit
       bootstrap
       lib
-
-      alacarte
-      internal
     ;
+
+    alacarte = alacarte // { inherit internal; };
   };
 
   alacarte = mergeLibFiles ./. args' { };

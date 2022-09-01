@@ -1,6 +1,5 @@
 {
   alacarte,
-  internal,
   lib,
   ...
 }:
@@ -40,7 +39,7 @@ let
     set
   ;
 
-  inherit (internal.options)
+  inherit (alacarte.internal.options)
     generateOptions
     mkOptionConstructor
     withDefault

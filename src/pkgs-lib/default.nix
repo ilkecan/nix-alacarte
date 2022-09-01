@@ -21,11 +21,9 @@ let
       bootstrap
       lib
       pkgs
-
-      internal
     ;
 
-    alacarte = recursiveUpdate alacarte pkgs-lib;
+    alacarte = recursiveUpdate alacarte pkgs-lib // { inherit internal; };
   };
 
   internal = import ./../lib/internal args';
