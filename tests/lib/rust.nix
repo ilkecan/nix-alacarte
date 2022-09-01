@@ -16,7 +16,7 @@ in
 
 {
   importCargoLock = assertEqual {
-    actual = importCargoLock ./data;
+    actual = importCargoLock ./fixtures/example-project;
     expected = {
       aho-corasick = {
         checksum = "1e37cfd5e7657ada45f742d6e99ca5788580b5c529dc78faf11ece6dc702656f";

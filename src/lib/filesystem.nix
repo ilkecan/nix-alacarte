@@ -20,6 +20,7 @@ let
     flatten
     hasSuffix
     id
+    mapAttrs'
     mapAttrsToList
     mapNullable
     nameValuePair
@@ -39,6 +40,10 @@ let
     filesOf
     relTo
     removeNulls
+  ;
+
+  inherit (alacarte.letterCase)
+    kebabToCamel
   ;
 in
 
@@ -99,6 +104,19 @@ in
 
   filterByRelPath = relPath:
     filter (dir: pathExists (relTo dir relPath));
+
+  importDirectory = dir: args:
+    {
+      recursive ? false,
+    }:
+    let
+      files = filesOf dir {
+        inherit recursive;
+        asAttrs = true;
+        withExtension = "nix";
+      };
+    in
+    mapAttrs' (name: path: nameValuePair (kebabToCamel name) (import path args)) files;
 
   relTo = dir: path:
     dir + "/${toString path}";

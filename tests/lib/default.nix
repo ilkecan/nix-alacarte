@@ -1,7 +1,7 @@
 {
   inputs,
   system,
-  alacarte ? inputs.self.outputs.libs.${system},
+  alacarte ? inputs.self.libs.${system},
   dnm ? inputs.dnm.lib,
   lib ? inputs.nixpkgs.lib,
 }:

@@ -17,7 +17,7 @@ in
 
 {
   isAbsolutePath = {
-    path = assertTrue (isAbsolutePath ./data);
+    path = assertTrue (isAbsolutePath ./fixtures/example-project);
     string_absolute = assertTrue (isAbsolutePath "/var/root");
     string_relative = assertFalse (isAbsolutePath ".git/config");
   };

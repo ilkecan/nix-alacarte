@@ -7,6 +7,7 @@
 let
   inherit (alacarte)
     filesOf
+    importDirectory
     relTo
   ;
 
@@ -18,17 +19,17 @@ in
 {
   filesOf = {
     with_extension = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         withExtension = "c";
       };
       expected = [
-        ./data/app.c
-        ./data/main.c
+        ./fixtures/example-project/app.c
+        ./fixtures/example-project/main.c
       ];
     };
 
     return_filename = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         withExtension = "c";
         return = "name";
       };
@@ -39,44 +40,44 @@ in
     };
 
     as_attrs = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         withExtension = "c";
         asAttrs = true;
       };
       expected = {
-        "app" = ./data/app.c;
-        "main" = ./data/main.c;
+        "app" = ./fixtures/example-project/app.c;
+        "main" = ./fixtures/example-project/main.c;
       };
     };
 
     recursive_and_as_attrs = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         asAttrs = true;
         recursive = true;
         withExtension = "c";
       };
       expected = {
-        app = ./data/app.c;
-        main = ./data/main.c;
+        app = ./fixtures/example-project/app.c;
+        main = ./fixtures/example-project/main.c;
         subdir = {
-          log = ./data/subdir/log.c;
+          log = ./fixtures/example-project/subdir/log.c;
         };
       };
     };
 
     excluded_paths = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         asAttrs = true;
-        excludedPaths = [ ./data/app.c ];
+        excludedPaths = [ ./fixtures/example-project/app.c ];
         withExtension = "c";
       };
       expected = {
-        "main" = ./data/main.c;
+        "main" = ./fixtures/example-project/main.c;
       };
     };
 
     strip_suffix = assertEqual {
-      actual = filesOf ./data {
+      actual = filesOf ./fixtures/example-project {
         withExtension = "c";
         return = "stem";
       };
@@ -87,25 +88,30 @@ in
     };
   };
 
+  importDirectory = assertEqual {
+    actual = importDirectory ./fixtures/nix-files { x = 5; y = 10; z = 12; } { };
+    expected = { fooBar = 12; baz = 5; };
+  };
+
   relTo = {
     path_path = assertEqual {
-      actual = relTo ./data /abc;
-      expected = ./data/abc;
+      actual = relTo ./example /abc;
+      expected = ./example/abc;
     };
 
     path_string = assertEqual {
-      actual = relTo ./data "abc";
-      expected = ./data/abc;
+      actual = relTo ./example "abc";
+      expected = ./example/abc;
     };
 
     string_path = assertEqual {
-      actual = relTo "./data" /abc;
-      expected = "./data//abc";
+      actual = relTo "./example" /abc;
+      expected = "./example//abc";
     };
 
     string_string = assertEqual {
-      actual = relTo "./data" "abc";
-      expected = "./data/abc";
+      actual = relTo "./example" "abc";
+      expected = "./example/abc";
     };
   };
 }

@@ -5,7 +5,7 @@ Source: https://github.com/ilkecan/nix-alacarte
 
 Files:
   *.lock
-  tests/*/data/*
+  tests/*/fixtures/*
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: Unlicense
 

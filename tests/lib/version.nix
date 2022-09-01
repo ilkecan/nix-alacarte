@@ -22,7 +22,7 @@ in
   };
 
   getCmakeVersion = assertEqual {
-    actual = getCmakeVersion ./data/CMakeLists.txt;
+    actual = getCmakeVersion ./fixtures/example-project/CMakeLists.txt;
     expected = "2.7.3";
   };
 }
