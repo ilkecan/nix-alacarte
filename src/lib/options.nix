@@ -8,12 +8,15 @@ let
   inherit (builtins)
     mapAttrs
     removeAttrs
+    typeOf
   ;
 
   inherit (lib)
     const
     genAttrs
     getExe
+    id
+    isDerivation
     isOptionType
     pipe
     toList
@@ -150,8 +153,20 @@ let
         mkBool;
 
       # str
-      exe = drv:
-        withDefault [ (default (getExe drv)) readOnly ]
+      exe = arg:
+        let
+          type = typeOf arg;
+          setDefault =
+            if isDerivation arg then
+              default (getExe arg)
+            else
+              {
+                null = id;
+                string = default arg;
+              }.${type}
+            ;
+        in
+        withDefault [ setDefault readOnly ]
           mkStr;
 
       envVars =
