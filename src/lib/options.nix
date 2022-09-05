@@ -79,9 +79,9 @@ let
     between = lowest: highest:
       setAttr "type" (types.ints.between lowest highest);
 
-    coerceTo = option: type: coerceFunc:
+    coerceTo = type: coerceFunc: option:
       let
-        setDefault = !option ? default && type ? emptyValue;
+        setDefault = !option ? default && type.emptyValue ? value;
       in
       option // {
         ${optionalValue setDefault "default"} = type.emptyValue.value;
@@ -114,7 +114,7 @@ let
         type = types.nullOr option.type;
       };
     optionalList = option:
-      coerceTo option (types.listOf option.type) toList;
+      coerceTo (types.listOf option.type) toList option;
     set = option:
       let
         apply = option.apply or null;

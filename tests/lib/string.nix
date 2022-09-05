@@ -165,7 +165,7 @@ in
   };
 
   splitStringAt = {
-   left_and_right_non_empty = assertEqual {
+    left_and_right_non_empty = assertEqual {
       actual = splitStringAt 3 "fooBar";
       expected = { left = "foo"; right = "Bar"; };
     };
