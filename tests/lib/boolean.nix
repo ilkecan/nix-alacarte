@@ -7,10 +7,13 @@
 let
   inherit (nix-alacarte)
     boolToInt
+    not
   ;
 
   inherit (dnm)
     assertEqual
+    assertFalse
+    assertTrue
   ;
 in
 
@@ -25,5 +28,10 @@ in
       actual = boolToInt false;
       expected = 0;
     };
+  };
+
+  not = {
+    true = assertFalse (not true);
+    false = assertTrue (not false);
   };
 }
