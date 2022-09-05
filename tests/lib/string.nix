@@ -6,8 +6,8 @@
 
 let
   inherit (nix-alacarte)
-    appendString
-    prependString
+    addPrefix
+    addSuffix
     capitalize
     commands
     uncommands
@@ -39,13 +39,13 @@ let
 in
 
 {
-  appendString = assertEqual {
-    actual = appendString "foo" "bar";
-    expected = "barfoo";
+  addPrefix = assertEqual {
+    actual = addPrefix "foo" "bar";
+    expected = "foobar";
   };
 
-  prependString = assertEqual {
-    actual = prependString "foo" "bar";
+  addSuffix = assertEqual {
+    actual = addSuffix "bar" "foo";
     expected = "foobar";
   };
 

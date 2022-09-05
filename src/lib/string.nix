@@ -34,7 +34,7 @@ let
     lines
     nix
     pipe'
-    prependString
+    addPrefix
     repeat
     replicate
     unlines
@@ -47,8 +47,8 @@ let
 in
 
 {
-  appendString = flip concatString;
-  prependString = concatString;
+  addPrefix = concatString;
+  addSuffix = flip concatString;
 
   capitalize = string:
     let
@@ -95,7 +95,7 @@ in
     in
     pipe' [
       lines
-      (map (prependString indentation))
+      (map (addPrefix indentation))
       unlines
     ];
 
