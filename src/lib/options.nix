@@ -18,12 +18,15 @@ let
     id
     isDerivation
     isOptionType
+    nameValuePair
     pipe
     toList
   ;
 
   inherit (nix-alacarte)
+    capitalize
     compose
+    mapListToAttrs
     mergeListOfAttrs
     optionalValue
     setAttr
@@ -53,13 +56,23 @@ let
   unsetAttr = name: set:
     removeAttrs set [ name ];
 
-  composerFunctions = {
-    apply = setAttr "apply";
-    default = setAttr "default";
-    internal = setAttr "internal" true;
-    readOnly = setAttr "readOnly" true;
+  optionAttributes = [
+    "apply"
+    "default"
+  ];
 
-    unsetDefault = unsetAttr "default";
+  setterFunctions = genAttrs optionAttributes setAttr;
+  unsetterFunctions =
+    mapListToAttrs
+      (name: nameValuePair "unset${capitalize name}" (unsetAttr name))
+      optionAttributes
+    ;
+
+  composerFunctions = {
+    internal = setAttr "internal" true;
+    public = setAttr "internal" false;
+    readOnly = setAttr "readOnly" true;
+    writable = setAttr "readOnly" false;
 
     addCheck = check: option:
       setAttr "type" (types.addCheck option.type check) option;
@@ -192,6 +205,8 @@ in
 
 {
   options = mergeListOfAttrs [
+    setterFunctions
+    unsetterFunctions
     composerFunctions
     (generateOptions optionFunctions)
   ];
