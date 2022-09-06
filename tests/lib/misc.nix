@@ -8,9 +8,7 @@ let
   inherit (nix-alacarte)
     callWith
     equals
-    isNull
     notEquals
-    notNull
   ;
 
   inherit (dnm)
@@ -36,13 +34,5 @@ in
     same = assertFalse notEquals { v = 2; } { v = 2; };
   };
 
-  isNull = {
-    null = assertTrue isNull null;
-    not_null = assertFalse isNull true;
-  };
 
-  notNull = {
-    not_null = assertTrue notNull 4.2;
-    null = assertFalse notNull null;
-  };
 }

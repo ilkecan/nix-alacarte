@@ -1,14 +1,6 @@
 {
-  nix-alacarte,
   ...
 }:
-
-let
-  inherit (nix-alacarte)
-    equals
-    notEquals
-  ;
-in
 
 {
   callWith = val: f:
@@ -18,9 +10,6 @@ in
     lhs == rhs;
   notEquals = lhs: rhs:
     lhs != rhs;
-
-  isNull = equals null;
-  notNull = notEquals null;
 
   optionalValue = condition: value:
     if condition then
