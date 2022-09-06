@@ -41,6 +41,7 @@ let
   inherit (dnm)
     assertAll
     assertEqual
+    assertFailure
     assertFalse
     assertTrue
   ;
@@ -73,10 +74,10 @@ in
       positive = addCheck (x: x > 0) emptyOption;
     in
     assertAll [
-      (assertTrue (emptyOption.type.check 4))
-      (assertTrue (emptyOption.type.check (-4)))
-      (assertTrue (positive.type.check 4))
-      (assertFalse (positive.type.check (-4)))
+      (assertTrue emptyOption.type.check 4)
+      (assertTrue emptyOption.type.check (-4))
+      (assertTrue positive.type.check 4)
+      (assertFalse positive.type.check (-4))
     ];
 
   between =
@@ -90,8 +91,8 @@ in
         expected = "intBetween";
       };
 
-      inInvernal = assertTrue (betweenFourAndEight.type.check 6);
-      notInInterval = assertFalse (betweenFourAndEight.type.check 11);
+      inInvernal = assertTrue betweenFourAndEight.type.check 6;
+      notInInterval = assertFalse betweenFourAndEight.type.check 11;
     };
 
   coerceTo =
@@ -108,7 +109,7 @@ in
       };
 
       optionWithoutDefaultToTypeWithoutEmptyValue =
-        dnm.assertFailure ((coerceTo strWithoutEmptyValue toString pathOptionWithoutDefault).default or throw "no default");
+        assertFailure (coerceTo strWithoutEmptyValue toString pathOptionWithoutDefault).default or throw "no default";
 
       optionWithoutDefaultToTypeWithEmptyValue = assertEqual {
         actual = (coerceTo strWithEmptyValue toString pathOptionWithoutDefault).default;
@@ -143,7 +144,7 @@ in
       };
 
       optionWithoutDefaultAndTypeWithoutEmptyValue =
-        dnm.assertFailure ((lambda intOptionWithoutDefaultAndWithoutEmptyValue).default or throw "no default" null);
+        assertFailure (lambda intOptionWithoutDefaultAndWithoutEmptyValue).default or throw "no default" null;
 
       optionWithoutDefaultAndTypeWithEmptyValue = assertEqual {
         actual = (lambda intOptionWithoutDefaultAndWithEmptyValue).default null;
@@ -192,8 +193,8 @@ in
         expected = "listOf";
       };
 
-      emptyListIsNotAccepted = assertFalse (option.type.check [ ]);
-      nonEmptyListIsAccepted = assertTrue (option.type.check [ 4 ]);
+      emptyListIsNotAccepted = assertFalse option.type.check [ ];
+      nonEmptyListIsAccepted = assertTrue option.type.check [ 4 ];
       defaultIsUnset = assertFalse (option ? default);
     };
 
@@ -202,9 +203,9 @@ in
       optionalFloat = optional (mkOption { type = types.float; });
     in
     {
-      nullIsAccepted = assertTrue (optionalFloat.type.check null);
-      originalTypeIsAccepted = assertTrue (optionalFloat.type.check 4.5);
-      otherTypesAreRejected = assertFalse (optionalFloat.type.check 21);
+      nullIsAccepted = assertTrue optionalFloat.type.check null;
+      originalTypeIsAccepted = assertTrue optionalFloat.type.check 4.5;
+      otherTypesAreRejected = assertFalse optionalFloat.type.check 21;
     };
 
   optionalList =

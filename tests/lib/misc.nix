@@ -27,22 +27,22 @@ in
   };
 
   equals = {
-    same = assertTrue (equals 2 2);
-    different = assertFalse (equals "a" "b");
+    same = assertTrue equals 2 2;
+    different = assertFalse equals "a" "b";
   };
 
   notEquals = {
-    different = assertTrue (notEquals [ 2 ] 2);
-    same = assertFalse (notEquals { v = 2; } { v = 2; });
+    different = assertTrue notEquals [ 2 ] 2;
+    same = assertFalse notEquals { v = 2; } { v = 2; };
   };
 
   isNull = {
-    null = assertTrue (isNull null);
-    not_null = assertFalse (isNull true);
+    null = assertTrue isNull null;
+    not_null = assertFalse isNull true;
   };
 
   notNull = {
-    not_null = assertTrue (notNull 4.2);
-    null = assertFalse (notNull null);
+    not_null = assertTrue notNull 4.2;
+    null = assertFalse notNull null;
   };
 }

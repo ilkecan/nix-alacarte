@@ -31,7 +31,7 @@ in
   };
 
   not = {
-    true = assertFalse (not true);
-    false = assertTrue (not false);
+    true = assertFalse not true;
+    false = assertTrue not false;
   };
 }

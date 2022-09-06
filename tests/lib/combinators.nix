@@ -33,14 +33,14 @@ in
   };
 
   and = {
-    empty = assertTrue (combinators.and [ ]);
-    without_args = assertFalse (combinators.and [ true false ]);
-    with_args = assertTrue (combinators.and fs 4 7);
+    empty = assertTrue combinators.and [ ];
+    without_args = assertFalse combinators.and [ true false ];
+    with_args = assertTrue combinators.and fs 4 7;
   };
 
   or = {
-    empty = assertFalse (combinators.or [ ]);
-    without_args = assertTrue (combinators.or [ true false ]);
-    with_args = assertTrue (combinators.or fs 4 2);
+    empty = assertFalse combinators.or [ ];
+    without_args = assertTrue combinators.or [ true false ];
+    with_args = assertTrue combinators.or fs 4 2;
   };
 }

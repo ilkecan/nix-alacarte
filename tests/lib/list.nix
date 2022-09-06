@@ -40,10 +40,10 @@ in
 
 {
   allEqual = {
-    zero_elem = assertTrue (allEqual [ ]);
-    one_elem = assertTrue (allEqual [ 2 ]);
-    many_elems_true = assertTrue (allEqual [ 2 2 2 ]);
-    many_elems_false = assertFalse (allEqual [ 2 3 2 ]);
+    zero_elem = assertTrue allEqual [ ];
+    one_elem = assertTrue allEqual [ 2 ];
+    many_elems_true = assertTrue allEqual [ 2 2 2 ];
+    many_elems_false = assertFalse allEqual [ 2 3 2 ];
   };
 
   append = assertEqual {
@@ -101,7 +101,7 @@ in
   };
 
   maximum = {
-    empty = assertFailure (maximum [ ]);
+    empty = assertFailure maximum [ ];
 
     single_elem = assertEqual {
       actual = maximum [ 4 ];
@@ -120,7 +120,7 @@ in
   };
 
   minimum = {
-    empty = assertFailure (minimum [ ]);
+    empty = assertFailure minimum [  ];
 
     single_elem = assertEqual {
       actual = minimum [ 4 ];
