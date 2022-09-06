@@ -9,11 +9,13 @@ let
     callWith
     equals
     notEquals
+    optionalValue
   ;
 
   inherit (dnm)
     assertEqual
     assertFalse
+    assertNull
     assertTrue
   ;
 in
@@ -34,5 +36,12 @@ in
     same = assertFalse notEquals { v = 2; } { v = 2; };
   };
 
+  optionalValue = {
+    true = assertEqual {
+      actual = optionalValue true 4;
+      expected = 4;
+    };
 
+    false = assertNull optionalValue false 23;
+  };
 }
