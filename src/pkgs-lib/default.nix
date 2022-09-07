@@ -36,6 +36,9 @@ let
 
   args' = args // {
     inherit
+      inputs
+      system
+
       bootstrap
       lib
       pkgs

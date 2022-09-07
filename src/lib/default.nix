@@ -23,6 +23,8 @@ let
 
   args' = args // {
     inherit
+      inputs
+
       bootstrap
       lib
     ;
