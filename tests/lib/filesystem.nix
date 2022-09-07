@@ -20,9 +20,9 @@ in
 {
   filesOf = {
     with_extension = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         withExtension = "c";
-      };
+      } ./fixtures/example-project;
       expected = [
         ./fixtures/example-project/app.c
         ./fixtures/example-project/main.c
@@ -30,10 +30,10 @@ in
     };
 
     return_filename = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         withExtension = "c";
         return = "name";
-      };
+      } ./fixtures/example-project;
       expected = [
         "app.c"
         "main.c"
@@ -41,10 +41,10 @@ in
     };
 
     as_attrs = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         withExtension = "c";
         asAttrs = true;
-      };
+      } ./fixtures/example-project;
       expected = {
         "app" = ./fixtures/example-project/app.c;
         "main" = ./fixtures/example-project/main.c;
@@ -52,11 +52,11 @@ in
     };
 
     recursive_and_as_attrs = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         asAttrs = true;
         recursive = true;
         withExtension = "c";
-      };
+      } ./fixtures/example-project;
       expected = {
         app = ./fixtures/example-project/app.c;
         main = ./fixtures/example-project/main.c;
@@ -67,32 +67,32 @@ in
     };
 
     exclude_paths = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         asAttrs = true;
         excludedPaths = [ ./fixtures/example-project/app.c ];
         withExtension = "c";
-      };
+      } ./fixtures/example-project;
       expected = {
         "main" = ./fixtures/example-project/main.c;
       };
     };
 
     exclude_relative_paths = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         asAttrs = true;
         excludedPaths = [ "app.c" ];
         withExtension = "c";
-      };
+      } ./fixtures/example-project;
       expected = {
         "main" = ./fixtures/example-project/main.c;
       };
     };
 
     strip_suffix = assertEqual {
-      actual = filesOf ./fixtures/example-project {
+      actual = filesOf {
         withExtension = "c";
         return = "stem";
-      };
+      } ./fixtures/example-project;
       expected = [
         "app"
         "main"

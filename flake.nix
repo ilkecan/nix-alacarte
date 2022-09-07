@@ -8,7 +8,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         # https://github.com/NixOS/nix/issues/4931
-        nix-alacarte.follows = "";
+        # nix-alacarte.follows = "";
       };
     };
 
@@ -18,7 +18,8 @@
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
         # https://github.com/NixOS/nix/issues/4931
-        nix-alacarte.follows = "";
+        # nix-alacarte.follows = "";
+        nix-alacarte.follows = "dnm/nix-alacarte";
       };
     };
   };
