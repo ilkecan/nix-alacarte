@@ -24,11 +24,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1662579575,
-        "narHash": "sha256-2ZmyqtbAHhg6xubxozKcKpvcWH5JD1w9MziYCDbow3s=",
+        "lastModified": 1662583932,
+        "narHash": "sha256-/H2w7Q8k9IyCYfh7uXbfb5uw0xtgdUdQ8XgM+uOxSeQ=",
         "owner": "ilkecan",
         "repo": "dnm",
-        "rev": "c298e1df5085455cc84161cbeb24d89aac79f21c",
+        "rev": "133cdc1e01fd937885a323b3db71844a59c52ba8",
         "type": "github"
       },
       "original": {

@@ -6,6 +6,7 @@
 
 let
   inherit (nix-alacarte)
+    dirToAttrs
     filesOf
     importDirectory
     nixFiles
@@ -18,6 +19,21 @@ let
 in
 
 {
+  dirToAttrs = assertEqual {
+    actual = dirToAttrs ./fixtures/example-project;
+    expected = {
+      subdir = {
+        "log.c" = ./fixtures/example-project/subdir/log.c;
+      };
+      "a.out" = ./fixtures/example-project/a.out;
+      "app.c" = ./fixtures/example-project/app.c;
+      "Cargo.lock" = ./fixtures/example-project/Cargo.lock;
+      "CMakeLists.txt" = ./fixtures/example-project/CMakeLists.txt;
+      log = ./fixtures/example-project/log;
+      "main.c" = ./fixtures/example-project/main.c;
+    };
+  };
+
   filesOf = {
     with_extension = assertEqual {
       actual = filesOf {

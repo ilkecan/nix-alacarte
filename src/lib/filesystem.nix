@@ -25,6 +25,7 @@ let
     mapAttrsToList
     mapNullable
     nameValuePair
+    pipe
     removeSuffix
   ;
 
@@ -38,6 +39,7 @@ let
   ;
 
   inherit (nix-alacarte)
+    dirToAttrs
     filesOf
     nixFiles
     pipe'
@@ -52,6 +54,22 @@ let
 in
 
 {
+  dirToAttrs = dir:
+    let
+      mkAbsolute = relTo dir;
+    in
+    pipe dir [
+      readDir
+      (mapAttrs (name: type:
+        let
+          path = mkAbsolute name;
+        in
+        if type == "directory"
+          then dirToAttrs path
+          else path
+      ))
+    ];
+
   inherit mergeLibFiles;
 
   nixFiles =
