@@ -1,6 +1,6 @@
 let
   missingDependantOf =
-    import ./../../nix/missing-dependant-of.nix/default.nix {
+    import ./../../submodules/missing-dependant-of.nix/default.nix {
       inputs = [
         "bootstrap"
         "lib"
