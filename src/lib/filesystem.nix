@@ -131,14 +131,15 @@ in
   filterByRelPath = relPath:
     filter (dir: pathExists (relTo dir relPath));
 
-  importDirectory = dir: args:
+  importDirectory =
     {
       recursive ? false,
     }:
-    let
-      files = nixFiles dir { inherit recursive; };
-    in
-    mapAttrs (_: path: import path args) files;
+    dir: args:
+      let
+        files = nixFiles dir { inherit recursive; };
+      in
+      mapAttrs (_: path: import path args) files;
 
   relTo = dir: path:
     dir + "/${toString path}";

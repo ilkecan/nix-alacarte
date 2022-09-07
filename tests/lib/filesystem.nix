@@ -101,7 +101,7 @@ in
   };
 
   importDirectory = assertEqual {
-    actual = importDirectory ./fixtures/nix-files { x = 5; y = 10; z = 12; } { };
+    actual = importDirectory { } ./fixtures/nix-files { x = 5; y = 10; z = 12; };
     expected = { fooBar = 12; baz = 5; };
   };
 
