@@ -53,27 +53,28 @@ in
 {
   inherit mergeLibFiles;
 
-  nixFiles = dir:
+  nixFiles =
     {
       convertNameToCamel ? true,
       excludedPaths ? [ "default.nix" ],
       recursive ? false,
     }:
-    let
-      files = filesOf dir {
-        inherit
-          excludedPaths
-          recursive
-        ;
-        withExtension = "nix";
-        asAttrs = true;
-      };
-    in
-    if convertNameToCamel then
-      renameAttrs (name: _path: kebabToCamel name) files
-    else
-      files
-    ;
+    dir:
+      let
+        files = filesOf dir {
+          inherit
+            excludedPaths
+            recursive
+          ;
+          withExtension = "nix";
+          asAttrs = true;
+        };
+      in
+      if convertNameToCamel then
+        renameAttrs (name: _path: kebabToCamel name) files
+      else
+        files
+      ;
 
   filesOf = dir: {
     asAttrs ? false,
@@ -135,9 +136,10 @@ in
     {
       recursive ? false,
     }:
+
     dir: args:
       let
-        files = nixFiles dir { inherit recursive; };
+        files = nixFiles { inherit recursive; } dir;
       in
       mapAttrs (_: path: import path args) files;
 

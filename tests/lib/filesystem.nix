@@ -106,7 +106,7 @@ in
   };
 
   nixFiles = assertEqual {
-    actual = nixFiles ./fixtures/nix-files { };
+    actual = nixFiles { } ./fixtures/nix-files;
     expected = { fooBar = ./fixtures/nix-files/foo-bar.nix; baz = ./fixtures/nix-files/baz.nix; };
   };
 
