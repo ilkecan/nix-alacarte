@@ -6,7 +6,6 @@
 
 let
   inherit (nix-alacarte)
-    callWith
     equals
     notEquals
     optionalValue
@@ -21,11 +20,6 @@ let
 in
 
 {
-  callWith = assertEqual {
-    actual = callWith 5 (n: n + 10);
-    expected = 15;
-  };
-
   equals = {
     same = assertTrue equals 2 2;
     different = assertFalse equals "a" "b";

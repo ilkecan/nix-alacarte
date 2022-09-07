@@ -6,6 +6,7 @@
 
 let
   inherit (nix-alacarte)
+    callWith
     compose
     pipe'
   ;
@@ -20,6 +21,11 @@ let
 in
 
 {
+  callWith = assertEqual {
+    actual = callWith 5 (n: n + 10);
+    expected = 15;
+  };
+
   compose = assertEqual {
     actual = compose [ double addFive subtractNine ] 2;
     expected = -4;

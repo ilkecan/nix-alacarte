@@ -17,6 +17,9 @@ let
 in
 
 {
+  callWith = val: f:
+    f val;
+
   compose = fs: val:
     foldr (flip callWith) val fs;
 

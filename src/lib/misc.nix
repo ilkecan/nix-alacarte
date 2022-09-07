@@ -3,9 +3,6 @@
 }:
 
 {
-  callWith = val: f:
-    f val;
-
   equals = lhs: rhs:
     lhs == rhs;
   notEquals = lhs: rhs:
