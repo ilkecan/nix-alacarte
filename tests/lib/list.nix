@@ -15,6 +15,8 @@ let
     allEqual
     append
     prepend
+    empty
+    notEmpty
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
@@ -54,6 +56,16 @@ in
   prepend = assertEqual {
     actual = prepend [ 2 ] [ 1 ];
     expected = [ 2 1 ];
+  };
+
+  empty = {
+    empty_list = assertTrue empty [ ];
+    non_empty_list = assertFalse empty [ 2 ];
+  };
+
+  notEmpty = {
+    empty_list = assertFalse notEmpty [ ];
+    non_empty_list = assertTrue notEmpty [ 2 ];
   };
 
   headAndTails = {

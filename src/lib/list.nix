@@ -31,6 +31,7 @@ let
 
   inherit (nix-alacarte)
     equals
+    notEquals
     notNull
   ;
 
@@ -43,15 +44,14 @@ let
 in
 
 {
-  inherit (bootstrap)
-    mergeListOfAttrs
-  ;
-
   allEqual = list:
     all (equals (head list)) list;
 
   append = flip concat;
   prepend = concat;
+
+  empty = equals [ ];
+  notEmpty = notEquals [ ];
 
   headAndTails = list:
     {
@@ -64,6 +64,10 @@ in
 
   maximum = foldStartingWithHead max;
   minimum = foldStartingWithHead min;
+
+  inherit (bootstrap)
+    mergeListOfAttrs
+  ;
 
   product = foldl' mul 1;
 
