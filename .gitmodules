@@ -1,0 +1,3 @@
+[submodule "nix/missing-dependant-of.nix"]
+	path = nix/missing-dependant-of.nix
+	url = git@github.com:ilkecan/missing-dependant-of.nix.git

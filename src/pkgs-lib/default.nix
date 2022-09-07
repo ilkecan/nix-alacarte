@@ -1,6 +1,22 @@
+let
+  missingDependantOf =
+    import ./../../nix/missing-dependant-of.nix/default.nix {
+      inputs = [
+        "bootstrap"
+        "lib"
+        "nix-alacarte"
+        "pkgs"
+      ];
+
+      system = [
+        "pkgs"
+      ];
+    };
+in
+
 {
-  inputs ? assert false; "must be called with either 'inputs' or all of [ 'bootstrap' 'lib' 'nix-alacarte' 'pkgs' ]",
-  system ? assert false; "must be called with either 'system' or all of [ 'pkgs' ]",
+  inputs ? missingDependantOf.inputs,
+  system ? missingDependantOf.system,
 
   bootstrap ? inputs.self.bootstrap,
   lib ? inputs.nixpkgs.lib,

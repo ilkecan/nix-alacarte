@@ -1,5 +1,14 @@
+let
+  missingDependantOf =
+    import ./../../nix/missing-dependant-of.nix/default.nix {
+      inputs = [
+        "lib"
+      ];
+    };
+in
+
 {
-  inputs ? assert false; "must be called with either 'inputs' or all of [ 'lib' ]",
+  inputs ? missingDependantOf.inputs,
 
   lib ? inputs.nixpkgs.lib,
 }:

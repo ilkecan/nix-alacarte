@@ -1,6 +1,21 @@
+let
+  missingDependantOf =
+    import ./../../nix/missing-dependant-of.nix/default.nix {
+      inputs = [
+        "dnm"
+        "lib"
+        "nix-alacarte"
+      ];
+
+      system = [
+        "pkgs"
+      ];
+    };
+in
+
 {
-  inputs ? assert false; "must be called with either 'inputs' or all of [ 'dnm' 'lib' 'nix-alacarte' ]",
-  system ? assert false; "must be called with either 'system' or all of [ 'pkgs' ]",
+  inputs ? missingDependantOf.inputs,
+  system ? missingDependantOf.system,
 
   dnm ? inputs.dnm.lib,
   lib ? inputs.nixpkgs.lib,
