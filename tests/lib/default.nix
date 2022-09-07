@@ -36,4 +36,4 @@ let
   };
 in
 
-runTests ./. args { }
+runTests { } ./. args
