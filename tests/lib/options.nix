@@ -83,13 +83,13 @@ in
       betweenFourAndEight = between 4 8 emptyOption;
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = betweenFourAndEight.type.name;
         expected = "intBetween";
       };
 
-      inInvernal = assertTrue betweenFourAndEight.type.check 6;
-      notInInterval = assertFalse betweenFourAndEight.type.check 11;
+      in_invernal = assertTrue betweenFourAndEight.type.check 6;
+      not_in_interval = assertFalse betweenFourAndEight.type.check 11;
     };
 
   coerceTo =
@@ -100,25 +100,25 @@ in
       pathOptionWithDefault = pathOptionWithoutDefault // { default = "<some path>"; };
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = (coerceTo types.unspecified lib.id emptyOption).type.name;
         expected = "coercedTo";
       };
 
-      optionWithoutDefaultToTypeWithoutEmptyValue =
+      option_without_default_to_type_without_empty_value =
         assertFailure (coerceTo strWithoutEmptyValue toString pathOptionWithoutDefault).default or throw "no default";
 
-      optionWithoutDefaultToTypeWithEmptyValue = assertEqual {
+      option_without_default_to_type_with_empty_value = assertEqual {
         actual = (coerceTo strWithEmptyValue toString pathOptionWithoutDefault).default;
         expected = "";
       };
 
-      optionWithDefaultToTypeWithoutEmptyValue = assertEqual {
+      option_with_default_to_type_without_empty_value = assertEqual {
         actual = (coerceTo strWithoutEmptyValue toString pathOptionWithDefault).default;
         expected = "<some path>";
       };
 
-      optionWithDefaultToTypeWithEmptyValue = assertEqual {
+      option_with_default_to_type_with_empty_value = assertEqual {
         actual = (coerceTo strWithEmptyValue toString pathOptionWithDefault).default;
         expected = "<some path>";
       };
@@ -135,25 +135,25 @@ in
       intOptionWithDefaultAndWithEmptyValue = mkOption { type = intTypeWithEmptyValue; default = 4; };
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = (lambda emptyOption).type.name;
         expected = "functionTo";
       };
 
-      optionWithoutDefaultAndTypeWithoutEmptyValue =
+      option_without_default_and_type_without_empty_value =
         assertFailure (lambda intOptionWithoutDefaultAndWithoutEmptyValue).default or throw "no default" null;
 
-      optionWithoutDefaultAndTypeWithEmptyValue = assertEqual {
+      option_without_default_and_type_with_empty_value = assertEqual {
         actual = (lambda intOptionWithoutDefaultAndWithEmptyValue).default null;
         expected = 0;
       };
 
-      optionWithDefaultAndTypeWithoutEmptyValue = assertEqual {
+      option_with_default_and_type_without_empty_value = assertEqual {
         actual = (lambda intOptionWithDefaultAndWithoutEmptyValue).default null;
         expected = 4;
       };
 
-      optionWithDefaultAndTypeWithEmptyValue = assertEqual {
+      option_with_default_and_type_with_empty_value = assertEqual {
         actual = (lambda intOptionWithDefaultAndWithEmptyValue).default null;
         expected = 4;
       };
@@ -164,17 +164,17 @@ in
       option = list (emptyOption // { apply = x: 2 * x; });
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = option.type.name;
         expected = "listOf";
       };
 
-      applyIsPropagated = assertEqual {
+      apply_is_propagated = assertEqual {
         actual = option.apply [ 2 3 5 ];
         expected = [ 4 6 10 ];
       };
 
-      defaultIsEmptyList = assertEqual {
+      default_is_empty_list = assertEqual {
         actual = option.default;
         expected = [ ];
       };
@@ -185,14 +185,14 @@ in
       option = nonEmptyList (emptyOption // { default = 23; });
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = option.type.name;
         expected = "listOf";
       };
 
-      emptyListIsNotAccepted = assertFalse option.type.check [ ];
-      nonEmptyListIsAccepted = assertTrue option.type.check [ 4 ];
-      defaultIsUnset = assertFalse (option ? default);
+      empty_list_is_not_accepted = assertFalse option.type.check [ ];
+      non_empty_list_is_accepted = assertTrue option.type.check [ 4 ];
+      default_is_unset = assertFalse (option ? default);
     };
 
   optional =
@@ -200,9 +200,9 @@ in
       optionalFloat = optional (mkOption { type = types.float; });
     in
     {
-      nullIsAccepted = assertTrue optionalFloat.type.check null;
-      originalTypeIsAccepted = assertTrue optionalFloat.type.check 4.5;
-      otherTypesAreRejected = assertFalse optionalFloat.type.check 21;
+      null_is_accepted = assertTrue optionalFloat.type.check null;
+      original_type_is_accepted = assertTrue optionalFloat.type.check 4.5;
+      other_types_are_rejected = assertFalse optionalFloat.type.check 21;
     };
 
   optionalList =
@@ -211,17 +211,17 @@ in
       strWithDefault = strWithoutDefault // { default = "hey there"; };
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = (optionalList emptyOption).type.name;
         expected = "coercedTo";
       };
 
-      optionWithoutDefault = assertEqual {
+      option_without_default = assertEqual {
         actual = (optionalList strWithoutDefault).default;
         expected = [ ];
       };
 
-      optionWithDefault = assertEqual {
+      option_with_default = assertEqual {
         actual = (optionalList strWithDefault).default;
         expected = "hey there";
       };
@@ -232,17 +232,17 @@ in
       option = set (emptyOption // { apply = x: x + "s"; });
     in
     {
-      typeIsCorrect = assertEqual {
+      type_is_correct = assertEqual {
         actual = option.type.name;
         expected = "attrsOf";
       };
 
-      applyIsPropagated = assertEqual {
+      apply_is_propagated = assertEqual {
         actual = option.apply { a = "apple"; o = "orange"; };
         expected = { a = "apples"; o = "oranges"; };
       };
 
-      defaultIsEmptySet = assertEqual {
+      default_is_empty_set = assertEqual {
         actual = option.default;
         expected = { };
       };
