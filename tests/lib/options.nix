@@ -8,8 +8,6 @@
 let
   inherit (lib)
     mkOption
-    mkOptionType
-    toList
     types
   ;
 
@@ -66,11 +64,10 @@ in
     actual = (apply (x: x + 5) emptyOption).apply 4;
     expected = 9;
   };
-  unsetApply = assertFalse (unsetApply (mkOption { apply = x: "some function"; }) ? apply);
+  unsetApply = assertFalse (unsetApply (mkOption { apply = _: "some function"; }) ? apply);
 
   addCheck =
     let
-      option = emptyOption;
       positive = addCheck (x: x > 0) emptyOption;
     in
     assertAll [
