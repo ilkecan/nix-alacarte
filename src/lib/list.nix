@@ -36,7 +36,7 @@ let
   ;
 
   foldStartingWithHead = f: list:
-    assert assertMsg (list != [ ]) "alacarte.minimum: empty list";
+    assert assertMsg (list != [ ]) "nix-alacarte.minimum: empty list";
     let
       initial = head list;
     in
