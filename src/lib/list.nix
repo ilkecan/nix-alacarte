@@ -35,8 +35,8 @@ let
     notNull
   ;
 
-  foldStartingWithHead = f: list:
-    assert assertMsg (list != [ ]) "nix-alacarte.minimum: empty list";
+  foldStartingWithHead = name: f: list:
+    assert assertMsg (list != [ ]) "nix-alacarte.${name}: empty list";
     let
       initial = head list;
     in
@@ -62,8 +62,8 @@ in
   mapListToAttrs = f: list:
     listToAttrs (map f list);
 
-  maximum = foldStartingWithHead max;
-  minimum = foldStartingWithHead min;
+  maximum = foldStartingWithHead "maximum" max;
+  minimum = foldStartingWithHead "minimum" min;
 
   inherit (bootstrap)
     mergeListOfAttrs
