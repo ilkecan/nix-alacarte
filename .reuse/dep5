@@ -5,17 +5,20 @@ Source: https://github.com/ilkecan/nix-alacarte
 
 Files:
   *.lock
+  .gitmodules
   tests/*/fixtures/*
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: Unlicense
 
 Files:
+  *.editorconfig
+  *.gitattributes
   *.gitignore
   *.md
-  .editorconfig
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: CC-BY-SA-4.0
 
-Files: *.nix
+Files:
+  *.nix
 Copyright: 2021 ilkecan <ilkecan@protonmail.com>
 License: MPL-2.0
