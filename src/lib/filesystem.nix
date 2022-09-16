@@ -29,11 +29,6 @@ let
     removeSuffix
   ;
 
-  inherit (lib.asserts)
-    assertMsg
-    assertOneOf
-  ;
-
   inherit (bootstrap)
     mergeLibFiles
   ;
@@ -50,6 +45,12 @@ let
 
   inherit (nix-alacarte.letterCase)
     kebabToCamel
+  ;
+
+  inherit (nix-alacarte.internal)
+    assertMsg'
+    assertOneOf'
+    colorVariable
   ;
 in
 
@@ -104,13 +105,16 @@ in
 
     let
       self = dir:
-        assert assertOneOf "return" return [ "path" "name" "stem" ];
-        assert assertMsg (return == "stem" -> withExtension != "")
-          "`withExtension` cannot be an empty string while `return` is \"stem\".";
-        assert assertMsg (asAttrs -> withExtension != "")
-          "`withExtension` cannot be an empty string while `asAttrs` is true.";
-        assert assertMsg (recursive -> return == "path")
-          "`return` must be \"path\" while `recursive` is true.";
+        let
+          assertMsg'' = assertMsg' "filesOf";
+        in
+        assert assertOneOf' "filesOf" "return" return [ "path" "name" "stem" ];
+        assert assertMsg''  (return == "stem" -> withExtension != "")
+          "`${colorVariable "withExtension"}` cannot be an empty string while `${colorVariable "return"}` is \"stem\".";
+        assert assertMsg'' (asAttrs -> withExtension != "")
+          "`${colorVariable "withExtension"}` cannot be an empty string while `${colorVariable "asAttrs"}` is true.";
+        assert assertMsg'' (recursive -> return == "path")
+          "`${colorVariable "return"}` must be \"path\" while `${colorVariable "recursive"}` is true.";
 
         let
           suffix = ".${withExtension}";

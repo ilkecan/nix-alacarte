@@ -20,7 +20,6 @@ let
   ;
 
   inherit (lib)
-    assertMsg
     concat
     const
     flip
@@ -35,8 +34,12 @@ let
     notNull
   ;
 
+  inherit (nix-alacarte.internal)
+    assertMsg'
+  ;
+
   foldStartingWithHead = name: f: list:
-    assert assertMsg (list != [ ]) "nix-alacarte.${name}: empty list";
+    assert assertMsg' name (list != [ ]) "empty list";
     let
       initial = head list;
     in
