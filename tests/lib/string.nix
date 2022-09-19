@@ -11,6 +11,7 @@ let
     capitalize
     commands
     uncommands
+    concatString
     elements
     unelements
     fmtValue
@@ -62,6 +63,11 @@ in
   uncommands = assertEqual {
     actual = uncommands [ "touch a" "ls -al" ];
     expected = "touch a;ls -al";
+  };
+
+  concatString = assertEqual {
+    actual = concatString "foo" "bar";
+    expected = "foobar";
   };
 
   elements = assertEqual {
