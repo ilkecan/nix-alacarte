@@ -29,12 +29,13 @@ let
   ;
 
   inherit (nix-alacarte)
+    addPrefix
     concatString
+    concatStringWith
     indentByWith
     lines
     nix
     pipe'
-    addPrefix
     repeat
     replicate
     unlines
@@ -60,8 +61,9 @@ in
   commands = splitString ";";
   uncommands = concatStringsSep ";";
 
-  concatString = a: b:
-    a + b;
+  concatString = concatStringWith "";
+  concatStringWith = separator: left: right:
+    "${left}${separator}${right}";
 
   elements = splitString ",";
   unelements = concatStringsSep ",";

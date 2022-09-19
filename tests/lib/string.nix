@@ -12,6 +12,7 @@ let
     commands
     uncommands
     concatString
+    concatStringWith
     elements
     unelements
     fmtValue
@@ -68,6 +69,11 @@ in
   concatString = assertEqual {
     actual = concatString "foo" "bar";
     expected = "foobar";
+  };
+
+  concatStringWith = assertEqual {
+    actual = concatStringWith ":" "foo" "bar";
+    expected = "foo:bar";
   };
 
   elements = assertEqual {
