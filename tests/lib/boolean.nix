@@ -8,6 +8,7 @@ let
   inherit (nix-alacarte)
     boolToInt
     not
+    onOff
   ;
 
   inherit (dnm)
@@ -33,5 +34,17 @@ in
   not = {
     true = assertFalse not true;
     false = assertTrue not false;
+  };
+
+  onOff = {
+    on = assertEqual {
+      actual = onOff true;
+      expected = "on";
+    };
+
+    off = assertEqual {
+      actual = onOff false;
+      expected = "off";
+    };
   };
 }

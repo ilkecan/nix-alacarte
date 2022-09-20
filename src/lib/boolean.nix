@@ -8,4 +8,7 @@
 
   not = bool:
     !bool;
+
+  onOff = bool:
+    if bool then "on" else "off";
 }
