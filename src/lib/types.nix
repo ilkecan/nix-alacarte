@@ -24,6 +24,7 @@ let
   inherit (nix-alacarte)
     allEqual
     fmtValue
+    unwords
   ;
 
   types = lib.types // nix-alacarte.types;
@@ -72,5 +73,7 @@ in
         };
       in
       type;
+
+    words = with types; (coercedTo (listOf str) unwords str);
   };
 }
