@@ -51,7 +51,7 @@ let
     withDefault
   ;
 
-  types = lib.types // nix-alacarte.types;
+  types = lib.types // { alacarte = nix-alacarte.types; };
 
   unsetAttr = name: set:
     removeAttrs set [ name ];
@@ -130,7 +130,7 @@ let
       };
   };
 
-  typeNames = [
+  libTypeNames = [
     "bool"
     "either"
     "enum"
@@ -143,9 +143,6 @@ let
     "shellPackage"
     "str"
     "strMatching"
-
-    "coercibleToString"
-    "genericValue"
   ];
 
   option = type:
@@ -199,7 +196,8 @@ let
         withDefault [ (default { }) ]
           mkOption types.submodule;
     }
-    (genAttrs typeNames (name: mkOption types.${name}))
+    (genAttrs libTypeNames (name: mkOption types.${name}))
+    (mapAttrs (_: mkOption) types.alacarte)
   ];
 in
 
