@@ -14,6 +14,14 @@ let
     types
   ;
 
+  inherit (nix-alacarte.generators)
+    toGlibKeyFile
+  ;
+
+  inherit (nix-alacarte.formats)
+    fromGenerator
+  ;
+
   inherit (pkgs)
     writeText
   ;
@@ -31,10 +39,7 @@ in
     generic = args:
       formats.fromGenerator (generators.toKeyValue args);
 
-    glibKeyFile =
-      # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html
-      # https://developer-old.gnome.org/glib/unstable/glib-Key-value-file-parser.html
-      # not the same but INI could be used as a starting point
-      formats.ini;
+    glibKeyFile = { ... }@args:
+      fromGenerator (toGlibKeyFile args);
   };
 }
