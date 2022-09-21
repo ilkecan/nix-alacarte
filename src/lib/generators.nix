@@ -1,11 +1,22 @@
 {
   lib,
+  nix-alacarte,
   ...
 }:
 
 let
+  inherit (builtins)
+    isAttrs
+  ;
+
   inherit (lib.generators)
     toINI
+    toKeyValue
+  ;
+
+  inherit (nix-alacarte)
+    fmtValue
+    indentBy
   ;
 in
 
@@ -16,5 +27,21 @@ in
       # https://developer-old.gnome.org/glib/unstable/glib-Key-value-file-parser.html
       # not the same but INI could be used as a starting point
       toINI { };
+
+    # https://developer.valvesoftware.com/wiki/KeyValues
+    toVDF = { }:
+      let
+        fmtValue' = fmtValue { };
+        mkKeyValue = key: value:
+          if isAttrs value
+            then ''
+              "${key}"
+              {
+              ${indentBy 2 (self value)}
+              }''
+            else ''"${key}" "${fmtValue' value}"'';
+        self = toKeyValue { inherit mkKeyValue; };
+      in
+      self;
   };
 }
