@@ -5,6 +5,7 @@ let
         "dnm"
         "lib"
         "nix-alacarte"
+        "pkgs"
       ];
 
       system = [
@@ -19,7 +20,8 @@ in
 
   dnm ? inputs.dnm.lib,
   lib ? inputs.nixpkgs.lib,
-  nix-alacarte ? inputs.self.libs.${system},
+  nix-alacarte ? inputs.self.lib,
+  pkgs ? inputs.nixpkgs.legacyPackages.${system},
 }:
 
 let
@@ -32,6 +34,7 @@ let
       dnm
       lib
       nix-alacarte
+      pkgs
     ;
   };
 in
