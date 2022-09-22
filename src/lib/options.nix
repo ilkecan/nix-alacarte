@@ -41,7 +41,7 @@ let
     mkOption
     mkStr
     readOnly
-    unsetDefault
+    required
     set
   ;
 
@@ -58,7 +58,6 @@ let
 
   optionAttributes = [
     "apply"
-    "default"
   ];
 
   setterFunctions = genAttrs optionAttributes setAttr;
@@ -69,9 +68,11 @@ let
     ;
 
   composerFunctions = {
+    default = setAttr "default";
     internal = setAttr "internal" true;
     public = setAttr "internal" false;
     readOnly = setAttr "readOnly" true;
+    required = unsetAttr "default";
     writable = setAttr "readOnly" false;
 
     addCheck = check: option:
@@ -105,7 +106,7 @@ let
         type = types.listOf option.type;
       };
     nonEmptyList = option:
-      unsetDefault option // {
+      required option // {
         type = types.nonEmptyListOf option.type;
       };
     optional = option:

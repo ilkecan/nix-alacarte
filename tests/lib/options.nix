@@ -18,7 +18,7 @@ let
     writable
 
     default
-    unsetDefault
+    required
 
     apply
     unsetApply
@@ -58,7 +58,7 @@ in
     actual = (default "some value" emptyOption).default;
     expected = "some value";
   };
-  unsetDefault = assertFalse (unsetDefault (mkOption { default = "some other value"; }) ? default);
+  required = assertFalse (required (mkOption { default = "some other value"; }) ? default);
 
   apply = assertEqual {
     actual = (apply (x: x + 5) emptyOption).apply 4;
