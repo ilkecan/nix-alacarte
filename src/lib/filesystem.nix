@@ -167,10 +167,12 @@ in
   importDirectory =
     {
       recursive ? false,
+      makeOverridable ? false,
     }:
 
     let
       nixFiles' = nixFiles { inherit recursive; };
+      f = if makeOverridable then lib.makeOverridable else id;
     in
     dir: args:
       let
@@ -181,7 +183,7 @@ in
           fn = import path;
           fnArgs = intersectAttrs (functionArgs fn) args;
         in
-        fn fnArgs
+        f fn fnArgs
       );
 
   relTo = dir: path:
