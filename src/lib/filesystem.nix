@@ -9,7 +9,9 @@ let
   inherit (builtins)
     elem
     filter
+    functionArgs
     getAttr
+    intersectAttrs
     isString
     listToAttrs
     mapAttrs
@@ -36,6 +38,7 @@ let
   inherit (nix-alacarte)
     dirToAttrs
     filesOf
+    forEachAttr
     nixFiles
     pipe'
     relTo
@@ -166,11 +169,20 @@ in
       recursive ? false,
     }:
 
+    let
+      nixFiles' = nixFiles { inherit recursive; };
+    in
     dir: args:
       let
-        files = nixFiles { inherit recursive; } dir;
+        files = nixFiles' dir;
       in
-      mapAttrs (_: path: import path args) files;
+      forEachAttr files (_: path:
+        let
+          fn = import path;
+          fnArgs = intersectAttrs (functionArgs fn) args;
+        in
+        fn fnArgs
+      );
 
   relTo = dir: path:
     dir + "/${toString path}";
