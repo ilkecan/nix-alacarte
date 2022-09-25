@@ -26,12 +26,3 @@
 
 # linguist
 *.lock linguist-generated=true
-
-# creating an archive
-*.md export-ignore
-*.txt export-ignore
-/.editorconfig export-ignore
-/.gitattributes export-ignore
-/.gitignore export-ignore
-/.reuse/ export-ignore
-/LICENSE/ export-ignore
