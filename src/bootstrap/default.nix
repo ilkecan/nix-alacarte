@@ -1,14 +1,5 @@
-let
-  missingDependantOf =
-    import ./../../submodules/missing-dependant-of.nix/default.nix {
-      inputs = [
-        "lib"
-      ];
-    };
-in
-
 {
-  inputs ? missingDependantOf.inputs,
+  inputs ? { },
 
   lib ? inputs.nixpkgs.lib,
 }:

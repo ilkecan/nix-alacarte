@@ -16,7 +16,6 @@
 .editorconfig text
 .gitattributes text
 .gitignore text
-/.gitmodules text
 /.reuse/dep5 text
 /flake.lock text
 /tests/lib/fixtures/**/* text
