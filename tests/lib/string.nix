@@ -1,10 +1,19 @@
 {
   dnm,
+  lib,
   nix-alacarte,
   ...
 }:
 
 let
+  inherit (builtins)
+    substring
+  ;
+
+  inherit (lib)
+    hasPrefix
+  ;
+
   inherit (nix-alacarte)
     addPrefix
     addSuffix
@@ -15,6 +24,7 @@ let
     concatStringWith
     elements
     unelements
+    findString
     fmtValue
     indentBy
     indentByWith
@@ -35,8 +45,13 @@ let
     snakeToKebab
   ;
 
+  inherit (nix-alacarte.nix)
+    int
+  ;
+
   inherit (dnm)
     assertEqual
+    assertNull
   ;
 in
 
@@ -84,6 +99,35 @@ in
   unelements = assertEqual{
     actual = unelements [ "apple" "orange" ];
     expected = "apple,orange";
+  };
+
+  findString = {
+    nonexisting = assertNull findString "a" "bbc";
+
+    prefix = assertEqual {
+      actual = findString "foo" "foobar";
+      expected = 0;
+    };
+
+    suffix = assertEqual {
+      actual = findString "bar" "foobar";
+      expected = 3;
+    };
+
+    middle = assertEqual {
+      actual = findString "arb" "foobarbaz";
+      expected = 4;
+    };
+
+    multiple = assertEqual {
+      actual = findString "ba" "foobarbaz";
+      expected = 3;
+    };
+
+    lambda_pattern = assertEqual {
+      actual = findString (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      expected = 4;
+    };
   };
 
   fmtValue = {

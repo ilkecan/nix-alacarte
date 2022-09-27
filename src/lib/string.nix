@@ -7,8 +7,8 @@
 let
   inherit (builtins)
     concatStringsSep
-    stringLength
     replaceStrings
+    stringLength
     substring
     typeOf
   ;
@@ -16,9 +16,12 @@ let
   inherit (lib)
     concatStrings
     const
+    findFirst
     flip
     id
     lowerChars
+    pipe
+    range
     splitString
     toUpper
     upperChars
@@ -34,11 +37,18 @@ let
     concatStringWith
     indentByWith
     lines
-    nix
     pipe'
     repeat
     replicate
     unlines
+  ;
+
+  inherit (nix-alacarte.nix)
+    int
+  ;
+
+  inherit (nix-alacarte.internal)
+    throw'
   ;
 
   snakeSep = "_";
@@ -67,6 +77,28 @@ in
 
   elements = splitString ",";
   unelements = concatStringsSep ",";
+
+  findString =
+    let
+      throw'' = throw'.appendScope "findString";
+    in
+    pattern:
+      let
+        patternType = typeOf pattern;
+        patternLength = stringLength pattern;
+        searcher =
+          {
+            string = str: i:
+              substring i patternLength str == pattern;
+            lambda = pattern;
+          }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
+      in
+      str:
+        pipe str [
+          stringLength
+          (range 0)
+          (findFirst (searcher str) null)
+        ];
 
   fmtValue = {
     bool ? null,
@@ -120,7 +152,7 @@ in
 
   splitStringAt = index: str: {
     left = substring 0 index str;
-    right = substring index nix.int.max str;
+    right = substring index int.max str;
   };
 
   words = splitString " ";
