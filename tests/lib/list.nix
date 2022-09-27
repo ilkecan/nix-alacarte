@@ -81,6 +81,8 @@ in
   };
 
   headAndTails = {
+    empty = assertFailure headAndTails [ ];
+
     tail_not_empty = assertEqual {
       actual = headAndTails [ 2 3 5 ];
       expected = { head = 2; tail = [ 3 5 ]; };
