@@ -9,13 +9,16 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    assertAttr
+    throw'
   ;
 in
 
 {
-  allEnabled = all (cfg:
-    assert assertAttr "allEnabled" cfg "enable";
-    cfg.enable
-  );
+  allEnabled =
+    let
+      throw'' = throw'.appendScope "allEnabled";
+    in
+    all (cfg:
+      cfg.enable or (throw''.missingAttribute cfg "enable")
+    );
 }

@@ -39,15 +39,19 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    assertMsg'
+    assert'
   ;
 
-  foldStartingWithHead = name: f: list:
-    assert assertMsg' name (list != [ ]) "empty list";
+  foldStartingWithHead = scope:
     let
-      initial = head list;
+      assert'' = assert'.appendScope scope;
     in
-    foldl' f initial list;
+    f: list:
+      assert assert'' (list != [ ]) "empty list";
+      let
+        initial = head list;
+      in
+      foldl' f initial list;
 in
 
 {
@@ -60,11 +64,16 @@ in
   empty = equals [ ];
   notEmpty = notEquals [ ];
 
-  headAndTails = list:
-    {
-      head = head list;
-      tail = tail list;
-    };
+  headAndTails =
+    let
+      assert'' = assert'.appendScope "headAndTails";
+    in
+    list:
+      assert assert'' (list != [ ]) "empty list";
+      {
+        head = head list;
+        tail = tail list;
+      };
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);

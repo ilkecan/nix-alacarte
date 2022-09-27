@@ -51,9 +51,7 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    assertMsg'
-    assertOneOf'
-    colorVariable
+    assert'
   ;
 in
 
@@ -107,17 +105,15 @@ in
     }:
 
     let
+      assert'' = assert'.appendScope "filesOf";
       self = dir:
-        let
-          assertMsg'' = assertMsg' "filesOf";
-        in
-        assert assertOneOf' "filesOf" "return" return [ "path" "name" "stem" ];
-        assert assertMsg''  (return == "stem" -> withExtension != "")
-          "`${colorVariable "withExtension"}` cannot be an empty string while `${colorVariable "return"}` is \"stem\".";
-        assert assertMsg'' (asAttrs -> withExtension != "")
-          "`${colorVariable "withExtension"}` cannot be an empty string while `${colorVariable "asAttrs"}` is true.";
-        assert assertMsg'' (recursive -> return == "path")
-          "`${colorVariable "return"}` must be \"path\" while `${colorVariable "recursive"}` is true.";
+        assert assert''.oneOf [ "path" "name" "stem" ] "return" return;
+        assert assert''  (return == "stem" -> withExtension != "")
+          ''`withExtension` cannot be an empty string while `return` is "stem".'';
+        assert assert'' (asAttrs -> withExtension != "")
+          ''`withExtension` cannot be "" while `asAttrs` is true.'';
+        assert assert'' (recursive -> return == "path")
+          ''`return` must be "path" while `recursive` is true.'';
 
         let
           suffix = ".${withExtension}";
