@@ -166,12 +166,18 @@ in
 
   importDirectory =
     {
-      recursive ? false,
+      convertNameToCamel ? true,
       makeOverridable ? false,
+      recursive ? false,
     }:
 
     let
-      nixFiles' = nixFiles { inherit recursive; };
+      nixFiles' = nixFiles {
+        inherit
+          convertNameToCamel
+          recursive
+        ;
+      };
       f = if makeOverridable then lib.makeOverridable else id;
     in
     dir: args:
