@@ -144,20 +144,20 @@ in
               path = relTo dir name;
               stem = removeSuffix suffix name;
               file = { inherit name path stem type; };
-
-              val = f file;
-              val' = f' file val;
-              val'' = f'' file val';
-              val''' = f''' file val'';
             in
-            val''';
-
-          files' = mapAttrsToList g files;
-          files'' = if recursive then flatten files' else files';
-          files''' = removeNulls files'';
-          files'''' = if asAttrs then listToAttrs files''' else files''';
+            pipe file [
+              f
+              (f' file)
+              (f'' file)
+              (f''' file)
+            ];
         in
-        files'''';
+        pipe files [
+          (mapAttrsToList g)
+          (if recursive then flatten else id)
+          removeNulls
+          (if asAttrs then listToAttrs else id)
+        ];
     in
     self;
 
