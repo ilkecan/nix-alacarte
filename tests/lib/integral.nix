@@ -6,12 +6,16 @@
 
 let
   inherit (nix-alacarte)
-    increment
     decrement
+    even
+    increment
+    odd
   ;
 
   inherit (dnm)
     assertEqual
+    assertFalse
+    assertTrue
   ;
 in
 
@@ -28,6 +32,11 @@ in
     };
   };
 
+  even = {
+    true = assertTrue even 4;
+    false = assertFalse even 3;
+  };
+
   increment = {
     integer = assertEqual {
       actual = increment 12;
@@ -40,5 +49,8 @@ in
     };
   };
 
+  odd = {
+    true = assertTrue odd 5;
+    false = assertFalse odd 4;
   };
 }
