@@ -25,13 +25,17 @@ let
     flip
     max
     min
+    singleton
     sublist
   ;
 
   inherit (nix-alacarte)
+    append
+    compose
     equals
     notEquals
     notNull
+    prepend
   ;
 
   inherit (nix-alacarte.internal)
@@ -73,6 +77,9 @@ in
   ;
 
   product = foldl' mul 1;
+
+  appendElem = compose [ append singleton ];
+  prependElem = compose [ prepend singleton ];
 
   removeNulls = filter notNull;
 

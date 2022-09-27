@@ -15,6 +15,8 @@ let
     allEqual
     append
     prepend
+    appendElem
+    prependElem
     empty
     notEmpty
     headAndTails
@@ -56,6 +58,16 @@ in
   prepend = assertEqual {
     actual = prepend [ 2 ] [ 1 ];
     expected = [ 2 1 ];
+  };
+
+  appendElem = assertEqual {
+    actual = appendElem 45 [ 2 4 ];
+    expected = [ 2 4 45 ];
+  };
+
+  prependElem = assertEqual {
+    actual = prependElem 45 [ 2 4 ];
+    expected = [ 45 2 4 ];
   };
 
   empty = {
