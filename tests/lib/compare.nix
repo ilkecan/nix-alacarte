@@ -6,8 +6,8 @@
 
 let
   inherit (nix-alacarte)
-    equals
-    notEquals
+    equalTo
+    notEqualTo
   ;
 
   inherit (dnm)
@@ -17,13 +17,13 @@ let
 in
 
 {
-  equals = {
-    same = assertTrue equals 2 2;
-    different = assertFalse equals "a" "b";
+  equalTo = {
+    same = assertTrue equalTo 2 2;
+    different = assertFalse equalTo "a" "b";
   };
 
-  notEquals = {
-    different = assertTrue notEquals [ 2 ] 2;
-    same = assertFalse notEquals { v = 2; } { v = 2; };
+  notEqualTo = {
+    different = assertTrue notEqualTo [ 2 ] 2;
+    same = assertFalse notEqualTo { v = 2; } { v = 2; };
   };
 }

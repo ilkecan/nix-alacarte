@@ -3,8 +3,9 @@
 }:
 
 {
-  equals = lhs: rhs:
+  equalTo = rhs: lhs:
     lhs == rhs;
-  notEquals = lhs: rhs:
+
+  notEqualTo = rhs: lhs:
     lhs != rhs;
 }

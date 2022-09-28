@@ -5,12 +5,12 @@
 
 let
   inherit (nix-alacarte)
-    equals
-    notEquals
+    equalTo
+    notEqualTo
   ;
 in
 
 {
-  isNull = equals null;
-  notNull = notEquals null;
+  isNull = equalTo null;
+  notNull = notEqualTo null;
 }

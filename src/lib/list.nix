@@ -32,8 +32,8 @@ let
   inherit (nix-alacarte)
     append
     compose
-    equals
-    notEquals
+    equalTo
+    notEqualTo
     notNull
     prepend
   ;
@@ -56,13 +56,13 @@ in
 
 {
   allEqual = list:
-    all (equals (head list)) list;
+    all (equalTo (head list)) list;
 
   append = flip concat;
   prepend = concat;
 
-  empty = equals [ ];
-  notEmpty = notEquals [ ];
+  empty = equalTo [ ];
+  notEmpty = notEqualTo [ ];
 
   headAndTails =
     let
