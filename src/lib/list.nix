@@ -25,6 +25,7 @@ let
     const
     findFirst
     flip
+    imap0
     max
     min
     pipe
@@ -105,6 +106,8 @@ in
         head = head list;
         tail = tail list;
       };
+
+  imap = imap0;
 
   mapListToAttrs = f: list:
     listToAttrs (map f list);

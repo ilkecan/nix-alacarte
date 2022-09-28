@@ -8,20 +8,18 @@ let
   inherit (builtins)
     concatStringsSep
     elem
-    filter
     foldl'
     hasAttr
     isList
-    isString
-    split
   ;
 
   inherit (lib)
     concatStrings
     id
-    imap0
+    imap
     mapAttrsToList
     optionalString
+    splitString
     toList
   ;
 
@@ -84,9 +82,8 @@ let
               else compose [ addDelimiters color ];
           in
           pipe' [
-            (split delimiter)
-            (filter isString)
-            (imap0 colorMsg)
+            (splitString delimiter)
+            (imap colorMsg)
             concatStrings
           ];
     in

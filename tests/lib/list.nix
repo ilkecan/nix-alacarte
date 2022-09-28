@@ -29,6 +29,7 @@ let
     findIndex
     findIndices
     headAndTails
+    imap
     mapListToAttrs
     mergeListOfAttrs
     maximum
@@ -180,6 +181,10 @@ in
     };
   };
 
+  imap = assertEqual {
+    actual = imap (i: n: n + i) [ 0 2 4 ];
+    expected = [ 0 3 6 ];
+  };
 
   mapListToAttrs = assertEqual {
     actual = mapListToAttrs (e: nameValuePair e.name e) [
