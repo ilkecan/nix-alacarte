@@ -21,6 +21,8 @@ let
     prepend
     appendElem
     prependElem
+    elemIndex
+    elemIndices
     empty
     notEmpty
     findIndex
@@ -75,6 +77,37 @@ in
   prependElem = assertEqual {
     actual = prependElem 45 [ 2 4 ];
     expected = [ 45 2 4 ];
+  };
+
+  elemIndex = {
+    not_found = assertNull elemIndex 4 [ 4.5 "martin" ];
+
+    single_elem = assertEqual {
+      actual = elemIndex 4 [ 4.5 4 "martin" ];
+      expected = 1;
+    };
+
+    multi_elems = assertEqual {
+      actual = elemIndex 4 [ 4.5 4 "martin" 4 ];
+      expected = 1;
+    };
+  };
+
+  elemIndices = {
+    not_found = assertEqual {
+      actual = elemIndices 4 [ 4.5 "martin" ];
+      expected = [ ];
+    };
+
+    single_elem = assertEqual {
+      actual = elemIndices 4 [ 4.5 4 "martin" ];
+      expected = [ 1 ];
+    };
+
+    multi_elems = assertEqual {
+      actual = elemIndices 4 [ 4.5 4 "martin" 4 ];
+      expected = [ 1 3 ];
+    };
   };
 
   empty = {

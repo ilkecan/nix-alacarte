@@ -38,6 +38,7 @@ let
     decrement
     empty
     equalTo
+    findIndex
     findIndices
     notEqualTo
     notNull
@@ -66,6 +67,12 @@ in
 
   append = flip concat;
   prepend = concat;
+
+  appendElem = compose [ append singleton ];
+  prependElem = compose [ prepend singleton ];
+
+  elemIndex = compose [ findIndex equalTo ];
+  elemIndices = compose [ findIndices equalTo ];
 
   empty = equalTo [ ];
   notEmpty = notEqualTo [ ];
@@ -106,9 +113,6 @@ in
   ;
 
   product = foldl' mul 1;
-
-  appendElem = compose [ append singleton ];
-  prependElem = compose [ prepend singleton ];
 
   removeNulls = filter notNull;
 
