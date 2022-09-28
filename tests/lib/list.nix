@@ -25,6 +25,7 @@ let
     elemIndices
     empty
     notEmpty
+    find
     findIndex
     findIndices
     headAndTails
@@ -118,6 +119,20 @@ in
   notEmpty = {
     empty_list = assertFalse notEmpty [ ];
     non_empty_list = assertTrue notEmpty [ 2 ];
+  };
+
+  find = {
+    not_found = assertNull find isInt [ 4.5 "martin" ];
+
+    single_elem = assertEqual {
+      actual = find isInt [ 4.5 4 "martin" ];
+      expected = 4;
+    };
+
+    multi_elems = assertEqual {
+      actual = find isInt [ 4.5 4 "martin" 8 ];
+      expected = 4;
+    };
   };
 
   findIndex = {

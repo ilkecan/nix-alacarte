@@ -23,11 +23,12 @@ let
   inherit (lib)
     concat
     const
-    pipe
+    findFirst
     flip
-    range
     max
     min
+    pipe
+    range
     singleton
     sublist
   ;
@@ -76,6 +77,9 @@ in
 
   empty = equalTo [ ];
   notEmpty = notEqualTo [ ];
+
+  find = pred:
+    findFirst pred null;
 
   findIndex = predicate: list:
     let
