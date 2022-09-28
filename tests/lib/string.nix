@@ -25,6 +25,7 @@ let
     elements
     unelements
     findString
+    rfindString
     fmtValue
     indentBy
     indentByWith
@@ -129,6 +130,36 @@ in
       expected = 4;
     };
   };
+
+  rfindString = {
+    nonexisting = assertNull rfindString "a" "bbc";
+
+    prefix = assertEqual {
+      actual = rfindString "foo" "foobar";
+      expected = 0;
+    };
+
+    suffix = assertEqual {
+      actual = rfindString "bar" "foobar";
+      expected = 3;
+    };
+
+    middle = assertEqual {
+      actual = rfindString "arb" "foobarbaz";
+      expected = 4;
+    };
+
+    multiple = assertEqual {
+      actual = rfindString "ba" "foobarbaz";
+      expected = 6;
+    };
+
+    lambda_pattern = assertEqual {
+      actual = rfindString (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      expected = 4;
+    };
+  };
+
 
   fmtValue = {
     default = assertEqual {

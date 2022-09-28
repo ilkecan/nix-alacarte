@@ -20,8 +20,10 @@ let
     flip
     id
     lowerChars
+    optionalString
     pipe
     range
+    reverseList
     splitString
     toUpper
     upperChars
@@ -33,6 +35,7 @@ let
 
   inherit (nix-alacarte)
     addPrefix
+    compose
     concatString
     concatStringWith
     indentByWith
@@ -55,6 +58,30 @@ let
   kebabSep = "-";
   snakeChars = map (c: "${snakeSep}${c}") lowerChars;
   kebabChars = map (c: "${kebabSep}${c}") lowerChars;
+
+
+  findString' = reverse:
+    let
+      range' = if reverse then compose [ reverseList (range 0) ] else range 0;
+      throw'' = throw'.appendScope "${optionalString reverse "r"}findString";
+    in
+    pattern:
+      let
+        patternType = typeOf pattern;
+        patternLength = stringLength pattern;
+        searcher =
+          {
+            string = str: i:
+              substring i patternLength str == pattern;
+            lambda = pattern;
+          }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
+      in
+      str:
+        pipe str [
+          stringLength
+          range'
+          (findFirst (searcher str) null)
+        ];
 in
 
 {
@@ -78,27 +105,8 @@ in
   elements = splitString ",";
   unelements = concatStringsSep ",";
 
-  findString =
-    let
-      throw'' = throw'.appendScope "findString";
-    in
-    pattern:
-      let
-        patternType = typeOf pattern;
-        patternLength = stringLength pattern;
-        searcher =
-          {
-            string = str: i:
-              substring i patternLength str == pattern;
-            lambda = pattern;
-          }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
-      in
-      str:
-        pipe str [
-          stringLength
-          (range 0)
-          (findFirst (searcher str) null)
-        ];
+  findString = findString' false;
+  rfindString = findString' true;
 
   fmtValue = {
     bool ? null,
