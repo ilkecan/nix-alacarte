@@ -10,7 +10,9 @@ let
     even
     increment
     negate
+    negative
     odd
+    positive
   ;
 
   inherit (dnm)
@@ -86,8 +88,36 @@ in
     };
   };
 
+  negative = {
+    integer = {
+      negative = assertTrue negative (-4);
+      zero = assertFalse negative 0;
+      positive = assertFalse negative 48;
+    };
+
+    float = {
+      negative = assertTrue negative (-4.4);
+      zero = assertFalse negative 0.0;
+      positive = assertFalse negative 48.9;
+    };
+  };
+
   odd = {
     true = assertTrue odd 5;
     false = assertFalse odd 4;
+  };
+
+  positive = {
+    integer = {
+      negative = assertFalse positive (-4);
+      zero = assertFalse positive 0;
+      positive = assertTrue positive 48;
+    };
+
+    float = {
+      negative = assertFalse positive (-4.4);
+      zero = assertFalse positive 0.0;
+      positive = assertTrue positive 48.9;
+    };
   };
 }

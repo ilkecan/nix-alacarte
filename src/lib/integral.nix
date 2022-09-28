@@ -1,5 +1,6 @@
 {
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -12,6 +13,11 @@ let
   inherit (lib)
     flip
     mod
+  ;
+
+  inherit (nix-alacarte)
+    greaterThan
+    lessThan
   ;
 in
 
@@ -26,6 +32,10 @@ in
   negate = number:
     -number;
 
+  negative = lessThan 0;
+
   odd = number:
     mod number 2 == 1;
+
+  positive = greaterThan 0;
 }
