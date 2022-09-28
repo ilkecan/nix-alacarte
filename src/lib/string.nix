@@ -59,7 +59,6 @@ let
   snakeChars = map (c: "${snakeSep}${c}") lowerChars;
   kebabChars = map (c: "${kebabSep}${c}") lowerChars;
 
-
   findString' = reverse:
     let
       range' = if reverse then compose [ reverseList (range 0) ] else range 0;

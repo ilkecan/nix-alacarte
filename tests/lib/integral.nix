@@ -9,6 +9,7 @@ let
     decrement
     even
     increment
+    negate
     odd
   ;
 
@@ -46,6 +47,42 @@ in
     float = assertEqual {
       actual = increment 12.74;
       expected = 13.74;
+    };
+  };
+
+  negate = {
+    integer = {
+      zero = assertEqual {
+        actual = negate 0;
+        expected = 0;
+      };
+
+      positive = assertEqual {
+        actual = negate 23;
+        expected = -23;
+      };
+
+      negative = assertEqual {
+        actual = negate (-23);
+        expected = 23;
+      };
+    };
+
+    float = {
+      zero = assertEqual {
+        actual = negate 0.0;
+        expected = 0.0;
+      };
+
+      positive = assertEqual {
+        actual = negate 23.7;
+        expected = -23.7;
+      };
+
+      negative = assertEqual {
+        actual = negate (-23.7);
+        expected = 23.7;
+      };
     };
   };
 
