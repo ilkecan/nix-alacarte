@@ -6,6 +6,10 @@
 }:
 
 let
+  inherit (builtins)
+    isInt
+  ;
+
   inherit (lib)
     nameValuePair
     range
@@ -19,6 +23,8 @@ let
     prependElem
     empty
     notEmpty
+    findIndex
+    findIndices
     headAndTails
     mapListToAttrs
     mergeListOfAttrs
@@ -35,6 +41,7 @@ let
     assertEqual
     assertFailure
     assertFalse
+    assertNull
     assertTrue
   ;
 
@@ -78,6 +85,37 @@ in
   notEmpty = {
     empty_list = assertFalse notEmpty [ ];
     non_empty_list = assertTrue notEmpty [ 2 ];
+  };
+
+  findIndex = {
+    not_found = assertNull findIndex isInt [ 4.5 "martin" ];
+
+    single_elem = assertEqual {
+      actual = findIndex isInt [ 4.5 4 "martin" ];
+      expected = 1;
+    };
+
+    multi_elems = assertEqual {
+      actual = findIndex isInt [ 4.5 4 "martin" 8 ];
+      expected = 1;
+    };
+  };
+
+  findIndices = {
+    not_found = assertEqual {
+      actual = findIndices isInt [ 4.5 "martin" ];
+      expected = [ ];
+    };
+
+    single_elem = assertEqual {
+      actual = findIndices isInt [ 4.5 4 "martin" ];
+      expected = [ 1 ];
+    };
+
+    multi_elems = assertEqual {
+      actual = findIndices isInt [ 4.5 4 "martin" 8 ];
+      expected = [ 1 3 ];
+    };
   };
 
   headAndTails = {

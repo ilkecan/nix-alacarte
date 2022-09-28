@@ -8,6 +8,7 @@
 let
   inherit (builtins)
     add
+    elemAt
     all
     filter
     foldl'
@@ -22,7 +23,9 @@ let
   inherit (lib)
     concat
     const
+    pipe
     flip
+    range
     max
     min
     singleton
@@ -32,7 +35,10 @@ let
   inherit (nix-alacarte)
     append
     compose
+    decrement
+    empty
     equalTo
+    findIndices
     notEqualTo
     notNull
     prepend
@@ -63,6 +69,20 @@ in
 
   empty = equalTo [ ];
   notEmpty = notEqualTo [ ];
+
+  findIndex = predicate: list:
+    let
+      indices = findIndices predicate list;
+    in
+    if empty indices then null else head indices; 
+
+  findIndices = predicate: list:
+    pipe list [
+      length
+      decrement
+      (range 0)
+      (filter (i: predicate (elemAt list i)))
+    ];
 
   headAndTails =
     let
