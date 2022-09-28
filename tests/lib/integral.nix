@@ -6,6 +6,7 @@
 
 let
   inherit (nix-alacarte)
+    abs
     decrement
     even
     increment
@@ -23,6 +24,42 @@ let
 in
 
 {
+  abs = {
+    integer = {
+      negative = assertEqual {
+        actual = abs (-4);
+        expected = 4;
+      };
+
+      zero = assertEqual {
+        actual = abs 0;
+        expected = 0;
+      };
+
+      positive = assertEqual {
+        actual = abs 4;
+        expected = 4;
+      };
+    };
+
+    float = {
+      negative = assertEqual {
+        actual = abs (-4.7);
+        expected = 4.7;
+      };
+
+      zero = assertEqual {
+        actual = abs 0.0;
+        expected = 0.0;
+      };
+
+      positive = assertEqual {
+        actual = abs 4.19;
+        expected = 4.19;
+      };
+    };
+  };
+
   decrement = {
     integer = assertEqual {
       actual = decrement 23;

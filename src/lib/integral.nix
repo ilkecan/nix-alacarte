@@ -18,10 +18,15 @@ let
   inherit (nix-alacarte)
     greaterThan
     lessThan
+    negate
+    negative
   ;
 in
 
 {
+  abs = number:
+    if negative number then negate number else number;
+
   decrement = flip sub 1;
 
   even = number:
