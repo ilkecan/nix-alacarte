@@ -28,6 +28,7 @@ let
     find
     findIndex
     findIndices
+    greaterThan
     headAndTail
     imap
     indexed
@@ -35,6 +36,7 @@ let
     mergeListOfAttrs
     maximum
     minimum
+    partition
     product
     range'
     removeNulls
@@ -266,6 +268,23 @@ in
     floats = assertEqual {
       actual = minimum listOfFloats;
       expected = 1.7;
+    };
+  };
+
+  partition = {
+    first_empty = assertEqual {
+      actual = partition (greaterThan 50) [ 1 23 9 3 42 ];
+      expected = { "0" = [ ]; "1" = [ 1 23 9 3 42 ]; };
+    };
+
+    second_empty = assertEqual {
+      actual = partition (greaterThan 0) [ 1 23 9 3 42 ];
+      expected = { "0" = [ 1 23 9 3 42 ]; "1" = [ ]; };
+    };
+
+    both_non_empty = assertEqual {
+      actual = partition (greaterThan 10) [ 1 23 9 3 42 ];
+      expected = { "0" = [ 23 42 ]; "1" = [ 1 9 3 ]; };
     };
   };
 

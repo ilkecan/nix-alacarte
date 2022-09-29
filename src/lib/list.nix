@@ -12,6 +12,7 @@ let
     elemAt
     filter
     foldl'
+    partition
     genList
     head
     isAttrs
@@ -128,6 +129,15 @@ in
   inherit (bootstrap)
     mergeListOfAttrs
   ;
+
+  partition = predicate: list:
+    let
+      partitioned = partition predicate list;
+    in
+    {
+      "0" = partitioned.right;
+      "1" = partitioned.wrong;
+    };
 
   product = foldl' mul 1;
 
