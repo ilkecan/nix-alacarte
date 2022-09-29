@@ -109,6 +109,14 @@ in
 
   imap = imap0;
 
+  indexed = list:
+    let
+      elemAt' = elemAt list;
+      index = n:
+        { index = n; element = elemAt' n; };
+    in
+    map index (range' (length list));
+
   mapListToAttrs = f: list:
     listToAttrs (map f list);
 

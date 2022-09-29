@@ -30,6 +30,7 @@ let
     findIndices
     headAndTails
     imap
+    indexed
     mapListToAttrs
     mergeListOfAttrs
     maximum
@@ -185,6 +186,17 @@ in
   imap = assertEqual {
     actual = imap (i: n: n + i) [ 0 2 4 ];
     expected = [ 0 3 6 ];
+  };
+
+  indexed = assertEqual {
+    actual = indexed [ 0 1 1 2 3 ];
+    expected = [
+      { index = 0; element = 0; }
+      { index = 1; element = 1; }
+      { index = 2; element = 1; }
+      { index = 3; element = 2; }
+      { index = 4; element = 3; }
+    ];
   };
 
   mapListToAttrs = assertEqual {
