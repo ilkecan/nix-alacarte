@@ -5,7 +5,7 @@
 
 let
   inherit (nix-alacarte)
-    mkAssert
+    mkAssertion
     mkThrow
   ;
 
@@ -13,6 +13,6 @@ let
 in
 
 {
-  assert' = mkAssert args;
+  assertion = mkAssertion args;
   throw = mkThrow args;
 }

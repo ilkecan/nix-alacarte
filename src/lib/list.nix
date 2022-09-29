@@ -56,15 +56,15 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    assert'
+    assertion
   ;
 
   foldStartingWithHead = scope:
     let
-      assert'' = assert'.appendScope scope;
+      assertion' = assertion.appendScope scope;
     in
     f: list:
-      assert assert'' (list != [ ]) "empty list";
+      assert assertion' (list != [ ]) "empty list";
       let
         initial = head list;
       in
@@ -105,10 +105,10 @@ in
 
   headAndTail =
     let
-      assert'' = assert'.appendScope "headAndTail";
+      assertion' = assertion.appendScope "headAndTail";
     in
     list:
-      assert assert'' (list != [ ]) "empty list";
+      assert assertion' (list != [ ]) "empty list";
       pair (head list) (tail list);
 
   ifilter = predicate:
@@ -146,9 +146,9 @@ in
 
   range' = n:
     let
-      assert'' = assert'.appendScope "range'";
+      assertion' = assertion.appendScope "range'";
     in
-    assert assert'' (!negative n) "negative list size: `${toString n}`";
+    assert assertion' (!negative n) "negative list size: `${toString n}`";
     genList id n;
 
   removeNulls = filter notNull;

@@ -30,7 +30,7 @@ let
     compose
     even
     imap
-    mkAssert
+    mkAssertion
     mkThrow
     pipe'
   ;
@@ -97,17 +97,17 @@ let
 in
 
 {
-  mkAssert = args:
+  mkAssertion = args:
     let
       throw = mkThrow args;
-      assert' = pred: msg:
+      assertion = pred: msg:
         pred || throw msg;
     in
     {
-      appendScope = compose [ mkAssert (appendScope args) ];
+      appendScope = compose [ mkAssertion (appendScope args) ];
 
       __functor = _:
-        assert';
+        assertion;
 
       attr = attrName: set:
         let

@@ -51,7 +51,7 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    assert'
+    assertion
   ;
 in
 
@@ -105,14 +105,14 @@ in
     }:
 
     let
-      assert'' = assert'.appendScope "filesOf";
+      assertion' = assertion.appendScope "filesOf";
       self = dir:
-        assert assert''.oneOf [ "path" "name" "stem" ] "return" return;
-        assert assert''  (return == "stem" -> withExtension != "")
+        assert assertion'.oneOf [ "path" "name" "stem" ] "return" return;
+        assert assertion'  (return == "stem" -> withExtension != "")
           ''`withExtension` cannot be an empty string while `return` is "stem".'';
-        assert assert'' (asAttrs -> withExtension != "")
+        assert assertion' (asAttrs -> withExtension != "")
           ''`withExtension` cannot be "" while `asAttrs` is true.'';
-        assert assert'' (recursive -> return == "path")
+        assert assertion' (recursive -> return == "path")
           ''`return` must be "path" while `recursive` is true.'';
 
         let
