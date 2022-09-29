@@ -43,9 +43,10 @@ let
     equalTo
     findIndex
     findIndices
-    notEqualTo
     negative
+    notEqualTo
     notNull
+    pair
     prepend
     range'
   ;
@@ -105,10 +106,7 @@ in
     in
     list:
       assert assert'' (list != [ ]) "empty list";
-      {
-        "0" = head list;
-        "1" = tail list;
-      };
+      pair (head list) (tail list);
 
   imap = imap0;
 
@@ -134,10 +132,7 @@ in
     let
       partitioned = partition predicate list;
     in
-    {
-      "0" = partitioned.right;
-      "1" = partitioned.wrong;
-    };
+    pair partitioned.right partitioned.wrong;
 
   product = foldl' mul 1;
 
@@ -158,10 +153,9 @@ in
       index' = if negative index then 0 else index;
     in
     list:
-      {
-        "0" = sublist 0 index' list;
-        "1" = sublist index' (length list - index') list;
-      };
+      pair
+        (sublist 0 index' list)
+        (sublist index' (length list - index') list);
 
   sum = foldl' add 0;
 

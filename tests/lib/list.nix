@@ -18,13 +18,10 @@ let
   inherit (nix-alacarte)
     allEqual
     append
-    prepend
     appendElem
-    prependElem
     elemIndex
     elemIndices
     empty
-    notEmpty
     find
     findIndex
     findIndices
@@ -33,10 +30,14 @@ let
     imap
     indexed
     mapListToAttrs
-    mergeListOfAttrs
     maximum
+    mergeListOfAttrs
     minimum
+    notEmpty
+    pair
     partition
+    prepend
+    prependElem
     product
     range'
     removeNulls
@@ -177,12 +178,12 @@ in
 
     tail_not_empty = assertEqual {
       actual = headAndTail [ 2 3 5 ];
-      expected = { "0" = 2; "1" = [ 3 5 ]; };
+      expected = pair 2 [ 3 5 ];
     };
 
     tail_empty = assertEqual {
       actual = headAndTail [ true ];
-      expected = { "0" = true; "1" = [ ]; };
+      expected = pair true [ ];
     };
   };
 
@@ -274,17 +275,17 @@ in
   partition = {
     first_empty = assertEqual {
       actual = partition (greaterThan 50) [ 1 23 9 3 42 ];
-      expected = { "0" = [ ]; "1" = [ 1 23 9 3 42 ]; };
+      expected = pair [ ] [ 1 23 9 3 42 ];
     };
 
     second_empty = assertEqual {
       actual = partition (greaterThan 0) [ 1 23 9 3 42 ];
-      expected = { "0" = [ 1 23 9 3 42 ]; "1" = [ ]; };
+      expected = pair [ 1 23 9 3 42 ] [ ];
     };
 
     both_non_empty = assertEqual {
       actual = partition (greaterThan 10) [ 1 23 9 3 42 ];
-      expected = { "0" = [ 23 42 ]; "1" = [ 1 9 3 ]; };
+      expected = pair [ 23 42 ] [ 1 9 3 ];
     };
   };
 
@@ -335,26 +336,17 @@ in
   splitAt = {
     negative_index = assertEqual {
       actual = splitAt (-4) [ "equal" "to" "the"  ];
-      expected = {
-        "0" = [ ];
-        "1" = [ "equal" "to" "the" ];
-      };
+      expected = pair [ ] [ "equal" "to" "the" ];
     };
 
     index_to_large = assertEqual {
       actual = splitAt 24 [ "equal" "to" "the"  ];
-      expected = {
-        "0" = [ "equal" "to" "the" ];
-        "1" = [ ];
-      };
+      expected = pair [ "equal" "to" "the" ] [ ];
     };
 
     index_in_range = assertEqual {
       actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
-      expected = {
-        "0" = [ "equal" "to" "the" "value" ];
-        "1" = [ "returned" ];
-      };
+      expected = pair [ "equal" "to" "the" "value" ] [ "returned" ];
     };
   };
 

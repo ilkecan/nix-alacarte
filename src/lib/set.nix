@@ -19,12 +19,15 @@ let
   ;
 
   inherit (nix-alacarte)
+    fst
     headAndTail
     mergeListOfAttrs
     notNull
     optionalValue
+    pair
     setAttr
     setAttrByPath'
+    snd
   ;
 in
 
@@ -43,7 +46,7 @@ in
     let
       right = filterAttrs predicate set;
     in
-    { "0" = right; "1" = removeAttrs set (attrNames right); };
+    pair right (removeAttrs set (attrNames right));
 
   removeNullAttrs = filterAttrs (_: notNull);
 
@@ -56,8 +59,8 @@ in
   setAttrByPath' = attrPath: value: set:
     let
       hat = headAndTail attrPath;
-      head = hat."0";
-      tail = hat."1";
+      head = fst hat;
+      tail = snd hat;
       value' =
         if tail == [ ]
           then value

@@ -40,6 +40,7 @@ let
     indentByWith
     lines
     negative
+    pair
     pipe'
     range'
     repeat
@@ -163,10 +164,9 @@ in
       index' = if negative index then 0 else index;
     in
     str:
-      {
-        "0" = substring 0 index' str;
-        "1" = substring index' int.max str;
-      };
+      pair
+        (substring 0 index' str)
+        (substring index' int.max str);
 
   words = splitString " ";
   unwords = concatStringsSep " ";
