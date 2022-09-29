@@ -333,23 +333,23 @@ in
   };
 
   splitAt = {
-    first_empty = assertEqual {
-      actual = splitAt 0 [ "equal" "to" "the"  ];
+    negative_index = assertEqual {
+      actual = splitAt (-4) [ "equal" "to" "the"  ];
       expected = {
         "0" = [ ];
         "1" = [ "equal" "to" "the" ];
       };
     };
 
-    second_empty = assertEqual {
-      actual = splitAt 4 [ "equal" "to" "the"  ];
+    index_to_large = assertEqual {
+      actual = splitAt 24 [ "equal" "to" "the"  ];
       expected = {
         "0" = [ "equal" "to" "the" ];
         "1" = [ ];
       };
     };
 
-    both_non_empty = assertEqual {
+    index_in_range = assertEqual {
       actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
       expected = {
         "0" = [ "equal" "to" "the" "value" ];

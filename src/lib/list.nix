@@ -153,10 +153,15 @@ in
   replicate = n: val:
     genList (const val) n;
 
-  splitAt = index: list: {
-    "0" = sublist 0 index list;
-    "1" = sublist index (length list - index) list;
-  };
+  splitAt = index:
+    let
+      index' = if negative index then 0 else index;
+    in
+    list:
+      {
+        "0" = sublist 0 index' list;
+        "1" = sublist index' (length list - index') list;
+      };
 
   sum = foldl' add 0;
 
