@@ -195,11 +195,11 @@ in
   indexed = assertEqual {
     actual = indexed [ 0 1 1 2 3 ];
     expected = [
-      { index = 0; element = 0; }
-      { index = 1; element = 1; }
-      { index = 2; element = 1; }
-      { index = 3; element = 2; }
-      { index = 4; element = 3; }
+      (pair 0 0)
+      (pair 1 1)
+      (pair 2 1)
+      (pair 3 2)
+      (pair 4 3)
     ];
   };
 
