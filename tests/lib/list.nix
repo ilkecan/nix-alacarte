@@ -28,7 +28,7 @@ let
     find
     findIndex
     findIndices
-    headAndTails
+    headAndTail
     imap
     indexed
     mapListToAttrs
@@ -170,16 +170,16 @@ in
     };
   };
 
-  headAndTails = {
-    empty = assertFailure headAndTails [ ];
+  headAndTail = {
+    empty = assertFailure headAndTail [ ];
 
     tail_not_empty = assertEqual {
-      actual = headAndTails [ 2 3 5 ];
+      actual = headAndTail [ 2 3 5 ];
       expected = { head = 2; tail = [ 3 5 ]; };
     };
 
     tail_empty = assertEqual {
-      actual = headAndTails [ true ];
+      actual = headAndTail [ true ];
       expected = { head = true; tail = [ ]; };
     };
   };

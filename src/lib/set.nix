@@ -19,7 +19,7 @@ let
   ;
 
   inherit (nix-alacarte)
-    headAndTails
+    headAndTail
     mergeListOfAttrs
     notNull
     optionalValue
@@ -56,8 +56,13 @@ in
 
   setAttrByPath' = attrPath: value: set:
     let
-      inherit (headAndTails attrPath) head tail;
-      value' = if tail == [ ] then value else setAttrByPath' tail value set.${head};
+      hat = headAndTail attrPath;
+      head = hat.head;
+      tail = hat.tail;
+      value' =
+        if tail == [ ]
+          then value
+          else setAttrByPath' tail value set.${head};
     in
     setAttr head value' set;
 }

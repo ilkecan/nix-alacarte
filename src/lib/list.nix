@@ -98,9 +98,9 @@ in
       (filter (i: predicate (elemAt list i)))
     ];
 
-  headAndTails =
+  headAndTail =
     let
-      assert'' = assert'.appendScope "headAndTails";
+      assert'' = assert'.appendScope "headAndTail";
     in
     list:
       assert assert'' (list != [ ]) "empty list";
