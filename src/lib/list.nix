@@ -156,14 +156,4 @@ in
         (sublist index' (length list - index') list);
 
   sum = foldl' add 0;
-
-  unindexed =
-    let
-      assert'' = assert'.appendScope "unindexed";
-      throw'' = throw'.appendScope "unindexed";
-    in
-    map (e:
-      assert assert'' (isAttrs e) "list element must be an attr set";
-      throw''.unlessGetAttr "element" e
-    );
 }

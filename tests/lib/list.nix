@@ -44,7 +44,6 @@ let
     replicate
     splitAt
     sum
-    unindexed
   ;
 
   inherit (dnm)
@@ -369,15 +368,6 @@ in
     floats = assertEqual {
       actual = sum listOfFloats;
       expected = 7.8;
-    };
-  };
-
-  unindexed = {
-    not_an_attrs = assertFailure unindexed [ 4 2 ];
-    without_element_attr = assertFailure unindexed [ { } ];
-    with_element_attr = assertEqual {
-      actual = unindexed [ { index = 4; element = 4.91; } ];
-      expected = [ 4.91 ];
     };
   };
 }
