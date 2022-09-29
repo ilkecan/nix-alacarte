@@ -4,6 +4,10 @@
 }:
 
 let
+  inherit (nix-alacarte)
+    pair
+  ;
+
   inherit (nix-alacarte.internal)
     throw'
   ;
@@ -14,6 +18,9 @@ in
       throw'' = throw'.appendScope "fst";
     in
     throw''.unlessGetAttr "0";
+
+  pair = x: y:
+    { "0" = x; "1" = y; };
 
   snd =
     let

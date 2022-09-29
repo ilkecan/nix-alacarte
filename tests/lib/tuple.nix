@@ -7,6 +7,7 @@
 let
   inherit (nix-alacarte)
     fst
+    pair
     snd
   ;
 
@@ -23,6 +24,11 @@ in
       actual = fst { "0" = 24; };
       expected = 24;
     };
+  };
+
+  pair = assertEqual {
+    actual = pair 2.4 true;
+    expected = { "0" = 2.4; "1" = true; };
   };
 
   snd = {
