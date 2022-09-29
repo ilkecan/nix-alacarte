@@ -33,9 +33,21 @@ in
     expected = { y = "bar"; };
   };
 
-  partitionAttrs = assertEqual {
-    actual = partitionAttrs (name: value: name != "foo" && value > 10) { foo = 12; bar = 20; };
-    expected = { right = { bar = 20; }; wrong = { foo = 12; }; };
+  partitionAttrs = {
+    first_empty = assertEqual {
+      actual = partitionAttrs (name: value: name != "foo" && value < 10) { foo = 12; bar = 20; };
+      expected = { "0" = { }; "1" = { foo = 12; bar = 20; }; };
+    };
+
+    second_empty = assertEqual {
+      actual = partitionAttrs (name: value: name != "bar" || value > 15) { foo = 12; bar = 20; };
+      expected = { "0" = { foo = 12; bar = 20; }; "1" = { }; };
+    };
+
+    both_non_empty = assertEqual {
+      actual = partitionAttrs (name: value: name != "foo" && value > 10) { foo = 12; bar = 20; };
+      expected = { "0" = { bar = 20; }; "1" = { foo = 12; }; };
+    };
   };
 
   removeNullAttrs = assertEqual {

@@ -39,12 +39,11 @@ in
     in
     mergeListOfAttrs (map (getAttrIfExists set) names);
 
-  partitionAttrs = f: set:
+  partitionAttrs = predicate: set:
     let
-      right = filterAttrs f set;
-      wrong = removeAttrs set (attrNames right);
+      right = filterAttrs predicate set;
     in
-    { inherit right wrong; };
+    { "0" = right; "1" = removeAttrs set (attrNames right); };
 
   removeNullAttrs = filterAttrs (_: notNull);
 
