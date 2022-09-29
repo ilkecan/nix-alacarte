@@ -20,6 +20,7 @@ let
     lessThan
     negate
     negative
+    sub'
   ;
 in
 
@@ -27,7 +28,7 @@ in
   abs = number:
     if negative number then negate number else number;
 
-  decrement = flip sub 1;
+  decrement = sub' 1;
 
   even = number:
     mod number 2 == 0;
@@ -43,4 +44,6 @@ in
     mod number 2 == 1;
 
   positive = greaterThan 0;
+
+  sub' = flip sub;
 }

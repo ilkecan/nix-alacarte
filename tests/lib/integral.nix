@@ -14,6 +14,7 @@ let
     negative
     odd
     positive
+    sub'
   ;
 
   inherit (dnm)
@@ -156,5 +157,10 @@ in
       zero = assertFalse positive 0.0;
       positive = assertTrue positive 48.9;
     };
+  };
+
+  sub' = assertEqual {
+    actual = sub' 4 8;
+    expected = 4;
   };
 }
