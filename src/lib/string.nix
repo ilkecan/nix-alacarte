@@ -158,8 +158,8 @@ in
     concatStrings (replicate n str);
 
   splitStringAt = index: str: {
-    left = substring 0 index str;
-    right = substring index int.max str;
+    "0" = substring 0 index str;
+    "1" = substring index int.max str;
   };
 
   words = splitString " ";

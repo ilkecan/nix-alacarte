@@ -254,12 +254,12 @@ in
   splitStringAt = {
     left_and_right_non_empty = assertEqual {
       actual = splitStringAt 3 "fooBar";
-      expected = { left = "foo"; right = "Bar"; };
+      expected = { "0" = "foo"; "1" = "Bar"; };
     };
 
     right_empty = assertEqual {
       actual = splitStringAt 3 "fo";
-      expected = { left = "fo"; right = ""; };
+      expected = { "0" = "fo"; "1" = ""; };
     };
   };
 
