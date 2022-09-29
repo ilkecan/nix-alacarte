@@ -27,6 +27,7 @@ let
     findIndices
     greaterThan
     headAndTail
+    ifilter
     imap
     indexed
     mapListToAttrs
@@ -184,6 +185,11 @@ in
       actual = headAndTail [ true ];
       expected = pair true [ ];
     };
+  };
+
+  ifilter = assertEqual {
+    actual = ifilter (i: v: i < 3 || v > 10) [ 1 23 9 3 42 ];
+    expected = [ 1 23 9 42 ];
   };
 
   imap = assertEqual {

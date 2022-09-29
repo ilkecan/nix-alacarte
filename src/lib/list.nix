@@ -43,12 +43,16 @@ let
     equalTo
     findIndex
     findIndices
+    indexed
     negative
     notEqualTo
     notNull
     pair
+    pipe'
     prepend
     range'
+    snd
+    uncurry
   ;
 
   inherit (nix-alacarte.internal)
@@ -107,6 +111,13 @@ in
     list:
       assert assert'' (list != [ ]) "empty list";
       pair (head list) (tail list);
+
+  ifilter = predicate:
+    pipe' [
+      indexed
+      (compose [ filter uncurry ] predicate)
+      (map snd)
+    ];
 
   imap = imap0;
 
