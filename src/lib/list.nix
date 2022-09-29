@@ -154,8 +154,8 @@ in
     genList (const val) n;
 
   splitAt = index: list: {
-    left = sublist 0 index list;
-    right = sublist index (length list - index) list;
+    "0" = sublist 0 index list;
+    "1" = sublist index (length list - index) list;
   };
 
   sum = foldl' add 0;

@@ -336,16 +336,16 @@ in
     left_and_right_non_empty = assertEqual {
       actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
       expected = {
-        left = [ "equal" "to" "the" "value" ];
-        right = [ "returned" ];
+        "0" = [ "equal" "to" "the" "value" ];
+        "1" = [ "returned" ];
       };
     };
 
     right_empty = assertEqual {
       actual = splitAt 4 [ "equal" "to" "the"  ];
       expected = {
-        left = [ "equal" "to" "the" ];
-        right = [ ];
+        "0" = [ "equal" "to" "the" ];
+        "1" = [ ];
       };
     };
   };
