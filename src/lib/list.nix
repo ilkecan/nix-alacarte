@@ -14,6 +14,7 @@ let
     foldl'
     genList
     head
+    isAttrs
     length
     listToAttrs
     mul
@@ -50,6 +51,7 @@ let
 
   inherit (nix-alacarte.internal)
     assert'
+    throw'
   ;
 
   foldStartingWithHead = scope:
@@ -147,4 +149,14 @@ in
   };
 
   sum = foldl' add 0;
+
+  unindexed =
+    let
+      assert'' = assert'.appendScope "unindexed";
+      throw'' = throw'.appendScope "unindexed";
+    in
+    map (e:
+      assert assert'' (isAttrs e) "list element must be an attr set";
+      throw''.unlessGetAttr "element" e
+    );
 }
