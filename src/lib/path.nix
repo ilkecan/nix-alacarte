@@ -7,32 +7,44 @@
 let
   inherit (builtins)
     elem
-    substring
+    head
   ;
 
   inherit (lib)
+    pipe
     splitString
   ;
 
   inherit (nix-alacarte)
-    compose
-    equalTo
     ifilter
     imap
-    pipe'
+    path
   ;
 in
   
 {
-  isAbsolutePath = compose [ (equalTo "/") (substring 0 1) ];
+  path = {
+    __functor = _:
+      builtins.path;
 
-  pathComponents =
-    let
-      componentsToRemove = [ "." "" ];
-    in
-    pipe' [
-      (splitString "/")
-      (ifilter (i: v: !elem v componentsToRemove || i == 0))
-      (imap (i: v: if i == 0 && v == "" then "/" else v))
-    ];
+    components = path:
+      let
+        componentsToRemove = [ "." "" ];
+      in
+      if path == ""
+        then [ ]
+        else pipe path [
+          (splitString "/")
+          (ifilter (i: v: !elem v componentsToRemove || i == 0))
+          (imap (i: v: if i == 0 && v == "" then "/" else v))
+        ];
+
+    isAbsolute = path':
+      let
+        components = path.components path';
+      in
+      if components == [ ]
+        then false
+        else head components == "/";
+  };
 }
