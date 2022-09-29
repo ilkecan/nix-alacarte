@@ -19,6 +19,11 @@ in
 
 {
   components = {
+    empty = assertEqual {
+      actual = components "";
+      expected = [ ];
+    };
+
     relative_path = assertEqual {
       actual = components "a/b";
       expected = [ "a" "b" ];
@@ -62,6 +67,7 @@ in
 
   isAbsolute = {
     path = assertTrue isAbsolute ./fixtures/example-project;
+    string_empty = assertFalse isAbsolute "";
     string_absolute = assertTrue isAbsolute "/var/root";
     string_relative = assertFalse isAbsolute ".git/config";
   };
