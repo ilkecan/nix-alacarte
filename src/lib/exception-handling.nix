@@ -140,17 +140,22 @@ in
 
       throw' = msg:
         throw "${prefix}${autoColor color' msg}";
+
+      self = {
+        appendScope = compose [ mkThrow (appendScope args) ];
+
+        __functor = _:
+          throw';
+
+        missingAttribute = attrName: set:
+          throw' "attribute `${attrName}` missing ${toPretty set}";
+
+        notOneOf = list: name: value:
+          throw' "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
+
+        unlessGetAttr = attrName: set:
+          set.${attrName} or (self.missingAttribute attrName set);
+      };
     in
-    {
-      appendScope = compose [ mkThrow (appendScope args) ];
-
-      __functor = _:
-        throw';
-
-      missingAttribute = attrName: set:
-        throw' "attribute `${attrName}` missing ${toPretty set}";
-
-      notOneOf = list: name: value:
-        throw' "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
-    };
+    self;
 }
