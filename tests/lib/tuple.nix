@@ -5,10 +5,16 @@
 }:
 
 let
+  inherit (builtins)
+    add
+  ;
+
   inherit (nix-alacarte)
+    curry
     fst
     pair
     snd
+    uncurry
   ;
 
   inherit (dnm)
@@ -18,6 +24,11 @@ let
 in
 
 {
+  curry = assertEqual {
+    actual = curry fst 1 2;
+    expected = 1;
+  };
+
   fst = {
     attr_missing = assertFailure fst { "1" = 49; };
     attr_not_missing = assertEqual {
@@ -37,5 +48,10 @@ in
       actual = snd { "1" = 54; };
       expected = 54;
     };
+  };
+
+  uncurry = assertEqual {
+    actual = uncurry add (pair 4.9 2);
+    expected = 6.9;
   };
 }
