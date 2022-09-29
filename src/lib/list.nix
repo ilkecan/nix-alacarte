@@ -105,8 +105,8 @@ in
     list:
       assert assert'' (list != [ ]) "empty list";
       {
-        head = head list;
-        tail = tail list;
+        "0" = head list;
+        "1" = tail list;
       };
 
   imap = imap0;

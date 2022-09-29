@@ -57,8 +57,8 @@ in
   setAttrByPath' = attrPath: value: set:
     let
       hat = headAndTail attrPath;
-      head = hat.head;
-      tail = hat.tail;
+      head = hat."0";
+      tail = hat."1";
       value' =
         if tail == [ ]
           then value

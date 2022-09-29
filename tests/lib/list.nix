@@ -175,12 +175,12 @@ in
 
     tail_not_empty = assertEqual {
       actual = headAndTail [ 2 3 5 ];
-      expected = { head = 2; tail = [ 3 5 ]; };
+      expected = { "0" = 2; "1" = [ 3 5 ]; };
     };
 
     tail_empty = assertEqual {
       actual = headAndTail [ true ];
-      expected = { head = true; tail = [ ]; };
+      expected = { "0" = true; "1" = [ ]; };
     };
   };
 
