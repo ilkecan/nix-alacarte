@@ -8,6 +8,7 @@ let
   inherit (builtins)
     elem
     head
+    pathExists
   ;
 
   inherit (lib)
@@ -38,6 +39,8 @@ in
           (ifilter (i: v: !elem v componentsToRemove || i == 0))
           (imap (i: v: if i == 0 && v == "" then "/" else v))
         ];
+
+    exists = pathExists;
 
     isAbsolute = path':
       let

@@ -15,7 +15,6 @@ let
     isString
     listToAttrs
     mapAttrs
-    pathExists
     readDir
   ;
 
@@ -44,6 +43,10 @@ let
     relTo
     removeNulls
     renameAttrs
+  ;
+
+  inherit (nix-alacarte.path)
+    exists
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -158,7 +161,7 @@ in
     self;
 
   filterByRelPath = relPath:
-    filter (dir: pathExists (relTo dir relPath));
+    filter (dir: exists (relTo dir relPath));
 
   importDirectory =
     {

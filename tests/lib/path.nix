@@ -7,6 +7,7 @@
 let
   inherit (nix-alacarte.path)
     components
+    exists
     isAbsolute
   ;
 
@@ -63,6 +64,11 @@ in
       actual = components "a/b/../c";
       expected = [ "a" "b" ".." "c" ];
     };
+  };
+
+  exists = {
+    existing_path = assertTrue exists ./fixtures/example-project;
+    non_existing_path = assertFalse exists ./fixtures81;
   };
 
   isAbsolute = {
