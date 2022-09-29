@@ -99,9 +99,9 @@ in
 {
   mkAssert = args:
     let
-      throw' = mkThrow args;
+      throw = mkThrow args;
       assert' = pred: msg:
-        pred || throw' msg;
+        pred || throw msg;
     in
     {
       appendScope = compose [ mkAssert (appendScope args) ];
@@ -113,13 +113,13 @@ in
         let
           pred = hasAttr attrName set;
         in
-        pred || throw'.missingAttribute attrName set;
+        pred || throw.missingAttribute attrName set;
 
       oneOf = list: name: value:
         let
           pred = elem value list;
         in
-        pred || throw'.notOneOf list name value;
+        pred || throw.notOneOf list name value;
     };
 
   mkThrow =
@@ -138,20 +138,20 @@ in
 
       prefix = optionalString (scope' != "") "${color'.scope scope'}: ";
 
-      throw' = msg:
-        throw "${prefix}${autoColor color' msg}";
+      throw = msg:
+        builtins.throw "${prefix}${autoColor color' msg}";
 
       self = {
         appendScope = compose [ mkThrow (appendScope args) ];
 
         __functor = _:
-          throw';
+          throw;
 
         missingAttribute = attrName: set:
-          throw' "attribute `${attrName}` missing in ${toPretty set}";
+          throw "attribute `${attrName}` missing in ${toPretty set}";
 
         notOneOf = list: name: value:
-          throw' "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
+          throw "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
 
         unlessGetAttr = attrName: set:
           set.${attrName} or (self.missingAttribute attrName set);

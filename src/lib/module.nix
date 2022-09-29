@@ -9,14 +9,14 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    throw'
+    throw
   ;
 in
 
 {
   allEnabled =
     let
-      throw'' = throw'.appendScope "allEnabled";
+      throw' = throw.appendScope "allEnabled";
     in
-    all (throw''.unlessGetAttr "enable");
+    all (throw'.unlessGetAttr "enable");
 }

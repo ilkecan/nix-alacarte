@@ -57,7 +57,6 @@ let
 
   inherit (nix-alacarte.internal)
     assert'
-    throw'
   ;
 
   foldStartingWithHead = scope:

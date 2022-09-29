@@ -14,5 +14,5 @@ in
 
 {
   assert' = mkAssert args;
-  throw' = mkThrow args;
+  throw = mkThrow args;
 }

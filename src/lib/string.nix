@@ -53,7 +53,7 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    throw'
+    throw
   ;
 
   snakeSep = "_";
@@ -63,7 +63,7 @@ let
 
   findString' = reverse:
     let
-      throw'' = throw'.appendScope "${optionalString reverse "r"}findString";
+      throw' = throw.appendScope "${optionalString reverse "r"}findString";
     in
     pattern:
       let
@@ -74,7 +74,7 @@ let
             string = str: i:
               substring i patternLength str == pattern;
             lambda = pattern;
-          }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
+          }.${patternType} or (throw' [ "string" "lambda" ] "`typeOf pattern`" patternType);
       in
       str:
         pipe str [

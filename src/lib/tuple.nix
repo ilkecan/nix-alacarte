@@ -11,7 +11,7 @@ let
   ;
 
   inherit (nix-alacarte.internal)
-    throw'
+    throw
   ;
 in
 {
@@ -20,18 +20,18 @@ in
 
   fst =
     let
-      throw'' = throw'.appendScope "fst";
+      throw' = throw.appendScope "fst";
     in
-    throw''.unlessGetAttr "0";
+    throw'.unlessGetAttr "0";
 
   pair = x: y:
     { "0" = x; "1" = y; };
 
   snd =
     let
-      throw'' = throw'.appendScope "snd";
+      throw' = throw.appendScope "snd";
     in
-    throw''.unlessGetAttr "1";
+    throw'.unlessGetAttr "1";
 
   uncurry = f: tuple:
     f (fst tuple) (snd tuple);
