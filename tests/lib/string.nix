@@ -252,14 +252,19 @@ in
   };
 
   splitStringAt = {
-    left_and_right_non_empty = assertEqual {
-      actual = splitStringAt 3 "fooBar";
-      expected = { "0" = "foo"; "1" = "Bar"; };
+    negative_index = assertEqual {
+      actual = splitStringAt (-4) "fo";
+      expected = { "0" = ""; "1" = "fo"; };
     };
 
-    right_empty = assertEqual {
+    index_too_large = assertEqual {
       actual = splitStringAt 3 "fo";
       expected = { "0" = "fo"; "1" = ""; };
+    };
+
+    index_in_range = assertEqual {
+      actual = splitStringAt 3 "fooBar";
+      expected = { "0" = "foo"; "1" = "Bar"; };
     };
   };
 

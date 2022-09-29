@@ -39,6 +39,7 @@ let
     concatStringWith
     indentByWith
     lines
+    negative
     pipe'
     range'
     repeat
@@ -157,10 +158,15 @@ in
   repeat = n: str:
     concatStrings (replicate n str);
 
-  splitStringAt = index: str: {
-    "0" = substring 0 index str;
-    "1" = substring index int.max str;
-  };
+  splitStringAt = index:
+    let
+      index' = if negative index then 0 else index;
+    in
+    str:
+      {
+        "0" = substring 0 index' str;
+        "1" = substring index' int.max str;
+      };
 
   words = splitString " ";
   unwords = concatStringsSep " ";
