@@ -148,7 +148,7 @@ in
           throw';
 
         missingAttribute = attrName: set:
-          throw' "attribute `${attrName}` missing ${toPretty set}";
+          throw' "attribute `${attrName}` missing in ${toPretty set}";
 
         notOneOf = list: name: value:
           throw' "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
