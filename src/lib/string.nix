@@ -34,9 +34,6 @@ let
 
   inherit (nix-alacarte)
     addPrefix
-    compose
-    concatString
-    concatStringWith
     indentByWith
     lines
     negative
@@ -86,8 +83,10 @@ let
 in
 
 {
-  addPrefix = concatString;
-  addSuffix = flip concatString;
+  addPrefix = prefix: string:
+    prefix + string;
+  addSuffix = suffix: string:
+    string + suffix;
 
   capitalize = string:
     let

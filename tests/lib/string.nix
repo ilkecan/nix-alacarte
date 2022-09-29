@@ -19,8 +19,6 @@ let
     addSuffix
     capitalize
     commands
-    concatString
-    concatStringWith
     elements
     findString
     fmtValue
@@ -81,16 +79,6 @@ in
   uncommands = assertEqual {
     actual = uncommands [ "touch a" "ls -al" ];
     expected = "touch a;ls -al";
-  };
-
-  concatString = assertEqual {
-    actual = concatString "foo" "bar";
-    expected = "foobar";
-  };
-
-  concatStringWith = assertEqual {
-    actual = concatStringWith ":" "foo" "bar";
-    expected = "foo:bar";
   };
 
   elements = assertEqual {
