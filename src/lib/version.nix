@@ -1,5 +1,6 @@
 {
   lib,
+  nix-alacarte,
   ...
 }:
 
@@ -7,7 +8,6 @@ let
   inherit (builtins)
     concatStringsSep
     filter
-    lessThan
     readFile
     sort
     substring
@@ -17,6 +17,10 @@ let
     hasInfix
     splitString
     stringAsChars
+  ;
+
+  inherit (nix-alacarte)
+    lessThan
   ;
 in
 

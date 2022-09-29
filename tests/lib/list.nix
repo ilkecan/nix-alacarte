@@ -25,7 +25,7 @@ let
     find
     findIndex
     findIndices
-    greaterThan
+    greaterThan'
     headAndTail
     ifilter
     imap
@@ -279,17 +279,17 @@ in
 
   partition = {
     first_empty = assertEqual {
-      actual = partition (greaterThan 50) [ 1 23 9 3 42 ];
+      actual = partition (greaterThan' 50) [ 1 23 9 3 42 ];
       expected = pair [ ] [ 1 23 9 3 42 ];
     };
 
     second_empty = assertEqual {
-      actual = partition (greaterThan 0) [ 1 23 9 3 42 ];
+      actual = partition (greaterThan' 0) [ 1 23 9 3 42 ];
       expected = pair [ 1 23 9 3 42 ] [ ];
     };
 
     both_non_empty = assertEqual {
-      actual = partition (greaterThan 10) [ 1 23 9 3 42 ];
+      actual = partition (greaterThan' 10) [ 1 23 9 3 42 ];
       expected = pair [ 23 42 ] [ 1 9 3 ];
     };
   };

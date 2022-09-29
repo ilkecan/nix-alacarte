@@ -1,23 +1,45 @@
 {
+  lib,
+  nix-alacarte,
   ...
 }:
 
+let
+  inherit (lib)
+    flip
+  ;
+
+  inherit (nix-alacarte)
+    greaterThan
+    greaterThanOrEqualTo
+    lessThan
+    lessThanOrEqualTo
+  ;
+in
+
 {
-  equalTo = rhs: lhs:
+  equalTo = lhs: rhs:
     lhs == rhs;
 
-  greaterThan = rhs: lhs:
+  greaterThan = lhs: rhs:
     lhs > rhs;
 
-  greaterThanOrEqualTo = rhs: lhs:
+  greaterThan' = flip greaterThan;
+
+  greaterThanOrEqualTo = lhs: rhs:
     lhs >= rhs;
 
-  lessThan = rhs: lhs:
-    lhs < rhs;
+  greaterThanOrEqualTo' = flip greaterThanOrEqualTo;
 
-  lessThanOrEqualTo = rhs: lhs:
+  lessThan = builtins.lessThan;
+
+  lessThan' = flip lessThan;
+
+  lessThanOrEqualTo = lhs: rhs:
     lhs <= rhs;
 
-  notEqualTo = rhs: lhs:
+  lessThanOrEqualTo' = flip lessThanOrEqualTo;
+
+  notEqualTo = lhs: rhs:
     lhs != rhs;
 }

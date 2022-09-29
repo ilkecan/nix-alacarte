@@ -16,8 +16,8 @@ let
   ;
 
   inherit (nix-alacarte)
-    greaterThan
-    lessThan
+    greaterThan'
+    lessThan'
     negate
     negative
     sub'
@@ -38,12 +38,12 @@ in
   negate = number:
     -number;
 
-  negative = lessThan 0;
+  negative = lessThan' 0;
 
   odd = number:
     mod number 2 == 1;
 
-  positive = greaterThan 0;
+  positive = greaterThan' 0;
 
   sub' = flip sub;
 }
