@@ -16,7 +16,6 @@ let
   inherit (lib)
     concatStrings
     id
-    imap
     mapAttrsToList
     optionalString
     splitString
@@ -30,6 +29,7 @@ let
   inherit (nix-alacarte)
     compose
     even
+    imap
     mkAssert
     mkThrow
     pipe'
