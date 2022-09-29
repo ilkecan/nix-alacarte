@@ -333,19 +333,27 @@ in
   };
 
   splitAt = {
-    left_and_right_non_empty = assertEqual {
-      actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
+    first_empty = assertEqual {
+      actual = splitAt 0 [ "equal" "to" "the"  ];
       expected = {
-        "0" = [ "equal" "to" "the" "value" ];
-        "1" = [ "returned" ];
+        "0" = [ ];
+        "1" = [ "equal" "to" "the" ];
       };
     };
 
-    right_empty = assertEqual {
+    second_empty = assertEqual {
       actual = splitAt 4 [ "equal" "to" "the"  ];
       expected = {
         "0" = [ "equal" "to" "the" ];
         "1" = [ ];
+      };
+    };
+
+    both_non_empty = assertEqual {
+      actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
+      expected = {
+        "0" = [ "equal" "to" "the" "value" ];
+        "1" = [ "returned" ];
       };
     };
   };
