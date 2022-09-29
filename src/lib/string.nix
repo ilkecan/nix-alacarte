@@ -6,24 +6,18 @@
 
 let
   inherit (builtins)
-    concatStringsSep
     replaceStrings
-    stringLength
     substring
     typeOf
   ;
 
   inherit (lib)
-    concatStrings
     const
     findFirst
-    flip
     id
     lowerChars
-    optionalString
     pipe
     reverseList
-    splitString
     toUpper
     upperChars
   ;
@@ -45,6 +39,14 @@ let
     unlines
   ;
 
+  inherit (nix-alacarte.string)
+    concat
+    intersperse
+    length
+    optional
+    split
+  ;
+
   inherit (nix-alacarte.nix)
     int
   ;
@@ -58,14 +60,14 @@ let
   snakeChars = map (c: "${snakeSep}${c}") lowerChars;
   kebabChars = map (c: "${kebabSep}${c}") lowerChars;
 
-  findString' = reverse:
+  find' = reverse:
     let
-      throw' = throw.appendScope "${optionalString reverse "r"}findString";
+      throw' = throw.appendScope "${optional reverse "r"}findString";
     in
     pattern:
       let
         patternType = typeOf pattern;
-        patternLength = stringLength pattern;
+        patternLength = length pattern;
         searcher =
           {
             string = str: i:
@@ -75,7 +77,7 @@ let
       in
       str:
         pipe str [
-          stringLength
+          length
           range'
           (if reverse then reverseList else id)
           (findFirst (searcher str) null)
@@ -85,28 +87,20 @@ in
 {
   addPrefix = prefix: string:
     prefix + string;
+
   addSuffix = suffix: string:
     string + suffix;
 
   capitalize = string:
     let
       first = substring 0 1 string;
-      rest = substring 1 (stringLength string) string;
+      rest = substring 1 (length string) string;
     in
     (toUpper first) + rest;
 
-  commands = splitString ";";
-  uncommands = concatStringsSep ";";
+  commands = split ";";
 
-  concatString = concatStringWith "";
-  concatStringWith = separator: left: right:
-    "${left}${separator}${right}";
-
-  elements = splitString ",";
-  unelements = concatStringsSep ",";
-
-  findString = findString' false;
-  rfindString = findString' true;
+  elements = split ",";
 
   fmtValue = {
     bool ? null,
@@ -131,6 +125,7 @@ in
     fmt value;
 
   indentBy = indentByWith " ";
+
   indentByWith = char: count:
     let
       indentation = repeat count char;
@@ -152,21 +147,43 @@ in
     snakeToKebab = replaceStrings [ snakeSep ] [ kebabSep ];
   };
 
-  lines = splitString "\n";
-  unlines = concatStringsSep "\n";
+  lines = split "\n";
 
   repeat = n: str:
-    concatStrings (replicate n str);
+    concat (replicate n str);
 
-  splitStringAt = index:
-    let
-      index' = if negative index then 0 else index;
-    in
-    str:
-      pair
-        (substring 0 index' str)
-        (substring index' int.max str);
+  string = {
+    concat = lib.concatStrings;
 
-  words = splitString " ";
-  unwords = concatStringsSep " ";
+    find = find' false;
+
+    intersperse = builtins.concatStringsSep;
+
+    length = builtins.stringLength;
+
+    optional = lib.optionalString;
+
+    rfind = find' true;
+
+    split = lib.splitString;
+
+    splitAt = index:
+      let
+        index' = if negative index then 0 else index;
+      in
+      str:
+        pair
+          (substring 0 index' str)
+          (substring index' int.max str);
+  };
+
+  uncommands = intersperse ";";
+
+  unelements = intersperse ",";
+
+  unlines = intersperse "\n";
+
+  unwords = intersperse " ";
+
+  words = split " ";
 }

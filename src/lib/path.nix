@@ -8,18 +8,20 @@ let
   inherit (builtins)
     elem
     head
-    pathExists
   ;
 
   inherit (lib)
     pipe
-    splitString
   ;
 
   inherit (nix-alacarte)
     ifilter
     imap
     path
+  ;
+
+  inherit (nix-alacarte.string)
+    split
   ;
 in
   
@@ -35,12 +37,12 @@ in
       if path == ""
         then [ ]
         else pipe path [
-          (splitString "/")
+          (split "/")
           (ifilter (i: v: !elem v componentsToRemove || i == 0))
           (imap (i: v: if i == 0 && v == "" then "/" else v))
         ];
 
-    exists = pathExists;
+    exists = builtins.pathExists;
 
     isAbsolute = path':
       let

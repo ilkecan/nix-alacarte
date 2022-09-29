@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    concatStringsSep
     filter
     readFile
     sort
@@ -15,12 +14,16 @@ let
 
   inherit (lib)
     hasInfix
-    splitString
     stringAsChars
   ;
 
   inherit (nix-alacarte)
     lessThan
+  ;
+
+  inherit (nix-alacarte.string)
+    intersperse
+    split
   ;
 in
 
@@ -28,13 +31,13 @@ in
   getCmakeVersion = file:
     let
       content = readFile file;
-      lines = splitString "\n" content;
+      lines = split "\n" content;
       versionLines = filter (hasInfix "_VERSION_") lines;
       sortedVersionLines = sort lessThan versionLines;
       isDigit = c: c >= "0" && c <= "9";
       filterDigits = stringAsChars (c: if isDigit c then c else "");
       versionNumbers = map filterDigits sortedVersionLines;
-      version = concatStringsSep "." versionNumbers;
+      version = intersperse "." versionNumbers;
     in
     version;
 

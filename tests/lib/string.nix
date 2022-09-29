@@ -20,20 +20,23 @@ let
     capitalize
     commands
     elements
-    findString
     fmtValue
     indentBy
     indentByWith
     lines
     pair
     repeat
-    rfindString
-    splitStringAt
     uncommands
     unelements
     unlines
     unwords
     words
+  ;
+
+  inherit (nix-alacarte.string)
+    find
+    rfind
+    splitAt
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -91,60 +94,60 @@ in
     expected = "apple,orange";
   };
 
-  findString = {
-    nonexisting = assertNull findString "a" "bbc";
+  find = {
+    nonexisting = assertNull find "a" "bbc";
 
     prefix = assertEqual {
-      actual = findString "foo" "foobar";
+      actual = find "foo" "foobar";
       expected = 0;
     };
 
     suffix = assertEqual {
-      actual = findString "bar" "foobar";
+      actual = find "bar" "foobar";
       expected = 3;
     };
 
     middle = assertEqual {
-      actual = findString "arb" "foobarbaz";
+      actual = find "arb" "foobarbaz";
       expected = 4;
     };
 
     multiple = assertEqual {
-      actual = findString "ba" "foobarbaz";
+      actual = find "ba" "foobarbaz";
       expected = 3;
     };
 
     lambda_pattern = assertEqual {
-      actual = findString (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      actual = find (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
       expected = 4;
     };
   };
 
-  rfindString = {
-    nonexisting = assertNull rfindString "a" "bbc";
+  rfind = {
+    nonexisting = assertNull rfind "a" "bbc";
 
     prefix = assertEqual {
-      actual = rfindString "foo" "foobar";
+      actual = rfind "foo" "foobar";
       expected = 0;
     };
 
     suffix = assertEqual {
-      actual = rfindString "bar" "foobar";
+      actual = rfind "bar" "foobar";
       expected = 3;
     };
 
     middle = assertEqual {
-      actual = rfindString "arb" "foobarbaz";
+      actual = rfind "arb" "foobarbaz";
       expected = 4;
     };
 
     multiple = assertEqual {
-      actual = rfindString "ba" "foobarbaz";
+      actual = rfind "ba" "foobarbaz";
       expected = 6;
     };
 
     lambda_pattern = assertEqual {
-      actual = rfindString (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      actual = rfind (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
       expected = 4;
     };
   };
@@ -240,19 +243,19 @@ in
     expected = " | | | |";
   };
 
-  splitStringAt = {
+  splitAt = {
     negative_index = assertEqual {
-      actual = splitStringAt (-4) "fo";
+      actual = splitAt (-4) "fo";
       expected = pair "" "fo";
     };
 
     index_too_large = assertEqual {
-      actual = splitStringAt 3 "fo";
+      actual = splitAt 3 "fo";
       expected = pair "fo" "";
     };
 
     index_in_range = assertEqual {
-      actual = splitStringAt 3 "fooBar";
+      actual = splitAt 3 "fooBar";
       expected = pair "foo" "Bar";
     };
   };

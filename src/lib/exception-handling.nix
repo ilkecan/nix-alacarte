@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    concatStringsSep
     elem
     foldl'
     hasAttr
@@ -14,11 +13,8 @@ let
   ;
 
   inherit (lib)
-    concatStrings
     id
     mapAttrsToList
-    optionalString
-    splitString
     toList
   ;
 
@@ -35,6 +31,13 @@ let
     pipe'
   ;
 
+  inherit (nix-alacarte.string)
+    concat
+    intersperse
+    optional
+    split
+  ;
+
   inherit (nix-alacarte.ansi.controlFunctions.controlSequences.SGR)
     blue
     bold
@@ -44,7 +47,7 @@ let
   ;
 
   boldAnd = color: msg:
-    concatStrings [ bold color msg reset ];
+    concat [ bold color msg reset ];
 
   blue' = boldAnd blue;
   magenta' = boldAnd magenta;
@@ -82,9 +85,9 @@ let
               else compose [ addDelimiters color ];
           in
           pipe' [
-            (splitString delimiter)
+            (split delimiter)
             (imap colorMsg)
-            concatStrings
+            concat
           ];
     in
     colors:
@@ -134,9 +137,9 @@ in
         scope = blue';
         string = green';
       } // color;
-      scope' = if isList scope then concatStringsSep "." scope else scope;
+      scope' = if isList scope then intersperse "." scope else scope;
 
-      prefix = optionalString (scope' != "") "${color'.scope scope'}: ";
+      prefix = optional (scope' != "") "${color'.scope scope'}: ";
 
       throw = msg:
         builtins.throw "${prefix}${autoColor color' msg}";

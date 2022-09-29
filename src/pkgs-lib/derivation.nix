@@ -13,7 +13,6 @@ let
   inherit (lib)
     escapeShellArg
     mapAttrsToList
-    optionalString
     toList
   ;
 
@@ -25,6 +24,10 @@ let
     camelToKebab
   ;
 
+  inherit (nix-alacarte.string)
+    optional
+  ;
+
   inherit (pkgs)
     makeWrapper
     runCommandLocal
@@ -32,7 +35,7 @@ let
 
   format = {
     arg = name: value: "--${name} ${escapeShellArg value}";
-    flag = name: enabled: optionalString enabled "--${name}";
+    flag = name: enabled: optional enabled "--${name}";
     listOfArgs = name: values:
       let
         args = map (format.arg name) (toList values);
@@ -135,7 +138,7 @@ in
       "outPath"
     ];
     arguments = mapAttrsToList (name: value:
-      optionalString (value != null) (formatArgs.${name} (camelToKebab name) value)
+      optional (value != null) (formatArgs.${name} (camelToKebab name) value)
     ) args';
   in
   runCommandLocal name env ''
