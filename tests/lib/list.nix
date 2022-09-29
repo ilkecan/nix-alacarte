@@ -35,6 +35,7 @@ let
     maximum
     minimum
     product
+    range'
     removeNulls
     replicate
     splitAt
@@ -274,6 +275,18 @@ in
     floats = assertEqual {
       actual = product listOfFloats;
       expected = 13.939999999999998;
+    };
+  };
+
+  range' = {
+    negative = assertFailure range' (-4);
+    zero = assertEqual {
+      actual = range' 0;
+      expected = [ ];
+    };
+    positive = assertEqual {
+      actual = range' 5;
+      expected = [ 0 1 2 3 4 ];
     };
   };
 

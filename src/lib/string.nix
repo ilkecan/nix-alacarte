@@ -22,7 +22,6 @@ let
     lowerChars
     optionalString
     pipe
-    range
     reverseList
     splitString
     toUpper
@@ -41,6 +40,7 @@ let
     indentByWith
     lines
     pipe'
+    range'
     repeat
     replicate
     unlines
@@ -61,7 +61,6 @@ let
 
   findString' = reverse:
     let
-      range' = if reverse then compose [ reverseList (range 0) ] else range 0;
       throw'' = throw'.appendScope "${optionalString reverse "r"}findString";
     in
     pattern:
@@ -79,6 +78,7 @@ let
         pipe str [
           stringLength
           range'
+          (if reverse then reverseList else id)
           (findFirst (searcher str) null)
         ];
 in

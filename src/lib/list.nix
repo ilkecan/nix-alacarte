@@ -8,8 +8,8 @@
 let
   inherit (builtins)
     add
-    elemAt
     all
+    elemAt
     filter
     foldl'
     genList
@@ -25,11 +25,11 @@ let
     const
     findFirst
     flip
+    id
     imap0
     max
     min
     pipe
-    range
     singleton
     sublist
   ;
@@ -37,14 +37,15 @@ let
   inherit (nix-alacarte)
     append
     compose
-    decrement
     empty
     equalTo
     findIndex
     findIndices
     notEqualTo
+    negative
     notNull
     prepend
+    range'
   ;
 
   inherit (nix-alacarte.internal)
@@ -91,8 +92,7 @@ in
   findIndices = predicate: list:
     pipe list [
       length
-      decrement
-      (range 0)
+      range'
       (filter (i: predicate (elemAt list i)))
     ];
 
@@ -120,6 +120,13 @@ in
   ;
 
   product = foldl' mul 1;
+
+  range' = n:
+    let
+      assert'' = assert'.appendScope "range'";
+    in
+    assert assert'' (!negative n) "negative list size: `${toString n}`";
+    genList id n;
 
   removeNulls = filter notNull;
 
