@@ -109,11 +109,11 @@ in
       __functor = _:
         assert';
 
-      attr = set: attrName:
+      attr = attrName: set:
         let
           pred = hasAttr attrName set;
         in
-        pred || throw'.missingAttribute set attrName;
+        pred || throw'.missingAttribute attrName set;
 
       oneOf = list: name: value:
         let
@@ -147,7 +147,7 @@ in
       __functor = _:
         throw';
 
-      missingAttribute = set: attrName:
+      missingAttribute = attrName: set:
         throw' "attribute `${attrName}` missing ${toPretty set}";
 
       notOneOf = list: name: value:

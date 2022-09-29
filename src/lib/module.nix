@@ -17,8 +17,9 @@ in
   allEnabled =
     let
       throw'' = throw'.appendScope "allEnabled";
+      missingAttribute = throw''.missingAttribute "enable";
     in
     all (cfg:
-      cfg.enable or (throw''.missingAttribute cfg "enable")
+      cfg.enable or (missingAttribute cfg)
     );
 }
