@@ -5,8 +5,12 @@
 
 let
   inherit (nix-alacarte)
-    fst
     pair
+    tuple
+  ;
+
+  inherit (pair)
+    fst
     snd
   ;
 in
@@ -24,4 +28,10 @@ in
 
   uncurry = f: pair':
     f (fst pair') (snd pair');
+
+  ## inherits
+  inherit (tuple)
+    fst
+    snd
+  ;
 }

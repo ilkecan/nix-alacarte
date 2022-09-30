@@ -5,7 +5,7 @@
 }:
 
 let
-  inherit (nix-alacarte)
+  inherit (nix-alacarte.tuple)
     fst
     snd
   ;

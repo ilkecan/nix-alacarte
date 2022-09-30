@@ -11,11 +11,11 @@ let
 
   inherit (nix-alacarte.tuple)
     pair
-    fst
   ;
 
   inherit (pair)
     curry
+    fst
     swap
     uncurry
   ;
