@@ -12,16 +12,18 @@ let
   ;
 
   inherit (nix-alacarte)
-    callWith
+    call
   ;
 in
 
 {
-  callWith = val: f:
-    f val;
+  call = f: arg:
+    f arg;
+
+  callWith = flip call;
 
   compose = fs: val:
-    foldr (flip callWith) val fs;
+    foldr call val fs;
 
   pipe' = flip pipe;
 }
