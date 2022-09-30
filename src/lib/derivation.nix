@@ -10,12 +10,12 @@ let
   ;
 
   inherit (lib)
-    forEach
     getValues
     removeSuffix
   ;
 
   inherit (nix-alacarte)
+    list
     mergeListOfAttrs
     optionalValue
   ;
@@ -38,7 +38,7 @@ in
         }
       ];
 
-      outputList = forEach (drv.outputs or [ ]) (outputName: {
+      outputList = list.forEach (drv.outputs or [ ]) (outputName: {
         name = outputName;
         value = drv' // {
           inherit (drv.${outputName})

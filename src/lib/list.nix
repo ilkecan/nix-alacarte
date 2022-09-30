@@ -122,6 +122,8 @@ in
         (filter (compose [ predicate elemAt' ]))
       ];
 
+    forEach = flip map;
+
     gen = builtins.genList;
 
     head = builtins.head;

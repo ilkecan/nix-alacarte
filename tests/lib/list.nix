@@ -7,6 +7,7 @@
 
 let
   inherit (builtins)
+    add
     isInt
   ;
 
@@ -33,6 +34,7 @@ let
     find
     findIndex
     findIndices
+    forEach
     ifilter
     imap
     init
@@ -181,6 +183,11 @@ in
       actual = uncons [ 2 3 5 ];
       expected = pair 2 [ 3 5 ];
     };
+  };
+
+  forEach = assertEqual {
+    actual = forEach [ 2 4 8 ] (add 3);
+    expected = [ 5 7 11 ];
   };
 
   ifilter = assertEqual {
