@@ -1,7 +1,7 @@
 {
   nix-alacarte,
   ...
-}:
+}@args:
 
 let
   inherit (nix-alacarte)
@@ -14,18 +14,15 @@ let
     throw
   ;
 in
-{
-  curry = f: x: y:
-    f (pair x y);
 
+{
   fst =
     let
       throw' = throw.appendScope "fst";
     in
     throw'.unlessGetAttr "0";
 
-  pair = x: y:
-    { "0" = x; "1" = y; };
+  pair = import ./pair.nix args;
 
   snd =
     let
@@ -33,6 +30,10 @@ in
     in
     throw'.unlessGetAttr "1";
 
-  uncurry = f: tuple:
-    f (fst tuple) (snd tuple);
+  ## inherits
+
+  inherit (pair)
+    curry
+    uncurry
+  ;
 }
