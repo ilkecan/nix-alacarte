@@ -7,7 +7,11 @@
 let
   inherit (nix-alacarte.tuple)
     fst
+    join
+    pair
+    singleton
     snd
+    unit
   ;
 
   inherit (dnm)
@@ -25,6 +29,22 @@ in
     };
   };
 
+  join = {
+    unit = assertEqual {
+      actual = join "/" unit;
+      expected = "";
+    };
+
+    singleton = assertEqual {
+      actual = join ", "  (singleton 24);
+      expected = "24";
+    };
+
+    pair = assertEqual {
+      actual = join " - " (pair 23 48);
+      expected = "23 - 48";
+    };
+  };
 
   snd = {
     attr_missing = assertFailure snd { "0" = 8; };

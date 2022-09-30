@@ -4,8 +4,14 @@
 }@args:
 
 let
+  inherit (builtins)
+    attrValues
+  ;
+
   inherit (nix-alacarte)
     pair
+    pipe'
+    string
     tuple
   ;
 
@@ -21,6 +27,13 @@ in
         throw' = throw.appendScope "fst";
       in
       throw'.unlessGetAttr "0";
+
+    join = separator:
+      pipe' [
+        attrValues
+        (map toString)
+        (string.intersperse separator)
+      ];
 
     pair = import ./pair.nix args;
 

@@ -32,6 +32,7 @@ in
   ## inherits
   inherit (tuple)
     fst
+    join
     snd
   ;
 }
