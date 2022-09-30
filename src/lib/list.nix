@@ -30,6 +30,7 @@ let
     negative
     notEqualTo
     notNull
+    options
     pair
     pipe'
     range'
@@ -78,6 +79,10 @@ in
     map (index: pair index (elemAt' index)) (range' (length list));
 
   list = {
+    # NOTE: i don't like this
+    __functor = _:
+      options.list;
+
     all = builtins.all;
 
     allEqual = list:
