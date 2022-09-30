@@ -16,6 +16,7 @@ let
 
   inherit (pair)
     curry
+    swap
     uncurry
   ;
 
@@ -38,5 +39,10 @@ in
   uncurry = assertEqual {
     actual = uncurry add (pair 4.9 2);
     expected = 6.9;
+  };
+
+  swap = assertEqual {
+    actual = swap (pair 23 false);
+    expected = { "0" = false; "1" = 23; };
   };
 }

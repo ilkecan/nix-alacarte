@@ -34,6 +34,7 @@ in
 
   inherit (pair)
     curry
+    swap
     uncurry
   ;
 }
