@@ -18,6 +18,7 @@ let
 
   inherit (dnm)
     assertEqual
+    assertFailure
   ;
 in
 
@@ -74,6 +75,8 @@ in
   };
 
   setAttrByPath' = {
+    depth_0 = assertFailure setAttrByPath' [ ] true { top = false; other = "hey"; };
+
     depth_1 = assertEqual {
       actual = setAttrByPath' [ "top" ] true { top = false; other = "hey"; };
       expected = { top = true; other = "hey"; };
