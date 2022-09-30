@@ -47,6 +47,7 @@ let
     gen
     head
     length
+    notEmpty
     prepend
     singleton
     tail
@@ -62,7 +63,7 @@ let
       assertion' = assertion.appendScope scope;
     in
     f: list:
-      assert assertion' (list != [ ]) "empty list";
+      assert assertion' (notEmpty list) "empty list";
       let
         initial = head list;
       in
@@ -126,7 +127,12 @@ in
 
     gen = builtins.genList;
 
-    head = builtins.head;
+    head = list:
+      let
+        assertion' = assertion.appendScope "head";
+      in
+      assert assertion' (notEmpty list) "empty list";
+      builtins.head list;
 
     ifilter = predicate:
       let

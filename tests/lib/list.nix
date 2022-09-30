@@ -36,6 +36,7 @@ let
     findIndices
     forEach
     gen
+    head
     ifilter
     imap
     init
@@ -194,6 +195,15 @@ in
   gen = assertEqual {
     actual = gen (add 7) 4;
     expected = [ 7 8 9 10 ];
+  };
+
+  head = {
+    empty_list = assertFailure head [ ];
+
+    non_empty_list = assertEqual {
+      actual = head [ 0 1 1 2 ];
+      expected = 0;
+    };
   };
 
   ifilter = assertEqual {
