@@ -35,6 +35,7 @@ let
     findIndex
     findIndices
     forEach
+    gen
     ifilter
     imap
     init
@@ -188,6 +189,11 @@ in
   forEach = assertEqual {
     actual = forEach [ 2 4 8 ] (add 3);
     expected = [ 5 7 11 ];
+  };
+
+  gen = assertEqual {
+    actual = gen (add 7) 4;
+    expected = [ 7 8 9 10 ];
   };
 
   ifilter = assertEqual {
