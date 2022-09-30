@@ -35,6 +35,8 @@ let
     findIndices
     ifilter
     imap
+    init
+    last
     mapToAttrs
     maximum
     minimum
@@ -198,6 +200,24 @@ in
       (pair 3 2)
       (pair 4 3)
     ];
+  };
+
+  init = {
+    empty_list = assertFailure init [ ];
+
+    non_empty_list = assertEqual {
+      actual = init [ 1 2 3 ];
+      expected = [ 1 2 ];
+    };
+  };
+
+  last = {
+    empty_list = assertFailure last [ ];
+
+    non_empty_list = assertEqual {
+      actual = last [ 1 2 3 ];
+      expected = 3;
+    };
   };
 
   mapToAttrs = assertEqual {

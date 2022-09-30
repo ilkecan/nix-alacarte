@@ -138,6 +138,10 @@ in
 
     imap = lib.imap0;
 
+    init = lib.init;
+
+    last = lib.last;
+
     length = builtins.length;
 
     map = builtins.map;
