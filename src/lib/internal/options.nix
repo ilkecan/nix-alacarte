@@ -10,7 +10,6 @@ let
   ;
 
   inherit (lib)
-    concat
     isType
   ;
 
@@ -18,6 +17,7 @@ let
     capitalize
     compose
     mergeListOfAttrs
+    prepend
     renameAttrs
   ;
 
@@ -29,11 +29,9 @@ let
   optionConstructorType = "option-constructor";
   isOptionConstructor = isType optionConstructorType;
   toOption = mkOptionFunction:
-    if isOptionConstructor mkOptionFunction then
-      mkOptionFunction [ ]
-    else
-      compose [ toOption mkOptionFunction ]
-    ;
+    if isOptionConstructor mkOptionFunction
+      then mkOptionFunction [ ]
+      else compose [ toOption mkOptionFunction ];
 in
 
 {
@@ -50,11 +48,15 @@ in
         __functor = _self: unaryFunction;
       };
 
-    withDefault = defaultFs: mkOptionFunction:
-      if isOptionConstructor mkOptionFunction then
-        mkOptionConstructor (compose [ mkOptionFunction (concat defaultFs) ])
-      else
-        compose [ (withDefault defaultFs) mkOptionFunction ]
-      ;
+    withDefault = defaultFs:
+      let
+        prependDefaultFs = prepend defaultFs;
+        self = mkOptionFunction:
+          if isOptionConstructor mkOptionFunction then
+            mkOptionConstructor (compose [ mkOptionFunction prependDefaultFs ])
+          else
+            compose [ self mkOptionFunction ];
+      in
+      self;
   };
 }

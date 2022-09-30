@@ -22,8 +22,8 @@ in
 
   callWith = flip call;
 
-  compose = fs: val:
-    foldr call val fs;
+  compose = fs: arg:
+    foldr call arg fs;
 
   pipe' = flip pipe;
 }

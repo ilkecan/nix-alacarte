@@ -147,11 +147,9 @@ let
   ];
 
   option = type:
-    if isOptionType type then
-      mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
-    else
-      compose [ option type ]
-    ;
+    if isOptionType type
+      then mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
+      else compose [ option type ];
 
   optionFunctions = mergeListOfAttrs [
     {

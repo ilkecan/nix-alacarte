@@ -79,10 +79,14 @@ let
         in
         color: colorDelimiters:
           let
-            colorMsg = i:
-              if even i then id
-              else if colorDelimiters then compose [ color addDelimiters ]
-              else compose [ addDelimiters color ];
+            addColor =
+              if colorDelimiters
+                then compose [ color addDelimiters ]
+                else compose [ addDelimiters color ];
+            colorMsg = index:
+              if even index
+                then id
+                else addColor;
           in
           pipe' [
             (split delimiter)
@@ -102,12 +106,13 @@ in
 {
   mkAssertion = args:
     let
+      appendScope' = appendScope args;
       throw = mkThrow args;
       assertion = pred: msg:
         pred || throw msg;
     in
     {
-      appendScope = compose [ mkAssertion (appendScope args) ];
+      appendScope = compose [ mkAssertion appendScope' ];
 
       __functor = _:
         assertion;
@@ -138,6 +143,7 @@ in
         string = green';
       } // color;
       scope' = if isList scope then intersperse "." scope else scope;
+      appendScope' = appendScope args;
 
       prefix = optional (scope' != "") "${color'.scope scope'}: ";
 
@@ -145,7 +151,7 @@ in
         builtins.throw "${prefix}${autoColor color' msg}";
 
       self = {
-        appendScope = compose [ mkThrow (appendScope args) ];
+        appendScope = compose [ mkThrow appendScope' ];
 
         __functor = _:
           throw;
