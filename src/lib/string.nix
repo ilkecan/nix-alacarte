@@ -169,6 +169,8 @@ in
         pair
           (substring 0 index' str)
           (substring index' int.MAX str);
+
+    unsafeDiscardContext = builtins.unsafeDiscardStringContext;
   };
 
   uncommands = intersperse ";";
