@@ -22,12 +22,9 @@ let
     upperChars
   ;
 
-  inherit (lib.strings)
-    floatToString
-  ;
-
   inherit (nix-alacarte)
     addPrefix
+    float
     indentByWith
     lines
     negative
@@ -116,7 +113,7 @@ in
     let
       fmtFs' = {
         bool = v: if v then "1" else "";
-        float = floatToString;
+        float = float.toString;
         null = const "";
         string = id;
       } // fmtFs;

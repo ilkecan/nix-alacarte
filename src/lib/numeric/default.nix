@@ -2,7 +2,7 @@
   lib,
   nix-alacarte,
   ...
-}:
+}@args:
 
 let
   inherit (builtins)
@@ -32,6 +32,8 @@ in
 
   even = number:
     mod number 2 == 0;
+
+  float = import ./float.nix args;
 
   increment = add 1;
 
