@@ -103,13 +103,10 @@ in
       (filter (i: predicate (elemAt list i)))
     ];
 
-  headAndTail =
-    let
-      assertion' = assertion.appendScope "headAndTail";
-    in
-    list:
-      assert assertion' (list != [ ]) "empty list";
-      pair (head list) (tail list);
+  uncons = list:
+    if empty list
+      then null
+      else pair (head list) (tail list);
 
   ifilter = predicate:
     pipe' [

@@ -20,7 +20,7 @@ let
 
   inherit (nix-alacarte)
     fst
-    headAndTail
+    uncons
     mergeListOfAttrs
     notNull
     optionalValue
@@ -28,6 +28,10 @@ let
     setAttr
     setAttrByPath'
     snd
+  ;
+
+  inherit (nix-alacarte.internal)
+    assertion
   ;
 in
 
@@ -56,11 +60,19 @@ in
   setAttr = name: value: set:
     set // { ${name} = value; };
 
-  setAttrByPath' = attrPath: value: set:
+  setAttrByPath' =
     let
-      hat = headAndTail attrPath;
-      head = fst hat;
-      tail = snd hat;
+      assertion' = assertion.appendScope "setAttrByPath'";
+    in
+    attrPath:
+    let
+      result = uncons attrPath;
+      head = fst result;
+      tail = snd result;
+    in
+    assert assertion' (result != null) "empty attribute path";
+    value: set:
+    let
       value' =
         if tail == [ ]
           then value

@@ -26,7 +26,7 @@ let
     findIndex
     findIndices
     greaterThan'
-    headAndTail
+    uncons
     ifilter
     imap
     indexed
@@ -173,17 +173,17 @@ in
     };
   };
 
-  headAndTail = {
-    empty = assertFailure headAndTail [ ];
+  uncons = {
+    empty = assertNull uncons [ ];
 
-    tail_not_empty = assertEqual {
-      actual = headAndTail [ 2 3 5 ];
-      expected = pair 2 [ 3 5 ];
+    single_elem = assertEqual {
+      actual = uncons [ true ];
+      expected = pair true [ ];
     };
 
-    tail_empty = assertEqual {
-      actual = headAndTail [ true ];
-      expected = pair true [ ];
+    multi_elems = assertEqual {
+      actual = uncons [ 2 3 5 ];
+      expected = pair 2 [ 3 5 ];
     };
   };
 
