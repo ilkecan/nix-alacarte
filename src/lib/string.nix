@@ -110,7 +110,7 @@ in
     let
       fmtFs' = {
         bool = v: if v then "1" else "";
-        float = float.toString;
+        float = nix-alacarte.float.toString;
         null = const "";
         string = id;
       } // fmtFs;
