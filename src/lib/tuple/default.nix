@@ -24,6 +24,8 @@ in
 
     pair = import ./pair.nix args;
 
+    singleton = import ./singleton.nix args;
+
     snd =
       let
         throw' = throw.appendScope "snd";
@@ -43,6 +45,7 @@ in
   inherit (tuple)
     fst
     pair
+    singleton
     snd
     unit
   ;
