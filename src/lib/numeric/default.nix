@@ -37,6 +37,8 @@ in
 
   increment = add 1;
 
+  int = import ./int.nix args;
+
   negate = number:
     -number;
 

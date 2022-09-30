@@ -23,6 +23,7 @@ let
     fmtValue
     indentBy
     indentByWith
+    int
     lines
     pair
     repeat
@@ -46,10 +47,6 @@ let
     kebabToSnake
     snakeToCamel
     snakeToKebab
-  ;
-
-  inherit (nix-alacarte.nix)
-    int
   ;
 
   inherit (dnm)
@@ -118,7 +115,7 @@ in
     };
 
     lambda_pattern = assertEqual {
-      actual = find (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      actual = find (str: i: hasPrefix "AR" (substring i int.MAX str)) "foObARbAz";
       expected = 4;
     };
   };
@@ -147,7 +144,7 @@ in
     };
 
     lambda_pattern = assertEqual {
-      actual = rfind (str: i: hasPrefix "AR" (substring i int.max str)) "foObARbAz";
+      actual = rfind (str: i: hasPrefix "AR" (substring i int.MAX str)) "foObARbAz";
       expected = 4;
     };
   };

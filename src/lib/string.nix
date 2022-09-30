@@ -26,6 +26,7 @@ let
     addPrefix
     float
     indentByWith
+    int
     lines
     negative
     pair
@@ -42,10 +43,6 @@ let
     length
     optional
     split
-  ;
-
-  inherit (nix-alacarte.nix)
-    int
   ;
 
   inherit (nix-alacarte.internal)
@@ -171,7 +168,7 @@ in
       str:
         pair
           (substring 0 index' str)
-          (substring index' int.max str);
+          (substring index' int.MAX str);
   };
 
   uncommands = intersperse ";";
