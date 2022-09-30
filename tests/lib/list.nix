@@ -42,6 +42,7 @@ let
     minimum
     notEmpty
     nub
+    optional
     partition
     prepend
     product
@@ -274,6 +275,18 @@ in
   nub = assertEqual {
     actual = nub [ 1 2 3 4 3 2 1 2 4 3 5 ];
     expected = [ 1 2 3 4 5 ];
+  };
+
+  optional = {
+    true = assertEqual {
+      actual = optional true [ "a" "list" ];
+      expected = [ "a" "list" ];
+    };
+
+    false = assertEqual {
+      actual = optional false [ "again" "a" "list" ];
+      expected = [ ];
+    };
   };
 
   partition = {
