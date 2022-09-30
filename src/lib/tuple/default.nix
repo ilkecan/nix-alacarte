@@ -29,6 +29,8 @@ in
         throw' = throw.appendScope "snd";
       in
       throw'.unlessGetAttr "1";
+
+    unit = import ./unit.nix args;
   };
 
   ## inherits
@@ -42,5 +44,6 @@ in
     fst
     pair
     snd
+    unit
   ;
 }
