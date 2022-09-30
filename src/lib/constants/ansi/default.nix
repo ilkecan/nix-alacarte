@@ -12,7 +12,6 @@ let
   ;
 
   inherit (lib)
-    assertOneOf
     nameValuePair
   ;
 
@@ -33,16 +32,23 @@ let
     controlSequences
   ;
 
+  inherit (nix-alacarte.internal)
+    assertion
+  ;
+
   inherit (controlSequences)
     SGR
   ;
 
   mkSgrColor =
+    let
+      assertion' = assertion.appendScope "mkSgrColor";
+    in
     {
       background ? false,
       bit ? 8,
     }:
-    assert assertOneOf "bit" bit [ 8 24 ];
+    assert assertion'.oneOf [ 8 24 ] "bit" bit;
     let
       typeParameter = if background then 48 else 38;
       bitParamater = {
