@@ -155,6 +155,8 @@ in
 
     notEmpty = notEqualTo [ ];
 
+    nub = lib.unique;
+
     optional = lib.optionals;
 
     partition = predicate: list:

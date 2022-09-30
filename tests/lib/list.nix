@@ -41,6 +41,7 @@ let
     maximum
     minimum
     notEmpty
+    nub
     partition
     prepend
     product
@@ -268,6 +269,11 @@ in
       actual = minimum listOfFloats;
       expected = 1.7;
     };
+  };
+
+  nub = assertEqual {
+    actual = nub [ 1 2 3 4 3 2 1 2 4 3 5 ];
+    expected = [ 1 2 3 4 5 ];
   };
 
   partition = {
