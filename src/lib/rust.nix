@@ -11,7 +11,7 @@ let
   ;
 
   inherit (nix-alacarte)
-    mapListToAttrs
+    list
   ;
 in
 
@@ -20,7 +20,7 @@ in
     let
       cargoLock = importTOML "${toString directory}/Cargo.lock";
     in
-    mapListToAttrs (p: nameValuePair p.name p) cargoLock.package;
+    list.mapToAttrs (p: nameValuePair p.name p) cargoLock.package;
 
   importCargoToml = directory:
     importTOML "${toString directory}/Cargo.toml";

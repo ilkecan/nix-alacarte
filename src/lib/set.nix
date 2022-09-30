@@ -21,7 +21,7 @@ let
 
   inherit (nix-alacarte)
     fst
-    uncons
+    list
     mergeListOfAttrs
     notNull
     optionalValue
@@ -29,6 +29,7 @@ let
     setAttr
     setAttrByPath'
     snd
+    uncons
   ;
 
   inherit (nix-alacarte.internal)
@@ -67,7 +68,7 @@ in
     in
     attrPath:
     let
-      result = uncons attrPath;
+      result = list.uncons attrPath;
       head = fst result;
       tail = snd result;
     in

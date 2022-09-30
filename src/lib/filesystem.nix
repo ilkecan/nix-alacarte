@@ -41,7 +41,7 @@ let
     nixFiles
     pipe'
     relTo
-    removeNulls
+    list
     renameAttrs
   ;
 
@@ -99,6 +99,9 @@ in
     ];
 
   filesOf =
+    let
+      assertion' = assertion.appendScope "filesOf";
+    in
     {
       asAttrs ? false,
       excludedPaths ? [ ],
@@ -106,9 +109,7 @@ in
       return ? "path",
       withExtension ? "",
     }:
-
     let
-      assertion' = assertion.appendScope "filesOf";
       self = dir:
         assert assertion'.oneOf [ "path" "name" "stem" ] "return" return;
         assert assertion'  (return == "stem" -> withExtension != "")
@@ -154,7 +155,7 @@ in
         pipe files [
           (mapAttrsToList g)
           (if recursive then flatten else id)
-          removeNulls
+          list.removeNulls
           (if asAttrs then listToAttrs else id)
         ];
     in

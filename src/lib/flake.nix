@@ -21,7 +21,7 @@ let
   inherit (nix-alacarte)
     dirToAttrs
     forEachAttr
-    notEmpty
+    list
   ;
 in
 
@@ -31,7 +31,7 @@ in
       patchesFor = pipe patchesDir [
         dirToAttrs
         (mapAttrs (_: attrValues))
-        (filterAttrs (_: notEmpty))
+        (filterAttrs (_: list.notEmpty))
       ];
     in
     genAttrs systems (system:

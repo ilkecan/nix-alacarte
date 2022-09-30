@@ -5,12 +5,9 @@
 }:
 
 let
-  inherit (builtins)
-    concatLists
-  ;
-
   inherit (nix-alacarte)
     combinators
+    list
   ;
 
   inherit (dnm)
@@ -28,7 +25,7 @@ in
 
 {
   mkCombinator = assertEqual {
-    actual = combinators.mkCombinator concatLists [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
+    actual = combinators.mkCombinator list.concat [ (x: [ 1 2 x ]) (y: [ y 4 5 ]) ] 3;
     expected = [ 1 2 3 3 4 5 ];
   };
 

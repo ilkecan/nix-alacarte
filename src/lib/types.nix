@@ -7,7 +7,6 @@
 let
   inherit (builtins)
     hasAttr
-    head
     typeOf
   ;
 
@@ -24,6 +23,7 @@ let
   inherit (nix-alacarte)
     allEqual
     fmtValue
+    list
     unwords
   ;
 
@@ -48,7 +48,7 @@ in
               {
                 list = (types.listOf self).merge;
                 set = (types.attrsOf self).merge;  # maybe this should also be mergeEqualOption?
-              }.${head valueTypes} or mergeEqualOption loc defs
+              }.${list.head valueTypes} or mergeEqualOption loc defs
             else
               types.string.merge
                 loc

@@ -25,17 +25,11 @@ let
   inherit (nix-alacarte)
     compose
     even
-    imap
+    list
     mkAssertion
     mkThrow
     pipe'
-  ;
-
-  inherit (nix-alacarte.string)
-    concat
-    intersperse
-    optional
-    split
+    string
   ;
 
   inherit (nix-alacarte.ansi.controlFunctions.controlSequences.SGR)
@@ -47,7 +41,7 @@ let
   ;
 
   boldAnd = color: msg:
-    concat [ bold color msg reset ];
+    string.concat [ bold color msg reset ];
 
   blue' = boldAnd blue;
   magenta' = boldAnd magenta;
@@ -89,9 +83,9 @@ let
                 else addColor;
           in
           pipe' [
-            (split delimiter)
-            (imap colorMsg)
-            concat
+            (string.split delimiter)
+            (list.imap colorMsg)
+            string.concat
           ];
     in
     colors:
@@ -142,10 +136,10 @@ in
         scope = blue';
         string = green';
       } // color;
-      scope' = if isList scope then intersperse "." scope else scope;
+      scope' = if isList scope then string.intersperse "." scope else scope;
       appendScope' = appendScope args;
 
-      prefix = optional (scope' != "") "${color'.scope scope'}: ";
+      prefix = string.optional (scope' != "") "${color'.scope scope'}: ";
 
       throw = msg:
         builtins.throw "${prefix}${autoColor color' msg}";

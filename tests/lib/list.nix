@@ -16,34 +16,37 @@ let
   ;
 
   inherit (nix-alacarte)
+    greaterThan'
+    indexed
+    pair
+    range'
+    replicate
+  ;
+
+  inherit (nix-alacarte.list)
     allEqual
     append
-    appendElem
+    cons
     elemIndex
     elemIndices
     empty
     find
     findIndex
     findIndices
-    greaterThan'
-    uncons
     ifilter
     imap
-    indexed
-    mapListToAttrs
+    mapToAttrs
     maximum
     minimum
     notEmpty
-    pair
     partition
     prepend
-    prependElem
     product
-    range'
     removeNulls
-    replicate
+    snoc
     splitAt
     sum
+    uncons
   ;
 
   inherit (dnm)
@@ -71,18 +74,8 @@ in
     expected = [ 1 2 ];
   };
 
-  prepend = assertEqual {
-    actual = prepend [ 2 ] [ 1 ];
-    expected = [ 2 1 ];
-  };
-
-  appendElem = assertEqual {
-    actual = appendElem 45 [ 2 4 ];
-    expected = [ 2 4 45 ];
-  };
-
-  prependElem = assertEqual {
-    actual = prependElem 45 [ 2 4 ];
+  cons = assertEqual {
+    actual = cons 45 [ 2 4 ];
     expected = [ 45 2 4 ];
   };
 
@@ -207,8 +200,8 @@ in
     ];
   };
 
-  mapListToAttrs = assertEqual {
-    actual = mapListToAttrs (e: nameValuePair e.name e) [
+  mapToAttrs = assertEqual {
+    actual = mapToAttrs (e: nameValuePair e.name e) [
       { name = "a"; value = 1; }
       { name = "b"; value = 2; }
     ];
@@ -274,6 +267,11 @@ in
     };
   };
 
+  prepend = assertEqual {
+    actual = prepend [ 2 ] [ 1 ];
+    expected = [ 2 1 ];
+  };
+
   product = {
     empty = assertEqual {
       actual = product [ ];
@@ -316,6 +314,11 @@ in
   replicate = assertEqual {
     actual = replicate 3 true;
     expected = [ true true true ];
+  };
+
+  snoc = assertEqual {
+    actual = snoc 45 [ 2 4 ];
+    expected = [ 2 4 45 ];
   };
 
   splitAt = {

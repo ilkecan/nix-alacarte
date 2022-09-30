@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    genList
     mapAttrs
     typeOf
   ;
@@ -17,8 +16,7 @@ let
 
   inherit (nix-alacarte)
     increment
-    prepend
-    mapListToAttrs
+    list
     pipe'
     uncommands
   ;
@@ -57,7 +55,7 @@ let
       }.${toString bit};
     in
     pipe' [
-      (prepend [ typeParameter bitParamater ])
+      (list.prepend [ typeParameter bitParamater ])
       SGR.mkSequence
     ];
 in
@@ -105,9 +103,9 @@ in
             strike = 9;
             font = {
               primary = 10;
-            } // mapListToAttrs
+            } // list.mapToAttrs
               (i: nameValuePair "alternative${toString i}" (10 + i))
-              (genList increment 9);
+              (list.gen increment 9);
             fraktur = 20;
             doubleUnderline = 21;
             resetIntensity = 22;

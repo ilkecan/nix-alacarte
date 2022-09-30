@@ -26,7 +26,7 @@ let
   inherit (nix-alacarte)
     capitalize
     compose
-    mapListToAttrs
+    list
     mergeListOfAttrs
     optionalValue
     setAttr
@@ -62,7 +62,7 @@ let
 
   setterFunctions = genAttrs optionAttributes setAttr;
   unsetterFunctions =
-    mapListToAttrs
+    list.mapToAttrs
       (name: nameValuePair "unset${capitalize name}" (unsetAttr name))
       optionAttributes
     ;

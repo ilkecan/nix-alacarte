@@ -7,51 +7,50 @@
 let
   inherit (builtins)
     add
-    all
     elemAt
-    filter
     foldl'
-    partition
-    genList
-    head
-    isAttrs
-    length
-    listToAttrs
     mul
-    tail
   ;
 
   inherit (lib)
-    concat
     const
-    findFirst
+    pipe
     flip
     id
-    imap0
     max
     min
-    pipe
-    singleton
     sublist
   ;
 
   inherit (nix-alacarte)
-    append
     compose
-    empty
     equalTo
-    findIndex
-    findIndices
     indexed
+    list
     negative
     notEqualTo
     notNull
     pair
     pipe'
-    prepend
     range'
     snd
-    uncurry
+  ;
+
+  inherit (list)
+    all
+    append
+    at
+    empty
+    filter
+    findIndex
+    findIndices
+    gen
+    head
+    length
+    prepend
+    singleton
+    tail
+    toAttrs
   ;
 
   inherit (nix-alacarte.internal)
@@ -71,92 +70,134 @@ let
 in
 
 {
-  allEqual = list:
-    all (equalTo (head list)) list;
-
-  append = flip concat;
-  prepend = concat;
-
-  appendElem = compose [ append singleton ];
-  prependElem = compose [ prepend singleton ];
-
-  elemIndex = compose [ findIndex equalTo ];
-  elemIndices = compose [ findIndices equalTo ];
-
-  empty = equalTo [ ];
-  notEmpty = notEqualTo [ ];
-
-  find = pred:
-    findFirst pred null;
-
-  findIndex = predicate: list:
-    let
-      indices = findIndices predicate list;
-    in
-    if empty indices then null else head indices; 
-
-  findIndices = predicate: list:
-    pipe list [
-      length
-      range'
-      (filter (i: predicate (elemAt list i)))
-    ];
-
-  uncons = list:
-    if empty list
-      then null
-      else pair (head list) (tail list);
-
-  ifilter = predicate:
-    pipe' [
-      indexed
-      (compose [ filter uncurry ] predicate)
-      (map snd)
-    ];
-
-  imap = imap0;
-
   indexed = list:
     let
       elemAt' = elemAt list;
     in
     map (index: pair index (elemAt' index)) (range' (length list));
 
-  mapListToAttrs = f: list:
-    listToAttrs (map f list);
+  list = {
+    all = builtins.all;
 
-  maximum = foldStartingWithHead "maximum" max;
-  minimum = foldStartingWithHead "minimum" min;
+    allEqual = list:
+      all (equalTo (head list)) list;
 
+    any = builtins.any;
 
-  partition = predicate: list:
-    let
-      partitioned = partition predicate list;
-    in
-    pair partitioned.right partitioned.wrong;
+    append = right: left:
+      left ++ right;
 
-  product = foldl' mul 1;
+    at = flip elemAt;
+
+    concat = builtins.concatLists;
+
+    cons = compose [ prepend singleton ];
+
+    elem = builtins.elem;
+
+    elemIndex = compose [ findIndex equalTo ];
+
+    elemIndices = compose [ findIndices equalTo ];
+
+    empty = equalTo [ ];
+
+    filter = builtins.filter;
+
+    find = pred:
+      lib.findFirst pred null;
+
+    findIndex = predicate: list:
+      let
+        indices = findIndices predicate list;
+      in
+      if empty indices then null else head indices; 
+
+    findIndices = predicate: list:
+      let
+        elemAt' = elemAt list;
+      in
+      pipe list [
+        length
+        range'
+        (filter (compose [ predicate elemAt' ]))
+      ];
+
+    gen = builtins.genList;
+
+    head = builtins.head;
+
+    ifilter = predicate:
+      let
+        predicate' = pair.uncurry predicate;
+      in
+      pipe' [
+        indexed
+        (filter predicate')
+        (map snd)
+      ];
+
+    imap = lib.imap0;
+
+    length = builtins.length;
+
+    map = builtins.map;
+
+    maximum = foldStartingWithHead "maximum" max;
+
+    mapToAttrs = f:
+      compose [ toAttrs (map f) ];
+
+    minimum = foldStartingWithHead "minimum" min;
+
+    notEmpty = notEqualTo [ ];
+
+    optional = lib.optionals;
+
+    partition = predicate: list:
+      let
+        partitioned = builtins.partition predicate list;
+      in
+      pair partitioned.right partitioned.wrong;
+
+    prepend = left: right:
+      left ++ right;
+
+    product = foldl' mul 1;
+
+    removeNulls = filter notNull;
+
+    singleton = lib.singleton;
+
+    snoc = compose [ append singleton ];
+
+    splitAt = index:
+      let
+        index' = if negative index then 0 else index;
+      in
+      list:
+        pair
+          (sublist 0 index' list)
+          (sublist index' (length list - index') list);
+
+    sum = foldl' add 0;
+
+    tail = builtins.tail;
+
+    toAttrs = builtins.listToAttrs;
+
+    uncons = list:
+      if empty list
+        then null
+        else pair (head list) (tail list);
+  };
 
   range' = n:
     let
       assertion' = assertion.appendScope "range'";
     in
     assert assertion' (!negative n) "negative list size: `${toString n}`";
-    genList id n;
-
-  removeNulls = filter notNull;
+    gen id n;
 
   replicate = n: val:
-    genList (const val) n;
-
-  splitAt = index:
-    let
-      index' = if negative index then 0 else index;
-    in
-    list:
-      pair
-        (sublist 0 index' list)
-        (sublist index' (length list - index') list);
-
-  sum = foldl' add 0;
+    gen (const val) n;
 }

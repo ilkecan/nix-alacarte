@@ -5,18 +5,12 @@
 }:
 
 let
-  inherit (builtins)
-    elem
-    head
-  ;
-
   inherit (lib)
     pipe
   ;
 
   inherit (nix-alacarte)
-    ifilter
-    imap
+    list
     path
   ;
 
@@ -38,8 +32,8 @@ in
         then [ ]
         else pipe path [
           (split "/")
-          (ifilter (i: v: !elem v componentsToRemove || i == 0))
-          (imap (i: v: if i == 0 && v == "" then "/" else v))
+          (list.ifilter (i: v: !list.elem v componentsToRemove || i == 0))
+          (list.imap (i: v: if i == 0 && v == "" then "/" else v))
         ];
 
     exists = builtins.pathExists;
@@ -50,6 +44,6 @@ in
       in
       if components == [ ]
         then false
-        else head components == "/";
+        else list.head components == "/";
   };
 }

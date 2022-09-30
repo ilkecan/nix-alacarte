@@ -5,21 +5,15 @@
 }:
 
 let
-  inherit (builtins)
-    all
-    any
-    head
-    length
-  ;
-
   inherit (lib)
     id
     isFunction
   ;
 
   inherit (nix-alacarte)
-    combinators
     callWith
+    combinators
+    list
   ;
 
   booleanCombinator = f:
@@ -31,21 +25,21 @@ in
     mkCombinator = combineFunc:
       let
         self = fs:
-          if isFunction (head fs) then
+          if isFunction (list.head fs) then
             val:
               self (map (callWith val) fs)
           else
             combineFunc fs
           ;
       in
-      list:
-        if length list == 0 then
+      list':
+        if list.length list' == 0 then
           combineFunc [ ]
         else
-          self list
+          self list'
         ;
 
-    and = booleanCombinator all;
-    or = booleanCombinator any;
+    and = booleanCombinator list.all;
+    or = booleanCombinator list.any;
   };
 }

@@ -16,8 +16,8 @@ let
   inherit (nix-alacarte)
     capitalize
     compose
+    list
     mergeListOfAttrs
-    prepend
     renameAttrs
   ;
 
@@ -50,7 +50,7 @@ in
 
     withDefault = defaultFs:
       let
-        prependDefaultFs = prepend defaultFs;
+        prependDefaultFs = list.prepend defaultFs;
         self = mkOptionFunction:
           if isOptionConstructor mkOptionFunction then
             mkOptionConstructor (compose [ mkOptionFunction prependDefaultFs ])

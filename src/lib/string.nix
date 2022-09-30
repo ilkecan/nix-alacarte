@@ -13,7 +13,6 @@ let
 
   inherit (lib)
     const
-    findFirst
     id
     lowerChars
     pipe
@@ -28,6 +27,7 @@ let
     indentByWith
     int
     lines
+    list
     negative
     pair
     pipe'
@@ -74,7 +74,7 @@ let
           length
           range'
           (if reverse then reverseList else id)
-          (findFirst (searcher str) null)
+          (list.find (searcher str))
         ];
 in
 
