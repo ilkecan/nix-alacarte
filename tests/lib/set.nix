@@ -8,6 +8,7 @@ let
   inherit (nix-alacarte)
     forEachAttr
     getExistingAttrs
+    mergeListOfAttrs
     pair
     partitionAttrs
     removeNullAttrs
@@ -33,6 +34,25 @@ in
   getExistingAttrs = assertEqual {
     actual = getExistingAttrs [ "y" "z" ] { x = "foo"; y = "bar"; };
     expected = { y = "bar"; };
+  };
+
+  mergeListOfAttrs = {
+    merge_leafs = assertEqual {
+      actual = mergeListOfAttrs [
+        { "a" = 1; }
+        { "b" = 2; }
+      ];
+
+      expected = {
+        "a" = 1;
+        "b" = 2;
+      };
+    };
+
+    recursive_merge = assertEqual {
+      actual = mergeListOfAttrs [ { a = { b = 3; }; } { a = { c = 4; }; } ];
+      expected = { a = { b = 3; c = 4; }; };
+    };
   };
 
   partitionAttrs = {

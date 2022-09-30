@@ -1,4 +1,5 @@
 {
+  bootstrap,
   lib,
   nix-alacarte,
   ...
@@ -79,4 +80,8 @@ in
           else setAttrByPath' tail value set.${head};
     in
     setAttr head value' set;
+
+  inherit (bootstrap)
+    mergeListOfAttrs
+  ;
 }

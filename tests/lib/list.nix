@@ -32,7 +32,6 @@ let
     indexed
     mapListToAttrs
     maximum
-    mergeListOfAttrs
     minimum
     notEmpty
     pair
@@ -217,25 +216,6 @@ in
     expected = {
       "a" = { name = "a"; value = 1; };
       "b" = { name = "b"; value = 2; };
-    };
-  };
-
-  mergeListOfAttrs = {
-    merge_leafs = assertEqual {
-      actual = mergeListOfAttrs [
-        { "a" = 1; }
-        { "b" = 2; }
-      ];
-
-      expected = {
-        "a" = 1;
-        "b" = 2;
-      };
-    };
-
-    recursive_merge = assertEqual {
-      actual = mergeListOfAttrs [ { a = { b = 3; }; } { a = { c = 4; }; } ];
-      expected = { a = { b = 3; c = 4; }; };
     };
   };
 

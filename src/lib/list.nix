@@ -1,5 +1,4 @@
 {
-  bootstrap,
   lib,
   nix-alacarte,
   ...
@@ -129,9 +128,6 @@ in
   maximum = foldStartingWithHead "maximum" max;
   minimum = foldStartingWithHead "minimum" min;
 
-  inherit (bootstrap)
-    mergeListOfAttrs
-  ;
 
   partition = predicate: list:
     let
