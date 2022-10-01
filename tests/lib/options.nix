@@ -25,6 +25,7 @@ let
 
     addCheck
 
+    attrs
     between
     coerceTo
     lambda
@@ -32,7 +33,6 @@ let
     nonEmptyList
     optional
     optionalList
-    set
     unique
   ;
 
@@ -76,6 +76,27 @@ in
       (assertTrue positive.type.check 4)
       (assertFalse positive.type.check (-4))
     ];
+
+  attrs =
+    let
+      option = attrs (emptyOption // { apply = x: x + "s"; });
+    in
+    {
+      type_is_correct = assertEqual {
+        actual = option.type.name;
+        expected = "attrsOf";
+      };
+
+      apply_is_propagated = assertEqual {
+        actual = option.apply { a = "apple"; o = "orange"; };
+        expected = { a = "apples"; o = "oranges"; };
+      };
+
+      default_is_empty_set = assertEqual {
+        actual = option.default;
+        expected = { };
+      };
+    };
 
   between =
     let
@@ -224,27 +245,6 @@ in
       option_with_default = assertEqual {
         actual = (optionalList strWithDefault).default;
         expected = "hey there";
-      };
-    };
-
-  set =
-    let
-      option = set (emptyOption // { apply = x: x + "s"; });
-    in
-    {
-      type_is_correct = assertEqual {
-        actual = option.type.name;
-        expected = "attrsOf";
-      };
-
-      apply_is_propagated = assertEqual {
-        actual = option.apply { a = "apple"; o = "orange"; };
-        expected = { a = "apples"; o = "oranges"; };
-      };
-
-      default_is_empty_set = assertEqual {
-        actual = option.default;
-        expected = { };
       };
     };
 

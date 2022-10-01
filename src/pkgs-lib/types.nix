@@ -91,8 +91,8 @@ in
                 argv0 = mkStr [ optional ];
                 inheritArgv0 = enable;
 
-                set = mkStr [ set ];
-                setDefault = mkStr [ set ];
+                set = mkStr [ attrs ];
+                setDefault = mkStr [ attrs ];
                 unset = mkStr [ list ];
 
                 chdir = mkStr [ optional ];

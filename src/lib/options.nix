@@ -33,6 +33,7 @@ let
   ;
 
   inherit (nix-alacarte.options)
+    attrs
     coerceTo
     default
     mkBool
@@ -42,7 +43,6 @@ let
     mkStr
     readOnly
     required
-    set
   ;
 
   inherit (nix-alacarte.internal.options)
@@ -116,7 +116,7 @@ let
       };
     optionalList = option:
       coerceTo (types.listOf option.type) toList option;
-    set = option:
+    attrs = option:
       let
         apply = option.apply or null;
       in
@@ -179,7 +179,7 @@ let
           mkStr;
 
       envVars =
-        withDefault [ set ]
+        withDefault [ attrs ]
           mkCoercibleToString;
       format = format:
         withDefault [ (default { }) ]
@@ -189,7 +189,7 @@ let
         withDefault [ (default "") ]
           mkOption types.lines;
       settings =
-        withDefault [ set ]
+        withDefault [ attrs ]
           mkGenericValue;
       submodule =
         withDefault [ (default { }) ]
