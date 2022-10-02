@@ -7,9 +7,12 @@
 let
   inherit (lib)
     flip
+    max
+    min
   ;
 
   inherit (nix-alacarte)
+    compose
     greaterThan
     greaterThanOrEqualTo
     lessThan
@@ -18,6 +21,9 @@ let
 in
 
 {
+  clamp = low: high:
+    compose [ (min high) (max low) ];
+
   equalTo = lhs: rhs:
     lhs == rhs;
 

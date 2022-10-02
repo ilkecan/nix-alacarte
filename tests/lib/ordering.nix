@@ -6,6 +6,7 @@
 
 let
   inherit (nix-alacarte)
+    clamp
     equalTo
     greaterThan
     greaterThan'
@@ -19,12 +20,34 @@ let
   ;
 
   inherit (dnm)
+    assertEqual
     assertFalse
     assertTrue
   ;
 in
 
 {
+  clamp =
+    let
+      clamp' = clamp 4 10;
+    in
+    {
+      too_low = assertEqual {
+        actual = clamp' (-3);
+        expected = 4;
+      };
+
+      in_range = assertEqual {
+        actual = clamp' 5;
+        expected = 5;
+      };
+
+      too_high = assertEqual {
+        actual = clamp' 23;
+        expected = 10;
+      };
+    };
+
   equalTo = {
     equals = assertTrue equalTo 2 2;
     not_equals = assertFalse equalTo "a" "b";
