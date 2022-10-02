@@ -15,6 +15,13 @@ in
 
   notNull = notEqualTo null;
 
+  optionalValue = condition: value:
+    if condition then
+      value
+    else
+      null
+    ;
+
   unwrapOr = default: value:
     if value == null
       then default

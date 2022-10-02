@@ -8,12 +8,14 @@ let
   inherit (nix-alacarte)
     isNull
     notNull
+    optionalValue
     unwrapOr
   ;
 
   inherit (dnm)
     assertEqual
     assertFalse
+    assertNull
     assertTrue
   ;
 in
@@ -27,6 +29,15 @@ in
   notNull = {
     not_null = assertTrue notNull 4.2;
     null = assertFalse notNull null;
+  };
+
+  optionalValue = {
+    true = assertEqual {
+      actual = optionalValue true 4;
+      expected = 4;
+    };
+
+    false = assertNull optionalValue false 23;
   };
 
   unwrapOr =
