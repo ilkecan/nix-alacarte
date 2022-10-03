@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    replaceStrings
     substring
     typeOf
   ;
@@ -42,6 +41,7 @@ let
     intersperse
     length
     optional
+    replace
     split
   ;
 
@@ -131,14 +131,14 @@ in
     ];
 
   letterCase = {
-    camelToKebab = replaceStrings upperChars kebabChars;
-    camelToSnake = replaceStrings upperChars snakeChars;
+    camelToKebab = replace upperChars kebabChars;
+    camelToSnake = replace upperChars snakeChars;
 
-    kebabToCamel = replaceStrings kebabChars upperChars;
-    kebabToSnake = replaceStrings [ kebabSep ] [ snakeSep ];
+    kebabToCamel = replace kebabChars upperChars;
+    kebabToSnake = replace [ kebabSep ] [ snakeSep ];
 
-    snakeToCamel = replaceStrings snakeChars upperChars;
-    snakeToKebab = replaceStrings [ snakeSep ] [ kebabSep ];
+    snakeToCamel = replace snakeChars upperChars;
+    snakeToKebab = replace [ snakeSep ] [ kebabSep ];
   };
 
   lines = split "\n";
@@ -160,6 +160,8 @@ in
     optional = lib.optionalString;
 
     rfind = find' true;
+
+    replace = builtins.replaceStrings;
 
     split = lib.splitString;
 

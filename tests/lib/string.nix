@@ -40,6 +40,8 @@ let
     concatMap
     find
     rfind
+    replace
+    split
     splitAt
   ;
 
@@ -251,6 +253,34 @@ in
   repeat = assertEqual {
     actual = repeat 4 " |";
     expected = " | | | |";
+  };
+
+  replace =
+    let
+      plural = replace [ "y" ] [ "ies" ];
+    in
+    {
+      no_change = assertEqual {
+        actual = plural "apple";
+        expected = "apple";
+      };
+
+      changed = assertEqual {
+        actual = plural "fly";
+        expected = "flies";
+      };
+    };
+
+  split = {
+    separator_does_not_exist = assertEqual {
+      actual = split "/" "192.168.1.1";
+      expected = [ "192.168.1.1" ];
+    };
+
+    separator_exists = assertEqual {
+      actual = split "." "192.168.1.1";
+      expected = [ "192" "168" "1" "1" ];
+    };
   };
 
   splitAt = {
