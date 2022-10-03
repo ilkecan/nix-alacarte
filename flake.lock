@@ -95,11 +95,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1664833182,
-        "narHash": "sha256-Bn4Nw2YPLIOudDePOugaae5ElwJItqqZrEVrTKKNAfc=",
+        "lastModified": 1664838181,
+        "narHash": "sha256-ox0GyuUnilbheleixR7/Mkt2u0upHq6wbpOM+zRkSok=",
         "owner": "ilkecan",
         "repo": "overlayln",
-        "rev": "038a5038fdcbc7fb1094519c3bf7415a11caf43f",
+        "rev": "1a72b0bd4ee281bdcbef3f94bae9098e3cc8df86",
         "type": "github"
       },
       "original": {
