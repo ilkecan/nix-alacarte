@@ -11,6 +11,7 @@ let
   ;
 
   inherit (nix-alacarte)
+    attrs
     list
     pipe'
     string
