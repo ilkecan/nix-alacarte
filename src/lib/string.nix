@@ -23,7 +23,6 @@ let
 
   inherit (nix-alacarte)
     addPrefix
-    float
     indentByWith
     int
     lines
@@ -149,6 +148,8 @@ in
 
   string = {
     concat = lib.concatStrings;
+
+    concatMap = lib.concatMapStrings;
 
     find = find' false;
 

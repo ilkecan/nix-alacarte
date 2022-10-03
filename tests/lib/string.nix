@@ -27,6 +27,7 @@ let
     lines
     pair
     repeat
+    string
     uncommands
     unelements
     unlines
@@ -34,7 +35,9 @@ let
     words
   ;
 
-  inherit (nix-alacarte.string)
+  inherit (string)
+    concat
+    concatMap
     find
     rfind
     splitAt
@@ -89,6 +92,16 @@ in
   unelements = assertEqual{
     actual = unelements [ "apple" "orange" ];
     expected = "apple,orange";
+  };
+
+  concat = assertEqual {
+    actual = concat [ "foo" "bar" "baz" ];
+    expected = "foobarbaz";
+  };
+
+  concatMap = assertEqual {
+    actual = concatMap (s: "${s}, ") [ "foo" "bar" "baz" ];
+    expected = "foo, bar, baz, ";
   };
 
   find = {
