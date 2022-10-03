@@ -7,7 +7,6 @@
 let
   inherit (lib)
     flip
-    mod
   ;
 
   inherit (nix-alacarte)
@@ -16,6 +15,7 @@ let
     equalTo
     greaterThan'
     lessThan'
+    mod
     mod'
     negate
     negative
@@ -40,6 +40,8 @@ in
   increment = add 1;
 
   int = import ./int.nix args;
+
+  mod = lib.mod;
 
   mod' = flip mod;
 

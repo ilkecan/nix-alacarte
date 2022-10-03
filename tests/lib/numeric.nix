@@ -11,6 +11,7 @@ let
     decrement
     even
     increment
+    mod
     mod'
     negate
     negative
@@ -112,6 +113,11 @@ in
       actual = increment 12.74;
       expected = 13.74;
     };
+  };
+
+  mod = assertEqual {
+    actual = mod 13 7;
+    expected = 6;
   };
 
   mod' = assertEqual {
