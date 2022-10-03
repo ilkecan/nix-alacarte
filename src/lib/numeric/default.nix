@@ -5,21 +5,18 @@
 }@args:
 
 let
-  inherit (builtins)
-    add
-    sub
-  ;
-
   inherit (lib)
     flip
     mod
   ;
 
   inherit (nix-alacarte)
+    add
     greaterThan'
     lessThan'
     negate
     negative
+    sub
     sub'
   ;
 in
@@ -27,6 +24,8 @@ in
 {
   abs = number:
     if negative number then negate number else number;
+
+  add = builtins.add;
 
   decrement = sub' 1;
 
@@ -48,6 +47,8 @@ in
     mod number 2 == 1;
 
   positive = greaterThan' 0;
+
+  sub = builtins.sub;
 
   sub' = flip sub;
 }

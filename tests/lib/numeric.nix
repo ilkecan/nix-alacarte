@@ -7,6 +7,7 @@
 let
   inherit (nix-alacarte)
     abs
+    add
     decrement
     even
     increment
@@ -14,6 +15,7 @@ let
     negative
     odd
     positive
+    sub
     sub'
   ;
 
@@ -58,6 +60,18 @@ in
         actual = abs 4.19;
         expected = 4.19;
       };
+    };
+  };
+
+  add = {
+    integer = assertEqual {
+      actual = add 4 12;
+      expected = 16;
+    };
+
+    float = assertEqual {
+      actual = add 4.2 11.8;
+      expected = 16.0;
     };
   };
 
@@ -159,8 +173,27 @@ in
     };
   };
 
-  sub' = assertEqual {
-    actual = sub' 4 8;
-    expected = 4;
+  sub = {
+    integer = assertEqual {
+      actual = sub 5 2;
+      expected = 3;
+    };
+
+    float = assertEqual {
+      actual = sub 123.239 22.92;
+      expected = 100.319;
+    };
+  };
+
+  sub' = {
+    integer = assertEqual {
+      actual = sub' 4 8;
+      expected = 4;
+    };
+
+    float = assertEqual {
+      actual = sub' 3.50 23.28;
+      expected = 19.78;
+    };
   };
 }
