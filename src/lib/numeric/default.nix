@@ -14,6 +14,7 @@ let
     add
     greaterThan'
     lessThan'
+    mod'
     negate
     negative
     sub
@@ -37,6 +38,8 @@ in
   increment = add 1;
 
   int = import ./int.nix args;
+
+  mod' = flip mod;
 
   negate = number:
     -number;
