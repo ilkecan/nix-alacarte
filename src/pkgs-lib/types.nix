@@ -26,9 +26,10 @@ let
   ;
 
   inherit (nix-alacarte)
+    attrs
     combinators
+    list
     options
-    removeNullAttrs
   ;
 
   types = lib.types // nix-alacarte.types;
@@ -76,7 +77,7 @@ in
             drv.override cfg.override;
           wrap = drv:
             let
-              wrapArgs = removeNullAttrs cfg.wrap;
+              wrapArgs = attrs.removeNulls cfg.wrap;
             in
             wrapPackage drv wrapArgs;
         in
