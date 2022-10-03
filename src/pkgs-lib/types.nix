@@ -111,19 +111,11 @@ in
               };
             } [ optional ];
 
-            override = mkOption types.genericValue [
-              set
-              optional
-            ];
+            override = mkOption types.genericValue [ attrs optional ];
 
-            overrideAttrs = mkOption types.overrideAttrsArgs [
-              optional
-            ];
+            overrideAttrs = mkOption types.overrideAttrsArgs [ optional ];
 
-            final = mkPackage [
-              internal
-              readOnly
-            ];
+            final = mkPackage [ internal readOnly ];
           };
 
           config = mkMerge [
