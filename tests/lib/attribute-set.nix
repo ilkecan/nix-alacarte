@@ -34,6 +34,8 @@ let
     map'
     mapToList
     mapValues
+    merge
+    merge'
     names
     optional
     partition
@@ -209,6 +211,30 @@ in
   mapValues = assertEqual {
     actual = mapValues toString { a = 1; b = 2; c = 3; };
     expected = { a = "1"; b = "2"; c = "3"; };
+  };
+
+  merge = {
+    new_attributes_are_added = assertEqual {
+      actual = merge { x = 1; } { y = 4; };
+      expected = { x = 1; y = 4; };
+    };
+
+    old_attributes_are_overwritten = assertEqual {
+      actual = merge { x = 1; y = 4; } { y = 8; };
+      expected = { x = 1; y = 8; };
+    };
+  };
+
+  merge' = {
+    new_attributes_are_added = assertEqual {
+      actual = merge' { x = 1; } { y = 4; };
+      expected = { x = 1; y = 4; };
+    };
+
+    old_attributes_are_kept = assertEqual {
+      actual = merge' { x = 1; y = 4; } { y = 8; };
+      expected = { x = 1; y = 4; };
+    };
   };
 
   names = assertEqual {

@@ -33,6 +33,7 @@ let
     has
     map
     map'
+    merge
     names
     remove
     set
@@ -122,6 +123,10 @@ in
       mapValues = compose [ map const ];
 
       mapToList = lib.mapAttrsToList;
+
+      merge = lib.mergeAttrs;
+
+      merge' = flip merge;
 
       names = builtins.attrNames;
 
