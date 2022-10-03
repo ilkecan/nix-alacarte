@@ -5,20 +5,15 @@
 }:
 
 let
-  inherit (builtins)
-    mapAttrs
-  ;
-
   inherit (lib)
     isType
   ;
 
   inherit (nix-alacarte)
+    attrs
     capitalize
     compose
     list
-    mergeListOfAttrs
-    renameAttrs
   ;
 
   inherit (nix-alacarte.internal.options)
@@ -37,9 +32,9 @@ in
 {
   options = {
     generateOptions = optionFunctions:
-      mergeListOfAttrs [
-        (mapAttrs (_name: toOption) optionFunctions)
-        (renameAttrs (name: _value: "mk${capitalize name}") optionFunctions)
+      attrs.concat [
+        (attrs.map (_name: toOption) optionFunctions)
+        (attrs.rename (name: _value: "mk${capitalize name}") optionFunctions)
       ];
 
     mkOptionConstructor = unaryFunction:

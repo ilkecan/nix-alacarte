@@ -7,54 +7,88 @@
 
 let
   inherit (builtins)
-    add
     isInt
   ;
 
-  inherit (lib)
-    nameValuePair
-    range
-  ;
-
   inherit (nix-alacarte)
+    add
+    compose
     greaterThan'
     indexed
+    lessThan
+    list
+    mod'
     pair
+    positive
+    range
     range'
+    range3
     replicate
   ;
 
-  inherit (nix-alacarte.list)
+  inherit (list)
     allEqual
     append
+    at
+    concat
+    concatMap
     cons
+    count
+    difference
+    difference'
+    drop
+    elem
     elemIndex
     elemIndices
     empty
+    filter
     find
     findIndex
     findIndices
+    foldl
+    foldl'
+    foldr
     forEach
     gen
+    groupBy
     head
     ifilter
     imap
     init
+    intercalate
+    intersect
+    intersperse
+    is
     last
+    length
+    map
     mapToAttrs
     maximum
     minimum
+    notElem
     notEmpty
-    nub
     optional
     partition
     prepend
     product
-    removeNulls
+    remove
+    reverse
+    singleton
+    slice
     snoc
+    sort
     splitAt
     sum
+    tail
+    take
+    to
+    toAttrs
     uncons
+    union
+    unique
+    unzip
+    zip
+    zipWith
   ;
 
   inherit (dnm)
@@ -65,7 +99,7 @@ let
     assertTrue
   ;
 
-  firstTenPositiveNumbers = range 1 10;
+  firstTenPositiveNumbers = range 1 11;
   listOfFloats = [ 4.1 2.0 1.7 ];
 in
 
@@ -82,9 +116,89 @@ in
     expected = [ 1 2 ];
   };
 
+  at =
+    let
+      list = range' 5;
+    in
+    {
+      negative_index = assertFailure at (-4) list;
+      index_in_range = assertEqual {
+        actual = at 2 list;
+        expected = 2;
+      };
+      index_to_large = assertFailure at 22 list;
+    };
+
+  concat = assertEqual {
+    actual = concat [ [ 1 2 3 ] [ 4 5 ] [ 6 ] [ ] ];
+    expected = [ 1 2 3 4 5 6 ];
+  };
+
+  concatMap = assertEqual {
+    actual = concatMap (n: range n (n + 3)) [ 3 5 0 ];
+    expected = [ 3 4 5 5 6 7 0 1 2 ];
+  };
+
   cons = assertEqual {
     actual = cons 45 [ 2 4 ];
     expected = [ 45 2 4 ];
+  };
+
+  count = assertEqual {
+    actual = count positive [ 2 (-14) 8 0 (-0.4) 4.8 ];
+    expected = 3;
+  };
+
+  difference = {
+    disjoint = assertEqual {
+      actual = difference [ 0 1 2 3 4 ] [ 5 6 7 8 9 ];
+      expected = [ 0 1 2 3 4 ];
+    };
+
+    not_disjoint = assertEqual {
+      actual = difference [ 0 1 2 3 4 ] [ 0 2 4 6 8 ];
+      expected = [ 1 3 ];
+    };
+  };
+
+  difference' = {
+    disjoint = assertEqual {
+      actual = difference' [ 0 1 2 3 4 ] [ 5 6 7 8 9 ];
+      expected = [ 5 6 7 8 9 ];
+    };
+
+    not_disjoint = assertEqual {
+      actual = difference' [ 0 1 2 3 4 ] [ 0 2 4 6 8 ];
+      expected = [ 6 8 ];
+    };
+  };
+
+  drop =
+    let
+      list = [ 0 1 2 3 4 ];
+    in
+    {
+      negative = assertEqual {
+        actual = drop (-2) list;
+        expected = [ 0 1 2 3 4 ];
+      };
+
+      positive = {
+        in_range = assertEqual {
+          actual = drop 3 list;
+          expected = [ 3 4 ];
+        };
+
+        out_of_range = assertEqual {
+          actual = drop 9 list;
+          expected = [ ];
+        };
+      };
+    };
+
+  elem = {
+    true = assertTrue elem 24 [ 123.89 null 24 899 true ];
+    false = assertFalse elem "second" [ 1 ];
   };
 
   elemIndex = {
@@ -123,9 +237,20 @@ in
     non_empty_list = assertFalse empty [ 2 ];
   };
 
+  notElem = {
+    true = assertTrue notElem "second" [ 1 ];
+    false = assertFalse notElem 24 [ 123.89 null 24 899 true ];
+  };
+
   notEmpty = {
     empty_list = assertFalse notEmpty [ ];
     non_empty_list = assertTrue notEmpty [ 2 ];
+  };
+
+
+  filter = assertEqual {
+    actual = filter positive [ 2 (-14) 8 0 (-0.4) 4.8 ];
+    expected = [ 2 8 4.8 ];
   };
 
   find = {
@@ -173,18 +298,19 @@ in
     };
   };
 
-  uncons = {
-    empty = assertNull uncons [ ];
+  foldl = assertEqual {
+    actual = foldl (x: y: x + y) "|" [ "a" "b" "c" ];
+    expected = "|abc";
+  };
 
-    single_elem = assertEqual {
-      actual = uncons [ true ];
-      expected = pair true [ ];
-    };
+  foldl' = assertEqual {
+    actual = foldl' (x: y: x + y) "|" [ "a" "b" "c" ];
+    expected = "|abc";
+  };
 
-    multi_elems = assertEqual {
-      actual = uncons [ 2 3 5 ];
-      expected = pair 2 [ 3 5 ];
-    };
+  foldr = assertEqual {
+    actual = foldr (x: y: x + y) "|" [ "a" "b" "c" ];
+    expected = "abc|";
   };
 
   forEach = assertEqual {
@@ -195,6 +321,11 @@ in
   gen = assertEqual {
     actual = gen (add 7) 4;
     expected = [ 7 8 9 10 ];
+  };
+
+  groupBy = assertEqual {
+    actual = groupBy (compose [ toString (mod' 2) ]) [ 2 85 30 18 (-9) ];
+    expected = { "-1" = [ (-9) ];"0" = [ 2 30 18 ]; "1" = [ 85 ]; };
   };
 
   head = {
@@ -236,6 +367,33 @@ in
     };
   };
 
+  intercalate = assertEqual {
+    actual = intercalate [ 0 1 ] [ [ 1 3 5 ] [ 4 8 ] [ 3 5 7 ] ];
+    expected = [ 1 3 5 0 1 4 8 0 1 3 5 7 ];
+  };
+
+  intersect = {
+    disjoint = assertEqual {
+      actual = intersect [ 0 1 2 ] [ 3 4 5];
+      expected = [ ];
+    };
+
+    not_disjoint = assertEqual {
+      actual = intersect [ 0 1 2 3 4 ] [ 0 2 4 ];
+      expected = [ 0 2 4 ];
+    };
+  };
+
+  intersperse = assertEqual {
+    actual = intersperse 0 [ 2 4 6 8 ];
+    expected = [ 2 0 4 0 6 0 8 ];
+  };
+
+  is = {
+    list = assertTrue is [ "some" "list" ];
+    not_a_list = assertFalse is 6.4;
+  };
+
   last = {
     empty_list = assertFailure last [ ];
 
@@ -245,8 +403,18 @@ in
     };
   };
 
+  length = assertEqual {
+    actual = length [ 2.4 8 true ];
+    expected = 3;
+  };
+
+  map = assertEqual {
+    actual = map (add 4) [ 0 2 4 ];
+    expected = [ 4 6 8 ];
+  };
+
   mapToAttrs = assertEqual {
-    actual = mapToAttrs (e: nameValuePair e.name e) [
+    actual = mapToAttrs (e: pair e.name e) [
       { name = "a"; value = 1; }
       { name = "b"; value = 2; }
     ];
@@ -293,11 +461,6 @@ in
       actual = minimum listOfFloats;
       expected = 1.7;
     };
-  };
-
-  nub = assertEqual {
-    actual = nub [ 1 2 3 4 3 2 1 2 4 3 5 ];
-    expected = [ 1 2 3 4 5 ];
   };
 
   optional = {
@@ -356,21 +519,62 @@ in
     };
   };
 
+  range = {
+    start_is_greater_than_end = assertEqual {
+      actual = range 0 (-4);
+      expected = [ ];
+    };
+
+    start_and_end_are_the_same = assertEqual {
+      actual = range 4 4;
+      expected = [ ];
+    };
+
+    start_is_less_than_end = assertEqual {
+      actual = range 5 10;
+      expected = [ 5 6 7 8 9 ];
+    };
+  };
+
   range' = {
-    negative = assertFailure range' (-4);
+    negative = assertEqual {
+      actual = range' (-4);
+      expected = [ ];
+    };
+
     zero = assertEqual {
       actual = range' 0;
       expected = [ ];
     };
+
     positive = assertEqual {
       actual = range' 5;
       expected = [ 0 1 2 3 4 ];
     };
   };
 
-  removeNulls = assertEqual {
-    actual = removeNulls [ false null 2 ];
-    expected = [ false 2 ];
+  remove = {
+    non_existing_attribute = assertEqual {
+      actual = remove true [ false null 2 ];
+      expected = [ false null 2 ];
+    };
+
+    existing_attribute = assertEqual {
+      actual = remove null [ false null 2 ];
+      expected = [ false 2 ];
+    };
+  };
+
+  range3 = {
+    positive_step = assertEqual {
+      actual = range3 4 13 28;
+      expected = [ 13 17 21 25 ];
+    };
+
+    negative_step = assertEqual {
+      actual = range3 (-3) 13 (-2);
+      expected = [ 13 10 7 4 1 ];
+    };
   };
 
   replicate = assertEqual {
@@ -378,25 +582,101 @@ in
     expected = [ true true true ];
   };
 
+  reverse = {
+    empty = assertEqual {
+      actual = reverse [ ];
+      expected = [ ];
+    };
+
+    non_empty = assertEqual {
+      actual = reverse [ 0 1 2 3 4 ];
+      expected = [ 4 3 2 1 0 ];
+    };
+  };
+
+  singleton = assertEqual {
+    actual = singleton 28;
+    expected = [ 28 ];
+  };
+
+  slice =
+    let
+      list = [ 0 1 2 3 4 ];
+    in
+    {
+      start_is_greater_than_end = assertEqual {
+        actual = slice 3 2 list;
+        expected = [ ];
+      };
+
+      start_and_end_are_the_same = assertEqual {
+        actual = slice 1 1 list;
+        expected = [ ];
+      };
+
+      start_is_negative = assertEqual {
+        actual = slice (-3) 4 list;
+        expected = [ 2 3 ];
+      };
+
+      start_is_negative_out_of_bounds = assertEqual {
+        actual = slice (-29) 4 list;
+        expected = [ 0 1 2 3 ];
+      };
+
+      end_is_negative = assertEqual {
+        actual = slice 1 (-1) list;
+        expected = [ 1 2 3 ];
+      };
+
+      end_is_out_of_bounds = assertEqual {
+        actual = slice 1 22 list;
+        expected = [ 1 2 3 4 ];
+      };
+
+      end_is_negative_out_of_bounds = assertEqual {
+        actual = slice 3 (-14) list;
+        expected = [ ];
+      };
+    };
+
   snoc = assertEqual {
     actual = snoc 45 [ 2 4 ];
     expected = [ 2 4 45 ];
   };
 
-  splitAt = {
-    negative_index = assertEqual {
-      actual = splitAt (-4) [ "equal" "to" "the"  ];
-      expected = pair [ ] [ "equal" "to" "the" ];
+  sort = assertEqual {
+    actual = sort lessThan [1 6 4 3 2 5 ];
+    expected = [ 1 2 3 4 5 6 ];
+  };
+
+  splitAt =
+    let
+      list = [ 0 1 2 3 4 ];
+    in
+    {
+    negative_index = {
+      out_of_bounds = assertEqual {
+        actual = splitAt (-9) list;
+        expected = pair [ ] list;
+      };
+
+      in_range = assertEqual {
+        actual = splitAt (-2) list;
+        expected = pair [ 0 1 2 ] [ 3 4 ];
+      };
     };
 
-    index_to_large = assertEqual {
-      actual = splitAt 24 [ "equal" "to" "the"  ];
-      expected = pair [ "equal" "to" "the" ] [ ];
-    };
+    positive_index = {
+      out_of_bounds = assertEqual {
+        actual = splitAt 24 list;
+        expected = pair list [ ];
+      };
 
-    index_in_range = assertEqual {
-      actual = splitAt 4 [ "equal" "to" "the" "value" "returned" ];
-      expected = pair [ "equal" "to" "the" "value" ] [ "returned" ];
+      in_range = assertEqual {
+        actual = splitAt 2 list;
+        expected = pair [ 0 1 ] [ 2 3 4 ];
+      };
     };
   };
 
@@ -420,5 +700,119 @@ in
       actual = sum listOfFloats;
       expected = 7.8;
     };
+  };
+
+  tail = {
+    empty_list = assertFailure tail [ ];
+
+    non_empty_list = assertEqual {
+      actual = tail [ 0 1 1 2 ];
+      expected = [ 1 1 2 ];
+    };
+  };
+
+  take =
+    let
+      list = [ 0 1 2 3 4 ];
+    in
+    {
+      negative = assertEqual {
+        actual = take (-2) list;
+        expected = [ ];
+      };
+
+      positive = {
+        in_range = assertEqual {
+          actual = take 3 list;
+          expected = [ 0 1 2 ];
+        };
+
+        out_of_range = assertEqual {
+          actual = take 9 list;
+          expected = [ 0 1 2 3 4 ];
+        };
+      };
+    };
+
+  to = {
+    element = assertEqual {
+      actual = to 24;
+      expected = [ 24 ];
+    };
+
+    list = assertEqual {
+      actual = to [ 1.20 ];
+      expected = [ 1.20 ];
+    };
+  };
+
+  toAttrs = assertEqual {
+    actual = toAttrs [ (pair "a" 13) (pair "b" 21) ];
+    expected = { a = 13; b = 21; };
+  };
+
+  uncons = {
+    empty = assertNull uncons [ ];
+
+    single_elem = assertEqual {
+      actual = uncons [ true ];
+      expected = pair true [ ];
+    };
+
+    multi_elems = assertEqual {
+      actual = uncons [ 2 3 5 ];
+      expected = pair 2 [ 3 5 ];
+    };
+  };
+
+  union = {
+    repeating_elems_are_not_added = assertEqual {
+      actual = union [ 0 1 2 ] [ 3 1 4 ];
+      expected = [ 0 1 2 3 4 ];
+    };
+
+    duplicates_from_right_are_not_added = assertEqual {
+      actual = union [ 0 1 2 ] [ 3 4 3 ];
+      expected = [ 0 1 2 3 4 ];
+    };
+
+    duplicates_from_left_are_removed = assertEqual {
+      actual = union [ 2 0 1 2 ] [ 3 4 ];
+      expected = [ 2 0 1 3 4 ];
+    };
+  };
+
+  unique = assertEqual {
+    actual = unique [ 1 2 3 4 3 2 1 2 4 3 5 ];
+    expected = [ 1 2 3 4 5 ];
+  };
+
+  unzip = {
+    empty = assertEqual {
+      actual = unzip [ ];
+      expected = pair [ ] [ ];
+    };
+
+    non_empty = assertEqual {
+      actual = unzip [ (pair 1 "a") (pair 2 "b") (pair 3 "c") ];
+      expected = pair [ 1 2 3 ] [ "a" "b" "c" ];
+    };
+  };
+
+  zip = {
+    zip_with_empty_list = assertEqual {
+      actual = zip [ ] [ 2 4 6 ];
+      expected = [ ];
+    };
+
+    lists_with_same_length = assertEqual {
+      actual = zip [ 1 2 3 ] [ "a" "b" "c" ];
+      expected = [ (pair 1 "a") (pair 2 "b") (pair 3 "c") ];
+    };
+  };
+
+  zipWith = assertEqual {
+    actual = zipWith add [ 1 2 3 ] [ 4 5 6 ];
+    expected = [ 5 7 9 ];
   };
 }

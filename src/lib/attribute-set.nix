@@ -6,83 +6,167 @@
 }:
 
 let
-  inherit (builtins)
-    attrNames
-    hasAttr
-    mapAttrs
-    removeAttrs
-  ;
-
   inherit (lib)
-    filterAttrs
-    mapAttrs'
-    nameValuePair
+    const
+    flip
+    pipe
   ;
 
   inherit (nix-alacarte)
+    attrs
+    compose
     fst
     list
-    mergeListOfAttrs
+    notEqualTo
     notNull
-    optionalValue
+    options
     pair
-    setAttr
-    setAttrByPath'
+    pipe'
     snd
-    uncons
+  ;
+
+  inherit (attrs)
+    concat
+    filter
+    gen
+    getByPath'
+    has
+    map
+    map'
+    names
+    remove
+    set
+    setByPath
+    zipWith
   ;
 
   inherit (nix-alacarte.internal)
-    assertion
+    throw
   ;
+
+  mkFold = fold:
+    op:
+      compose [ zipWith const (fold op) ];
 in
 
 {
-  forEachAttr = set: f:
-    mapAttrs f set;
-
-  getExistingAttrs = names: set:
+  attrs =
     let
-      getAttrIfExists = set: name:
-        { ${optionalValue (hasAttr name set) name} = set.${name}; };
+      throw' = throw.appendScope "attrs";
     in
-    mergeListOfAttrs (map (getAttrIfExists set) names);
+    {
+      __functor = _:
+        options.attrs;
 
-  partitionAttrs = predicate: set:
-    let
-      right = filterAttrs predicate set;
-    in
-    pair right (removeAttrs set (attrNames right));
+      cartesianProduct = lib.cartesianProductOfSets;
 
-  removeNullAttrs = filterAttrs (_: notNull);
+      cat = builtins.catAttrs;
 
-  renameAttrs = f:
-    mapAttrs' (name: value: nameValuePair (f name value) value);
+      concat = bootstrap.mergeListOfAttrs;
 
-  setAttr = name: value: set:
-    set // { ${name} = value; };
+      count = predicate: attrs:
+        compose [ (list.count (n: predicate n attrs.${n})) names ] attrs;
 
-  setAttrByPath' =
-    let
-      assertion' = assertion.appendScope "setAttrByPath'";
-    in
-    attrPath:
-    let
-      result = list.uncons attrPath;
-      head = fst result;
-      tail = snd result;
-    in
-    assert assertion' (result != null) "empty attribute path";
-    value: set:
-    let
-      value' =
-        if tail == [ ]
-          then value
-          else setAttrByPath' tail value set.${head};
-    in
-    setAttr head value' set;
+      filter = lib.filterAttrs;
 
-  inherit (bootstrap)
-    mergeListOfAttrs
-  ;
+      foldl = mkFold list.foldl;
+
+      foldl' = mkFold list.foldl';
+
+      foldr = mkFold list.foldr;
+
+      forEach = flip map;
+
+      gen = lib.genAttrs;
+
+      get =
+        let
+          throw'' = throw'.appendScope "get";
+        in
+        throw''.unlessGetAttr;
+
+      getByPath = getByPath' null;
+
+      getByPath' = flip lib.attrByPath;
+
+      getMany =
+        let
+          nullValue = { __getManyNullValue = null; };
+          getAttrOrNullValue = attrs: name:
+            attrs.${name} or nullValue;
+        in
+        names:
+          pipe' [
+            getAttrOrNullValue
+            (gen names)
+            (filter (_: notEqualTo nullValue))
+          ];
+
+      has = builtins.hasAttr;
+
+      hasByPath = lib.hasAttrByPath;
+
+      intersect = builtins.intersectAttrs;
+
+      is = builtins.isAttrs;
+
+      map = builtins.mapAttrs;
+
+      map' = f: attrs:
+        pipe attrs [
+          names
+          (list.map (attr: f attr attrs.${attr}))
+          list.toAttrs
+        ];
+
+      mapValues = compose [ map const ];
+
+      mapToList = lib.mapAttrsToList;
+
+      names = builtins.attrNames;
+
+      optional = lib.optionalAttrs;
+
+      partition = predicate: attrs:
+        let
+          right = filter predicate attrs;
+        in
+        pair right (remove (names right) attrs);
+
+      remove = flip builtins.removeAttrs;
+
+      removeNulls = filter (_: notNull);
+
+      rename = f:
+        map' (name: value: pair (f name value) value);
+
+      set = name: value: attrs:
+        attrs // { ${name} = value; };
+
+      setByPath = attrPath:
+        let
+          result = list.uncons attrPath;
+        in
+        if result == null
+          then const
+          else
+            let
+              head = fst result;
+              tail = snd result;
+
+              set' = set head;
+            in
+            value: attrs:
+              let
+                value' =
+                  if tail == [ ]
+                    then value
+                    else setByPath tail value attrs.${head};
+              in
+              set' value' attrs;
+
+      values = builtins.attrValues;
+
+      zipWith = builtins.zipAttrsWith;
+    };
 }

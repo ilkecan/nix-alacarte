@@ -7,14 +7,8 @@
 
 let
   inherit (builtins)
-    elem
-    filter
     functionArgs
-    getAttr
-    intersectAttrs
     isString
-    listToAttrs
-    mapAttrs
     readDir
   ;
 
@@ -23,9 +17,7 @@ let
     flatten
     hasSuffix
     id
-    mapAttrsToList
     mapNullable
-    nameValuePair
     pipe
     removeSuffix
   ;
@@ -35,14 +27,14 @@ let
   ;
 
   inherit (nix-alacarte)
+    attrs
     dirToAttrs
     filesOf
-    forEachAttr
+    list
     nixFiles
+    pair
     pipe'
     relTo
-    list
-    renameAttrs
   ;
 
   inherit (nix-alacarte.path)
@@ -65,7 +57,7 @@ in
     in
     pipe dir [
       readDir
-      (mapAttrs (name: type:
+      (attrs.map (name: type:
         let
           path = mkAbsolute name;
         in
@@ -94,7 +86,7 @@ in
         asAttrs = true;
       })
       (if convertNameToCamel
-        then renameAttrs (name: _: kebabToCamel name)
+        then attrs.rename (name: _: kebabToCamel name)
         else id)
     ];
 
@@ -125,17 +117,17 @@ in
           mkAbsolute = path:
             if isString path then relTo dir path else path;
           excludedPaths' = map mkAbsolute excludedPaths;
-          f = getAttr return;
+          f = attrs.get return;
           f' = if withExtension == "" then const id else
             file: val: if hasSuffix suffix file.name then val else null;
           f'' = file: val:
-            if elem file.path excludedPaths' then null
+            if list.elem file.path excludedPaths' then null
             else if file.type == "directory" && recursive then self file.path
             else val;
           f''' =
             if asAttrs then
               file:
-                mapNullable (nameValuePair file.stem)
+                mapNullable (pair file.stem)
             else
               const id
             ;
@@ -153,16 +145,16 @@ in
             ];
         in
         pipe files [
-          (mapAttrsToList g)
+          (attrs.mapToList g)
           (if recursive then flatten else id)
-          list.removeNulls
-          (if asAttrs then listToAttrs else id)
+          (list.remove null)
+          (if asAttrs then list.toAttrs else id)
         ];
     in
     self;
 
   filterByRelPath = relPath:
-    filter (dir: exists (relTo dir relPath));
+    list.filter (dir: exists (relTo dir relPath));
 
   importDirectory =
     {
@@ -184,10 +176,10 @@ in
       let
         files = nixFiles' dir;
       in
-      forEachAttr files (_: path:
+      attrs.forEach files (_: path:
         let
           fn = import path;
-          fnArgs = intersectAttrs (functionArgs fn) args;
+          fnArgs = attrs.intersect (functionArgs fn) args;
         in
         f fn fnArgs
       );

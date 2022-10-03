@@ -34,10 +34,11 @@ let
     range'
     repeat
     replicate
+    string
     unlines
   ;
 
-  inherit (nix-alacarte.string)
+  inherit (string)
     concat
     intersperse
     length

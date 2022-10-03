@@ -5,17 +5,17 @@
 
 let
   inherit (nix-alacarte)
+    attrs
     bsd
     libc
     lsb
-    mergeListOfAttrs
   ;
 in
 
 {
   systemd = {
     # https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Process%20Exit%20Codes
-    exitCodes = mergeListOfAttrs [
+    exitCodes = attrs.concat [
       libc.exitCodes
       lsb.exitCodes
       {

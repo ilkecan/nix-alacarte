@@ -7,11 +7,11 @@
 let
   inherit (lib)
     importTOML
-    nameValuePair
   ;
 
   inherit (nix-alacarte)
     list
+    pair
   ;
 in
 
@@ -20,7 +20,7 @@ in
     let
       cargoLock = importTOML "${toString directory}/Cargo.lock";
     in
-    list.mapToAttrs (p: nameValuePair p.name p) cargoLock.package;
+    list.mapToAttrs (p: pair p.name p) cargoLock.package;
 
   importCargoToml = directory:
     importTOML "${toString directory}/Cargo.toml";

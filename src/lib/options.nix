@@ -6,34 +6,28 @@
 
 let
   inherit (builtins)
-    mapAttrs
-    removeAttrs
     typeOf
   ;
 
   inherit (lib)
     const
-    genAttrs
     getExe
     id
     isDerivation
     isOptionType
-    nameValuePair
     pipe
-    toList
   ;
 
   inherit (nix-alacarte)
+    attrs
     capitalize
     compose
     list
-    mergeListOfAttrs
     optionalValue
-    setAttr
+    pair
   ;
 
   inherit (nix-alacarte.options)
-    attrs
     coerceTo
     default
     mkBool
@@ -53,32 +47,34 @@ let
 
   types = lib.types // { alacarte = nix-alacarte.types; };
 
-  unsetAttr = name: set:
-    removeAttrs set [ name ];
+  unsetAttr = compose [ attrs.remove list.singleton ];
 
   optionAttributes = [
     "apply"
   ];
 
-  setterFunctions = genAttrs optionAttributes setAttr;
+  setterFunctions = attrs.gen optionAttributes attrs.set;
   unsetterFunctions =
     list.mapToAttrs
-      (name: nameValuePair "unset${capitalize name}" (unsetAttr name))
+      (name: pair "unset${capitalize name}" (unsetAttr name))
       optionAttributes
     ;
 
+  setInternal = attrs.set "internal";
+  setReadOnly = attrs.set "readOnly";
+  setType = attrs.set "type";
   composerFunctions = {
-    default = setAttr "default";
-    internal = setAttr "internal" true;
-    public = setAttr "internal" false;
-    readOnly = setAttr "readOnly" true;
+    default = attrs.set "default";
+    internal = setInternal true;
+    public = setInternal false;
+    readOnly = setReadOnly true;
     required = unsetAttr "default";
-    writable = setAttr "readOnly" false;
+    writable = setReadOnly false;
 
     addCheck = check: option:
-      setAttr "type" (types.addCheck option.type check) option;
-    between = lowest: highest:
-      setAttr "type" (types.ints.between lowest highest);
+      setType (types.addCheck option.type check) option;
+    between = lowest:
+      compose [ setType (types.ints.between lowest) ];
 
     coerceTo = type: coerceFunc: option:
       let
@@ -115,13 +111,13 @@ let
         type = types.nullOr option.type;
       };
     optionalList = option:
-      coerceTo (types.listOf option.type) toList option;
+      coerceTo (types.listOf option.type) list.to option;
     attrs = option:
       let
         apply = option.apply or null;
       in
       option // {
-        ${optionalValue (apply != null) "apply"} = mapAttrs (_: apply);
+        ${optionalValue (apply != null) "apply"} = attrs.map (_: apply);
         default = { };
         type = types.attrsOf option.type;
       };
@@ -151,7 +147,7 @@ let
       then mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
       else compose [ option type ];
 
-  optionFunctions = mergeListOfAttrs [
+  optionFunctions = attrs.concat [
     {
       inherit option;
 
@@ -195,13 +191,13 @@ let
         withDefault [ (default { }) ]
           mkOption types.submodule;
     }
-    (genAttrs libTypeNames (name: mkOption types.${name}))
-    (mapAttrs (_: mkOption) types.alacarte)
+    (attrs.gen libTypeNames (name: mkOption types.${name}))
+    (attrs.map (_: mkOption) types.alacarte)
   ];
 in
 
 {
-  options = mergeListOfAttrs [
+  options = attrs.concat [
     setterFunctions
     unsetterFunctions
     composerFunctions

@@ -5,7 +5,11 @@
 }:
 
 let
-  inherit (nix-alacarte.float)
+  inherit (nix-alacarte)
+    float
+  ;
+
+  inherit (float)
     toString
   ;
 

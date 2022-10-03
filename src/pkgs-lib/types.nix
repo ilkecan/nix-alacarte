@@ -71,7 +71,7 @@ in
           cfg = args.config;
 
           overrideAttrs = drv:
-            foldl' (drv: drv.overrideAttrs) drv cfg.overrideAttrs;
+            list.foldl' (drv: drv.overrideAttrs) drv cfg.overrideAttrs;
           override = drv:
             drv.override cfg.override;
           wrap = drv:

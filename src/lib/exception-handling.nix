@@ -5,17 +5,8 @@
 }:
 
 let
-  inherit (builtins)
-    elem
-    foldl'
-    hasAttr
-    isList
-  ;
-
   inherit (lib)
     id
-    mapAttrsToList
-    toList
   ;
 
   inherit (lib.generators)
@@ -23,6 +14,7 @@ let
   ;
 
   inherit (nix-alacarte)
+    attrs
     compose
     even
     list
@@ -51,18 +43,18 @@ let
 
   appendScope = args:
     newScope:
-      args // { scope = toList args.scope or [ ] ++ [ newScope ]; };
+      args // { scope = list.to args.scope or [ ] ++ list.to newScope; };
 
   colorMap =
     let
-      set = {
+      regions = {
         "`" = { name = "codeBlock"; };
         "\"" = { name = "string"; colorDelimiters = true; };
       };
-      toSet = delimiter: { name, colorDelimiters ? false }:
+      f = delimiter: { name, colorDelimiters ? false }:
         { inherit delimiter name colorDelimiters; };
     in
-    mapAttrsToList toSet set;
+    attrs.mapToList f regions;
 
   autoColor =
     let
@@ -94,7 +86,7 @@ let
           colorOnce delimiter colors.${name} colorDelimiters msg;
       in
       msg:
-        foldl' colorOnce' msg colorMap;
+        list.foldl' colorOnce' msg colorMap;
 in
 
 {
@@ -111,17 +103,17 @@ in
       __functor = _:
         assertion;
 
-      attr = attrName: set:
+      attr = attrName: attrs:
         let
-          pred = hasAttr attrName set;
+          pred = attrs.has attrName attrs;
         in
-        pred || throw.missingAttribute attrName set;
+        pred || throw.missingAttribute attrName attrs;
 
-      oneOf = list: name: value:
+      oneOf = list': name: value:
         let
-          pred = elem value list;
+          pred = list.elem value list';
         in
-        pred || throw.notOneOf list name value;
+        pred || throw.notOneOf list' name value;
     };
 
   mkThrow =
@@ -136,7 +128,7 @@ in
         scope = blue';
         string = green';
       } // color;
-      scope' = if isList scope then string.intersperse "." scope else scope;
+      scope' = if list.is scope then string.intersperse "." scope else scope;
       appendScope' = appendScope args;
 
       prefix = string.optional (scope' != "") "${color'.scope scope'}: ";
@@ -150,14 +142,14 @@ in
         __functor = _:
           throw;
 
-        missingAttribute = attrName: set:
-          throw "attribute `${attrName}` missing in ${toPretty set}";
+        missingAttribute = attrName: attrs:
+          throw "attribute `${attrName}` missing in ${toPretty attrs}";
 
         notOneOf = list: name: value:
           throw "`${name}` is ${toPretty value} but must be one of ${toPretty list}";
 
-        unlessGetAttr = attrName: set:
-          set.${attrName} or (self.missingAttribute attrName set);
+        unlessGetAttr = attrName: attrs:
+          attrs.${attrName} or (self.missingAttribute attrName attrs);
       };
     in
     self;

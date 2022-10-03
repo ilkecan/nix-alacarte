@@ -5,19 +5,16 @@
 }:
 
 let
-  inherit (builtins)
-    listToAttrs
-  ;
-
   inherit (lib)
     getValues
     removeSuffix
   ;
 
   inherit (nix-alacarte)
+    attrs
     list
-    mergeListOfAttrs
     optionalValue
+    pair
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -28,9 +25,9 @@ in
 {
   addPassthru = passthru: drv:
     let
-      drv' = mergeListOfAttrs [
+      drv' = attrs.concat [
         drv
-        (listToAttrs outputList)
+        (list.toAttrs outputList)
         passthru
         {
           ${optionalValue (drv ? all) "all"} = getValues outputList;
@@ -38,19 +35,21 @@ in
         }
       ];
 
-      outputList = list.forEach (drv.outputs or [ ]) (outputName: {
-        name = outputName;
-        value = drv' // {
-          inherit (drv.${outputName})
-            drvPath
-            outPath
-            outputName
-            passthru
-            type
-          ;
-          outputSpecified = true;
-        };
-      });
+      outputList = list.forEach (drv.outputs or [ ]) (name:
+        let
+          value = drv' // {
+            inherit (drv.${name})
+              drvPath
+              outPath
+              outputName
+              passthru
+              type
+            ;
+            outputSpecified = true;
+          };
+        in
+        pair name value
+      );
     in drv';
 
   mkOverlay = args: drvFuncFile:

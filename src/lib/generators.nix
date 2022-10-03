@@ -5,16 +5,13 @@
 }:
 
 let
-  inherit (builtins)
-    isAttrs
-  ;
-
   inherit (lib.generators)
     toINI
     toKeyValue
   ;
 
   inherit (nix-alacarte)
+    attrs
     fmtValue
     indentBy
   ;
@@ -33,7 +30,7 @@ in
       let
         fmtValue' = fmtValue { };
         mkKeyValue = key: value:
-          if isAttrs value
+          if attrs.is value
             then ''
               "${key}"
               {

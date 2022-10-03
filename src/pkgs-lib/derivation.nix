@@ -6,17 +6,14 @@
 }:
 
 let
-  inherit (builtins)
-    baseNameOf
-  ;
-
   inherit (lib)
     escapeShellArg
-    mapAttrsToList
-    toList
   ;
 
   inherit (nix-alacarte)
+    list
+    pipe'
+    string
     unwords
   ;
 
@@ -34,18 +31,23 @@ let
   ;
 
   format = {
-    arg = name: value: "--${name} ${escapeShellArg value}";
-    flag = name: enabled: optional enabled "--${name}";
-    listOfArgs = name: values:
-      let
-        args = map (format.arg name) (toList values);
-      in
-      unwords args;
+    arg = name: value:
+      "--${name} ${escapeShellArg value}";
+    flag = name: enabled:
+      string.optional enabled "--${name}";
+
+    listOfArgs = name:
+      pipe' [
+        list.to
+        (list.map (format.arg name))
+        unwords
+      ];
+
     attrsOfArgs = argName: values:
       let
         formatArg = name: value:
           "--${argName} ${escapeShellArg name} ${escapeShellArg value}";
-        args = mapAttrsToList formatArg values;
+        args = attrs.mapToList formatArg values;
       in
       unwords args;
     listOfArgAttrs = indices: argName: argValues:
@@ -53,7 +55,7 @@ let
         formatValues = values:
           let
             values' =
-              mapAttrsToList (_: name: "${escapeShellArg values.${name}}") indices;
+              attrs.mapToList (_: name: "${escapeShellArg values.${name}}") indices;
           in
           unwords values';
         args = map (values: "--${argName} ${formatValues values}") argValues;
@@ -105,44 +107,46 @@ let
 in
 
 {
-  wrapExecutable = exe: {
-    outPath ? "",
-    name ? baseNameOf (if outPath == "" then exe else outPath),
+  wrapExecutable =
+    let
+      env = { nativeBuildInputs = [ makeWrapper ]; };
+      fmtArg = name: value:
+        string.optional (value != null) (formatArgs.${name} (camelToKebab name) value);
+      fmtArgs = pipe' [
+        (attrs.remove [ "name" "outPath" ])
+        (attrs.mapToList fmtArg)
+        toString
+      ];
+    in
+    exe: {
+      outPath ? "",
+      name ? baseNameOf (if outPath == "" then exe else outPath),
 
-    argv0 ? null,
-    inheritArgv0 ? false,
+      argv0 ? null,
+      inheritArgv0 ? false,
 
-    set ? { },
-    setDefault ? { },
-    unset ? [ ],
+      set ? { },
+      setDefault ? { },
+      unset ? [ ],
 
-    chdir ? null,
-    run ? [ ],
+      chdir ? null,
+      run ? [ ],
 
-    addFlags ? [ ],
-    appendFlags ? [ ],
+      addFlags ? [ ],
+      appendFlags ? [ ],
 
-    prefix ? [ ],
-    suffix ? [ ],
-    prefixEach ? [ ],
-    suffixEach ? [ ],
-    prefixContents ? [ ],
-    suffixContents ? [ ],
-  }@args:
-  let
-    env = { nativeBuildInputs = [ makeWrapper ]; };
-    outPath' = if outPath == "" then "$out" else "$out/${outPath}";
-
-    args' = removeAttrs args [
-      "name"
-      "outPath"
-    ];
-    arguments = mapAttrsToList (name: value:
-      optional (value != null) (formatArgs.${name} (camelToKebab name) value)
-    ) args';
-  in
-  runCommandLocal name env ''
-    mkdir --parents ${dirOf outPath'}
-    makeWrapper ${exe} ${outPath'} ${toString arguments}
-  '';
+      prefix ? [ ],
+      suffix ? [ ],
+      prefixEach ? [ ],
+      suffixEach ? [ ],
+      prefixContents ? [ ],
+      suffixContents ? [ ],
+    }@args:
+    let
+      outPath' = "$out/${outPath}";
+    in
+    runCommandLocal name env ''
+      mkdir --parents ${dirOf outPath'}
+      makeWrapper ${exe} ${outPath'} ${fmtArgs args}
+    '';
 }

@@ -4,11 +4,8 @@
 }@args:
 
 let
-  inherit (builtins)
-    attrValues
-  ;
-
   inherit (nix-alacarte)
+    attrs
     pair
     pipe'
     string
@@ -30,7 +27,7 @@ in
 
     join = separator:
       pipe' [
-        attrValues
+        attrs.values
         (map toString)
         (string.intersperse separator)
       ];

@@ -7,20 +7,13 @@
 }:
 
 let
-  inherit (builtins)
-    attrValues
-    mapAttrs
-  ;
-
   inherit (lib)
-    filterAttrs
-    genAttrs
     pipe
   ;
 
   inherit (nix-alacarte)
+    attrs
     dirToAttrs
-    forEachAttr
     list
   ;
 in
@@ -30,15 +23,15 @@ in
     let
       patchesFor = pipe patchesDir [
         dirToAttrs
-        (mapAttrs (_: attrValues))
-        (filterAttrs (_: list.notEmpty))
+        (attrs.map (_: attrs.values))
+        (attrs.filter (_: list.notEmpty))
       ];
     in
-    genAttrs systems (system:
+    attrs.gen systems (system:
       let
         inherit (inputs.nixpkgs.legacyPackages.${system}) applyPatches;
       in
-      inputs' // forEachAttr patchesFor (inputName: patches:
+      inputs' // attrs.forEach patchesFor (inputName: patches:
         let
           input = inputs'.${inputName};
           # TODO: use fetchTree after https://github.com/NixOS/nix/pull/6530 is merged

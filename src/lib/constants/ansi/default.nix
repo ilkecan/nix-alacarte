@@ -6,17 +6,14 @@
 
 let
   inherit (builtins)
-    mapAttrs
     typeOf
   ;
 
-  inherit (lib)
-    nameValuePair
-  ;
-
   inherit (nix-alacarte)
+    attrs
     increment
     list
+    pair
     pipe'
     uncommands
   ;
@@ -70,7 +67,7 @@ in
         # https://www.ecma-international.org/wp-content/uploads/ECMA-48_5th_edition_june_1991.pdf#page=75
         mkSequence = final:
           pipe' [
-          (map toString)
+          (list.map toString)
           uncommands
           # use the two-character `ESC [` sequence instead of the 8-bit C1 CSI
           # code to work in UTF-8 environments
@@ -79,7 +76,7 @@ in
 
         SGR =
           let
-            f = mapAttrs (_: value:
+            f = attrs.map (_: value:
               {
                 set = f value;
                 int = SGR.mkSequence [ value ];
@@ -104,7 +101,7 @@ in
             font = {
               primary = 10;
             } // list.mapToAttrs
-              (i: nameValuePair "alternative${toString i}" (10 + i))
+              (i: pair "alternative${toString i}" (10 + i))
               (list.gen increment 9);
             fraktur = 20;
             doubleUnderline = 21;

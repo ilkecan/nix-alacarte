@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    hasAttr
     typeOf
   ;
 
@@ -22,6 +21,7 @@ let
 
   inherit (nix-alacarte)
     allEqual
+    attrs
     fmtValue
     list
     unwords
@@ -37,7 +37,7 @@ in
         self = mkOptionType {
           name = "coercibleToString";
           check = x:
-            hasAttr (typeOf x) coerceFunctions || isCoercibleToString x;
+            attrs.has (typeOf x) coerceFunctions || isCoercibleToString x;
           merge = loc: defs:
             let
               values = getValues defs;

@@ -7,6 +7,7 @@
 
 let
   inherit (lib)
+    id
     mkOption
     types
   ;
@@ -122,7 +123,7 @@ in
     in
     {
       type_is_correct = assertEqual {
-        actual = (coerceTo types.unspecified lib.id emptyOption).type.name;
+        actual = (coerceTo types.unspecified id emptyOption).type.name;
         expected = "coercedTo";
       };
 
