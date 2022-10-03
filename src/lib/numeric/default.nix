@@ -12,11 +12,14 @@ let
 
   inherit (nix-alacarte)
     add
+    compose
+    equalTo
     greaterThan'
     lessThan'
     mod'
     negate
     negative
+    notEqualTo
     sub
     sub'
   ;
@@ -30,8 +33,7 @@ in
 
   decrement = sub' 1;
 
-  even = number:
-    mod number 2 == 0;
+  even = compose [ (equalTo 0) (mod' 2) ];
 
   float = import ./float.nix args;
 
@@ -46,8 +48,7 @@ in
 
   negative = lessThan' 0;
 
-  odd = number:
-    mod number 2 == 1;
+  odd = compose [ (notEqualTo 0) (mod' 2) ];
 
   positive = greaterThan' 0;
 

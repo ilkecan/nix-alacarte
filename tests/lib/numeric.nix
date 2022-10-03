@@ -89,8 +89,17 @@ in
   };
 
   even = {
-    true = assertTrue even 4;
-    false = assertFalse even 3;
+    positive = {
+      true = assertTrue even 4;
+      false = assertFalse even 3;
+    };
+
+    zero = assertTrue even 0;
+
+    negative = {
+      true = assertTrue even (-4);
+      false = assertFalse even (-3);
+    };
   };
 
   increment = {
@@ -161,8 +170,17 @@ in
   };
 
   odd = {
-    true = assertTrue odd 5;
-    false = assertFalse odd 4;
+    positive = {
+      true = assertTrue odd 5;
+      false = assertFalse odd 4;
+    };
+
+    zero = assertFalse odd 0;
+
+    negative = {
+      true = assertTrue odd (-5);
+      false = assertFalse odd (-4);
+    };
   };
 
   positive = {
