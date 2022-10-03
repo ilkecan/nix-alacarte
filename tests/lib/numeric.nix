@@ -9,10 +9,13 @@ let
     abs
     add
     decrement
+    div
+    div'
     even
     increment
     mod
     mod'
+    mul
     negate
     negative
     odd
@@ -89,6 +92,16 @@ in
     };
   };
 
+  div = assertEqual {
+    actual = div 13 7;
+    expected = 1;
+  };
+
+  div' = assertEqual {
+    actual = div' 2 5;
+    expected = 2;
+  };
+
   even = {
     positive = {
       true = assertTrue even 4;
@@ -123,6 +136,11 @@ in
   mod' = assertEqual {
     actual = mod' 2 5;
     expected = 1;
+  };
+
+  mul = assertEqual {
+    actual = mul (-4) 9;
+    expected = -36;
   };
 
   negate = {

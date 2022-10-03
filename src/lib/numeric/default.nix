@@ -12,6 +12,7 @@ let
   inherit (nix-alacarte)
     add
     compose
+    div
     equalTo
     greaterThan'
     lessThan'
@@ -33,6 +34,10 @@ in
 
   decrement = sub' 1;
 
+  div = builtins.div;
+
+  div' = flip div;
+
   even = compose [ (equalTo 0) (mod' 2) ];
 
   float = import ./float.nix args;
@@ -44,6 +49,8 @@ in
   mod = lib.mod;
 
   mod' = flip mod;
+
+  mul = builtins.mul;
 
   negate = number:
     -number;
