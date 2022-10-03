@@ -7,6 +7,7 @@
 let
   inherit (lib)
     flip
+    id
     max
     min
   ;
@@ -15,14 +16,32 @@ let
     compose
     greaterThan
     greaterThanOrEqualTo
+    int
     lessThan
     lessThanOrEqualTo
+    unwrapOr
+  ;
+
+  inherit (nix-alacarte.internal)
+    assertion
   ;
 in
 
 {
-  clamp = low: high:
-    compose [ (min high) (max low) ];
+  clamp =
+    let
+      assertion' = assertion.appendScope "clamp";
+    in
+    low:
+      let
+        max' = if low == null then id else max low;
+      in
+      high:
+        let
+          min' = if high == null then id else min high;
+        in
+        assert assertion' (low == null || high == null || low <= high) "`low` cannot be greater than `high`";
+        compose [ min' max' ];
 
   equalTo = lhs: rhs:
     lhs == rhs;

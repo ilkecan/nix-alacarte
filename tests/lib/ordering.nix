@@ -21,6 +21,7 @@ let
 
   inherit (dnm)
     assertEqual
+    assertFailure
     assertFalse
     assertTrue
   ;
@@ -32,6 +33,8 @@ in
       clamp' = clamp 4 10;
     in
     {
+      low_is_greater_than_high = assertFailure clamp 10 2 4;
+
       too_low = assertEqual {
         actual = clamp' (-3);
         expected = 4;
@@ -45,6 +48,21 @@ in
       too_high = assertEqual {
         actual = clamp' 23;
         expected = 10;
+      };
+
+      without_low = assertEqual {
+        actual = clamp null 10 12;
+        expected = 10;
+      };
+
+      without_high = assertEqual {
+        actual = clamp 7 null (-8);
+        expected = 7;
+      };
+
+      without_both_low_and_high = assertEqual {
+        actual = clamp null null 184.9;
+        expected = 184.9;
       };
     };
 
