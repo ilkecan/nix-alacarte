@@ -46,9 +46,9 @@ let
     throw
   ;
 
-  mkFold = fold:
-    op:
-      compose [ zipWith const (fold op) ];
+  inherit (nix-alacarte.internal.attrs)
+    mkFold
+  ;
 in
 
 {
