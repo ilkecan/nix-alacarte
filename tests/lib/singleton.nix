@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    add
-  ;
-
   inherit (nix-alacarte.tuple)
     singleton
   ;
@@ -32,7 +28,7 @@ in
 
   pair = assertEqual {
     actual = singleton "svh";
-    expected = { "0" = "svh"; };
+    expected = { "fst" = "svh"; };
   };
 
   uncurry = assertEqual {

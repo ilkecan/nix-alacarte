@@ -18,7 +18,7 @@ in
 {
   __functor = _:
     x: y:
-      { "0" = x; "1" = y; };
+      { "fst" = x; "snd" = y; };
 
   curry = f: x: y:
     f (pair x y);

@@ -23,7 +23,7 @@ in
       let
         throw' = throw.appendScope "fst";
       in
-      throw'.unlessGetAttr "0";
+      throw'.unlessGetAttr "fst";
 
     join = separator:
       pipe' [
@@ -40,7 +40,7 @@ in
       let
         throw' = throw.appendScope "snd";
       in
-      throw'.unlessGetAttr "1";
+      throw'.unlessGetAttr "snd";
 
     unit = import ./unit.nix args;
   };

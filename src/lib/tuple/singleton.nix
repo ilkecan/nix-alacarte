@@ -17,7 +17,7 @@ in
 {
   __functor = _:
     x:
-      { "0" = x; };
+      { "fst" = x; };
 
   curry = f: x:
     f (singleton x);

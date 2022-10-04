@@ -33,7 +33,7 @@ in
 
   pair = assertEqual {
     actual = pair 2.4 true;
-    expected = { "0" = 2.4; "1" = true; };
+    expected = { "fst" = 2.4; "snd" = true; };
   };
 
   uncurry = assertEqual {
@@ -43,6 +43,6 @@ in
 
   swap = assertEqual {
     actual = swap (pair 23 false);
-    expected = { "0" = false; "1" = 23; };
+    expected = { "fst" = false; "snd" = 23; };
   };
 }
