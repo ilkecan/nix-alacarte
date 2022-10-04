@@ -175,6 +175,8 @@ in
 
       values = builtins.attrValues;
 
+      zip = lib.zipAttrs;
+
       zipWith = builtins.zipAttrsWith;
     };
 }

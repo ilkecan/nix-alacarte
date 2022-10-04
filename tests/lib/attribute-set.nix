@@ -46,6 +46,7 @@ let
     setByPath
     toList
     values
+    zip
     zipWith
   ;
 
@@ -340,6 +341,11 @@ in
   values = assertEqual {
     actual = values { c = null; x = 123; y = 41.2; };
     expected = [ null 123 41.2 ];
+  };
+
+  zip = assertEqual {
+    actual = zip [ { a = 1; b = 2; } { a = 5; } ];
+    expected = { a = [ 1 5 ]; b = [ 2 ]; };
   };
 
   zipWith = assertEqual {
