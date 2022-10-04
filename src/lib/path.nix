@@ -13,7 +13,6 @@ let
     add
     list
     mapOr
-    notEqualTo
     path
     pipe'
     str
@@ -25,12 +24,9 @@ let
     name
   ;
 
-  extensionsUnsafe = 
-    pipe' [
-      (str.split ".")
-      (list.filter (notEqualTo ""))
-      (list.drop 1)
-    ];
+  inherit (nix-alacarte.internal.path)
+    extensionsUnsafe
+  ;
 in
   
 {
