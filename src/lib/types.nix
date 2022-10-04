@@ -27,7 +27,9 @@ let
     unwords
   ;
 
-  types = lib.types // nix-alacarte.types;
+  inherit (nix-alacarte.internal)
+    types
+  ;
 in
 
 {

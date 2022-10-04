@@ -39,13 +39,15 @@ let
     required
   ;
 
+  inherit (nix-alacarte.internal)
+    types
+  ;
+
   inherit (nix-alacarte.internal.options)
     generateOptions
     mkOptionConstructor
     withDefault
   ;
-
-  types = lib.types // { alacarte = nix-alacarte.types; };
 
   unsetAttr = compose [ attrs.remove list.singleton ];
 

@@ -32,7 +32,9 @@ let
     options
   ;
 
-  types = lib.types // nix-alacarte.types;
+  inherit (nix-alacarte.internal)
+    types
+  ;
 
   mkArgType = name:
     types.submodule {
@@ -111,9 +113,9 @@ in
               };
             } [ optional ];
 
-            override = mkOption types.genericValue [ attrs optional ];
+            override = mkOption types.alacarte.genericValue [ attrs optional ];
 
-            overrideAttrs = mkOption types.overrideAttrsArgs [ optional ];
+            overrideAttrs = mkOption types.alacarte.overrideAttrsArgs [ optional ];
 
             final = mkPackage [ internal readOnly ];
           };
@@ -133,7 +135,8 @@ in
 
     smartPackage = default:
       let
-        packageSubmodule = types.packageSubmodule (toPackageSubmoduleConfig default);
+        packageSubmodule =
+          types.alacarte.packageSubmodule (toPackageSubmoduleConfig default);
       in
       mkOptionType {
         name = "smartPackage";

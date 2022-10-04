@@ -19,19 +19,22 @@ let
     fromGenerator
   ;
 
+  inherit (nix-alacarte.internal)
+    types
+  ;
+
   inherit (pkgs)
     writeText
   ;
 
   formats = pkgs.formats // nix-alacarte.formats;
-  types = lib.types // nix-alacarte.types;
 in
 {
   formats = {
     fromGenerator = generator: {
       generate = name: value:
         writeText name (generator value);
-      type = types.genericValue;
+      type = types.alacarte.genericValue;
     };
 
     generic = args:
