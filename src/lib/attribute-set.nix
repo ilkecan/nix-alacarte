@@ -33,6 +33,7 @@ let
     has
     map
     map'
+    mapToList
     merge
     names
     remove
@@ -169,6 +170,8 @@ in
                     else setByPath tail value attrs.${head};
               in
               set' value' attrs;
+
+      toList = mapToList pair;
 
       values = builtins.attrValues;
 

@@ -44,6 +44,7 @@ let
     rename
     set
     setByPath
+    toList
     values
     zipWith
   ;
@@ -329,6 +330,11 @@ in
       actual = setByPath [ "top" "middle" "bottom" ] 42 { top = { middle = { bottom = null; }; other = "hey"; }; };
       expected = { top = { middle = { bottom = 42; }; other = "hey"; }; };
     };
+  };
+
+  toList = assertEqual {
+    actual = toList { a = 1; b = 2; c = 3; };
+    expected = [ (pair "a" 1) (pair "b" 2) (pair "c" 3) ];
   };
 
   values = assertEqual {
