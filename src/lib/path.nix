@@ -11,11 +11,14 @@ let
 
   inherit (nix-alacarte)
     list
+    notEqualTo
     path
+    pipe'
+    string
   ;
 
-  inherit (nix-alacarte.string)
-    split
+  inherit (path)
+    components
   ;
 in
   
@@ -31,20 +34,29 @@ in
       if path == ""
         then [ ]
         else pipe path [
-          (split "/")
+          (string.split "/")
           (list.ifilter (i: v: !list.elem v componentsToRemove || i == 0))
           (list.imap (i: v: if i == 0 && v == "" then "/" else v))
         ];
 
     exists = builtins.pathExists;
 
-    isAbsolute = path':
+    extensions =
+      pipe' [
+        components
+        list.last
+        (string.split ".")
+        (list.filter (notEqualTo ""))
+        (list.drop 1)
+      ];
+
+    isAbsolute = path:
       let
-        components = path.components path';
+        components' = components path;
       in
-      if components == [ ]
+      if components' == [ ]
         then false
-        else list.head components == "/";
+        else list.head components' == "/";
 
     relativeTo = dir: path:
       dir + "/${toString path}";
