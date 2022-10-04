@@ -6,7 +6,6 @@
 
 let
   inherit (builtins)
-    substring
     typeOf
   ;
 
@@ -14,6 +13,8 @@ let
     const
     id
     lowerChars
+    max
+    min
     pipe
     reverseList
     toUpper
@@ -42,10 +43,12 @@ let
     length
     optional
     replace
+    slice
     split
   ;
 
   inherit (nix-alacarte.internal)
+    normalizeNegativeIndex
     throw
   ;
 
@@ -65,7 +68,7 @@ let
         searcher =
           {
             string = str: i:
-              substring i patternLength str == pattern;
+              slice i (i + patternLength) str == pattern;
             lambda = pattern;
           }.${patternType} or (throw' [ "string" "lambda" ] "`typeOf pattern`" patternType);
       in
@@ -76,6 +79,28 @@ let
           (if reverse then reverseList else id)
           (list.find (searcher str))
         ];
+
+  sliceUnsafe = start: end:
+    builtins.substring start (end - start);
+
+  slice' =
+    {
+      normalizeNegativeIndex ? const id,
+    }:
+    start: end: string:
+      let
+        length' = length string;
+        normalizeNegativeIndex' = normalizeNegativeIndex length';
+        start' = pipe start [
+          normalizeNegativeIndex'
+          (max 0)
+        ];
+        end' = pipe end [
+          normalizeNegativeIndex'
+          (max start')
+        ];
+      in
+      sliceUnsafe start' end' string;
 in
 
 {
@@ -87,8 +112,8 @@ in
 
   capitalize = string:
     let
-      first = substring 0 1 string;
-      rest = substring 1 (length string) string;
+      first = slice 0 1 string;
+      rest = slice 1 int.MAX string;
     in
     (toUpper first) + rest;
 
@@ -163,6 +188,8 @@ in
 
     replace = builtins.replaceStrings;
 
+    slice = slice' { inherit normalizeNegativeIndex; };
+
     split = lib.splitString;
 
     splitAt = index:
@@ -171,8 +198,8 @@ in
       in
       str:
         pair
-          (substring 0 index' str)
-          (substring index' int.MAX str);
+          (slice 0 index' str)
+          (slice index' int.MAX str);
 
     unsafeDiscardContext = builtins.unsafeDiscardStringContext;
   };

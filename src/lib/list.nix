@@ -73,12 +73,8 @@ let
 
   inherit (nix-alacarte.internal)
     assertion
+    normalizeNegativeIndex
   ;
-
-  normalizeNegativeIndex = length: index:
-    if negative index
-      then length + index
-      else index;
 
   sliceUnsafe =
     {

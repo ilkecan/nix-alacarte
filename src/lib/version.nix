@@ -9,7 +9,6 @@ let
     filter
     readFile
     sort
-    substring
   ;
 
   inherit (lib)
@@ -19,6 +18,7 @@ let
 
   inherit (nix-alacarte)
     lessThan
+    string
   ;
 
   inherit (nix-alacarte.string)
@@ -43,9 +43,9 @@ in
 
   getUnstableVersion = lastModifiedDate:
     let
-      year = substring 0 4 lastModifiedDate;
-      month = substring 4 2 lastModifiedDate;
-      day = substring 6 2 lastModifiedDate;
+      year = string.slice 0 4 lastModifiedDate;
+      month = string.slice 4 6 lastModifiedDate;
+      day = string.slice 6 8 lastModifiedDate;
     in
     "unstable-${year}-${month}-${day}";
 }

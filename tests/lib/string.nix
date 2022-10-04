@@ -6,14 +6,6 @@
 }:
 
 let
-  inherit (builtins)
-    substring
-  ;
-
-  inherit (lib)
-    hasPrefix
-  ;
-
   inherit (nix-alacarte)
     addPrefix
     addSuffix
@@ -39,8 +31,9 @@ let
     concat
     concatMap
     find
-    rfind
     replace
+    rfind
+    slice
     split
     splitAt
   ;
@@ -130,7 +123,7 @@ in
     };
 
     lambda_pattern = assertEqual {
-      actual = find (str: i: hasPrefix "AR" (substring i int.MAX str)) "foObARbAz";
+      actual = find (str: i: (slice i (i + 2) str) == "AR") "foObARbAz";
       expected = 4;
     };
   };
@@ -159,7 +152,7 @@ in
     };
 
     lambda_pattern = assertEqual {
-      actual = rfind (str: i: hasPrefix "AR" (substring i int.MAX str)) "foObARbAz";
+      actual = rfind (str: i: (slice i (i + 2) str) == "AR") "foObARbAz";
       expected = 4;
     };
   };
@@ -268,6 +261,47 @@ in
       changed = assertEqual {
         actual = plural "fly";
         expected = "flies";
+      };
+    };
+
+  slice =
+    let
+      string = "abcde";
+    in
+    {
+      start_is_greater_than_end = assertEqual {
+        actual = slice 3 2 string;
+        expected = "";
+      };
+
+      start_and_end_are_the_same = assertEqual {
+        actual = slice 1 1 string;
+        expected = "";
+      };
+
+      start_is_negative = assertEqual {
+        actual = slice (-3) 4 string;
+        expected = "cd";
+      };
+
+      start_is_negative_out_of_bounds = assertEqual {
+        actual = slice (-29) 4 string;
+        expected = "abcd";
+      };
+
+      end_is_negative = assertEqual {
+        actual = slice 1 (-1) string;
+        expected = "bcd";
+      };
+
+      end_is_out_of_bounds = assertEqual {
+        actual = slice 1 22 string;
+        expected = "bcde";
+      };
+
+      end_is_negative_out_of_bounds = assertEqual {
+        actual = slice 3 (-14) string;
+        expected = "";
       };
     };
 
