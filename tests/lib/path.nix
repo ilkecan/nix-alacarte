@@ -10,12 +10,14 @@ let
     exists
     extensions
     isAbsolute
+    name
     relativeTo
   ;
 
   inherit (dnm)
     assertEqual
     assertFalse
+    assertNull
     assertTrue
   ;
 in
@@ -110,6 +112,32 @@ in
     string_empty = assertFalse isAbsolute "";
     string_absolute = assertTrue isAbsolute "/var/root";
     string_relative = assertFalse isAbsolute ".git/config";
+  };
+
+  name = {
+    absolute_dir = assertEqual {
+      actual = name "/usr/bin/";
+      expected = "bin";
+    };
+
+    relative_file = assertEqual {
+      actual = name "tmp/foo.txt";
+      expected = "foo.txt";
+    };
+
+    skip_current_dir = assertEqual {
+      actual = name "foo.txt/.";
+      expected = "foo.txt";
+    };
+
+    skip_empty_components = assertEqual {
+      actual = name "foo.txt/.//";
+      expected = "foo.txt";
+    };
+
+    considers_parent_dir = assertNull name "foo.txt/..";
+
+    root = assertNull name "/";
   };
 
   relativeTo = {

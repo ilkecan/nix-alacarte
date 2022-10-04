@@ -11,6 +11,7 @@ let
 
   inherit (nix-alacarte)
     list
+    mapOr
     notEqualTo
     path
     pipe'
@@ -19,7 +20,15 @@ let
 
   inherit (path)
     components
+    name
   ;
+
+  extensionsUnsafe = 
+    pipe' [
+      (string.split ".")
+      (list.filter (notEqualTo ""))
+      (list.drop 1)
+    ];
 in
   
 {
@@ -43,11 +52,8 @@ in
 
     extensions =
       pipe' [
-        components
-        list.last
-        (string.split ".")
-        (list.filter (notEqualTo ""))
-        (list.drop 1)
+        name
+        (mapOr [ ] extensionsUnsafe)
       ];
 
     isAbsolute = path:
@@ -57,6 +63,17 @@ in
       if components' == [ ]
         then false
         else list.head components' == "/";
+
+    name = path:
+      let
+        last' = pipe path [
+          components
+          list.last
+        ];
+      in
+      if list.elem last' [ "/" ".." ]
+        then null
+        else last';
 
     relativeTo = dir: path:
       dir + "/${toString path}";
