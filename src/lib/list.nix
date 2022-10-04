@@ -13,7 +13,6 @@ let
   inherit (lib)
     const
     flip
-    id
     max
     min
     pipe
@@ -77,32 +76,10 @@ let
     normalizeNegativeIndex
   ;
 
-  sliceUnsafe =
-    {
-      step ? 1,
-    }:
-    start: end: list:
-      map (elemAt list) (range3 step start end);
-
-  slice' =
-    {
-      normalizeNegativeIndex ? const id,
-      step ? 1,
-    }:
-    start: end: list:
-      let
-        length' = length list;
-        normalizeNegativeIndex' = normalizeNegativeIndex length';
-        start' = pipe start [
-          normalizeNegativeIndex'
-          (max 0)
-        ];
-        end' = pipe end [
-          normalizeNegativeIndex'
-          (min length')
-        ];
-      in
-      sliceUnsafe { inherit step; } start' end' list;
+  inherit (nix-alacarte.internal.list)
+    slice'
+    sliceUnsafe
+  ;
 in
 
 {
