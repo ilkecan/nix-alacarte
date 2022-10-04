@@ -16,6 +16,7 @@ let
     isAbsolute
     name
     relativeTo
+    stem
   ;
 
   inherit (dnm)
@@ -164,5 +165,36 @@ in
       actual = relativeTo "./example" "abc";
       expected = "./example/abc";
     };
+  };
+
+  stem = {
+    absolute_dir = assertEqual {
+      actual = stem "/usr/bin/";
+      expected = "bin";
+    };
+
+    relative_file = assertEqual {
+      actual = stem "tmp/foo.txt";
+      expected = "foo";
+    };
+
+    multiple_extensions = assertEqual {
+      actual = stem "project/master.tar.gz";
+      expected = "master";
+    };
+
+    skip_current_dir = assertEqual {
+      actual = stem "foo.txt/.";
+      expected = "foo";
+    };
+
+    skip_empty_components = assertEqual {
+      actual = stem "foo.txt/.//";
+      expected = "foo";
+    };
+
+    considers_parent_dir = assertNull stem "foo.txt/..";
+
+    root = assertNull stem "/";
   };
 }

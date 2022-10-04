@@ -10,12 +10,14 @@ let
   ;
 
   inherit (nix-alacarte)
+    add
     list
     mapOr
     notEqualTo
     path
     pipe'
     str
+    sub
   ;
 
   inherit (path)
@@ -77,5 +79,19 @@ in
 
     relativeTo = dir: path:
       dir + "/${toString path}";
+
+    stem = path:
+      let
+        name' = name path;
+        nameLength = str.length name';
+        extensions = extensionsUnsafe name';
+      in
+      mapOr null (pipe extensions [
+        (list.map str.length)
+        list.sum
+        (add (list.length extensions))
+        (sub nameLength)
+        str.take
+      ]) name';
   };
 }
