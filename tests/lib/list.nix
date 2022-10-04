@@ -180,7 +180,7 @@ in
     {
       negative = assertEqual {
         actual = drop (-2) list;
-        expected = [ 0 1 2 3 4 ];
+        expected = list;
       };
 
       positive = {
@@ -729,7 +729,7 @@ in
 
         out_of_range = assertEqual {
           actual = take 9 list;
-          expected = [ 0 1 2 3 4 ];
+          expected = list;
         };
       };
     };

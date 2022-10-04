@@ -176,6 +176,9 @@ in
 
     concatMap = lib.concatMapStrings;
 
+    drop = count:
+      slice' { } count int.MAX;
+
     find = find' false;
 
     intersperse = builtins.concatStringsSep;

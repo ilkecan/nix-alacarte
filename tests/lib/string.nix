@@ -30,6 +30,7 @@ let
   inherit (string)
     concat
     concatMap
+    drop
     find
     replace
     rfind
@@ -99,6 +100,29 @@ in
     actual = concatMap (s: "${s}, ") [ "foo" "bar" "baz" ];
     expected = "foo, bar, baz, ";
   };
+
+  drop =
+    let
+      string = "abcde";
+    in
+    {
+      negative = assertEqual {
+        actual = drop (-2) string;
+        expected = string;
+      };
+
+      positive = {
+        in_range = assertEqual {
+          actual = drop 3 string;
+          expected = "de";
+        };
+
+        out_of_range = assertEqual {
+          actual = drop 9 string;
+          expected = "";
+        };
+      };
+    };
 
   find = {
     nonexisting = assertNull find "a" "bbc";
@@ -353,7 +377,7 @@ in
 
         out_of_range = assertEqual {
           actual = take 9 string;
-          expected = "abcde";
+          expected = string;
         };
       };
     };
