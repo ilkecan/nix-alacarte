@@ -15,6 +15,11 @@ in
 
   notNull = notEqualTo null;
 
+  mapOr = default: f: value:
+    if value == null
+      then default
+      else f value;
+
   optionalValue = condition: value:
     if condition then
       value

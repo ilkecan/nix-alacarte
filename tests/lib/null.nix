@@ -7,6 +7,8 @@
 let
   inherit (nix-alacarte)
     isNull
+    mapOr
+    mul
     notNull
     optionalValue
     unwrapOr
@@ -25,6 +27,22 @@ in
     null = assertTrue isNull null;
     not_null = assertFalse isNull true;
   };
+
+  mapOr =
+    let
+      doubleOrZero = mapOr 0 (mul 2);
+    in
+    {
+      not_null = assertEqual {
+        actual = doubleOrZero 4;
+        expected = 8;
+      };
+
+      null = assertEqual {
+        actual = doubleOrZero null;
+        expected = 0;
+      };
+    };
 
   notNull = {
     not_null = assertTrue notNull 4.2;
