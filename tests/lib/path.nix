@@ -9,6 +9,7 @@ let
     components
     exists
     isAbsolute
+    relativeTo
   ;
 
   inherit (dnm)
@@ -76,5 +77,27 @@ in
     string_empty = assertFalse isAbsolute "";
     string_absolute = assertTrue isAbsolute "/var/root";
     string_relative = assertFalse isAbsolute ".git/config";
+  };
+
+  relativeTo = {
+    path_path = assertEqual {
+      actual = relativeTo ./example /abc;
+      expected = ./example/abc;
+    };
+
+    path_string = assertEqual {
+      actual = relativeTo ./example "abc";
+      expected = ./example/abc;
+    };
+
+    string_path = assertEqual {
+      actual = relativeTo "./example" /abc;
+      expected = "./example//abc";
+    };
+
+    string_string = assertEqual {
+      actual = relativeTo "./example" "abc";
+      expected = "./example/abc";
+    };
   };
 }

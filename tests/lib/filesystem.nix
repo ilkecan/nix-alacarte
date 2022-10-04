@@ -10,7 +10,6 @@ let
     filesOf
     importDirectory
     nixFiles
-    relTo
   ;
 
   inherit (dnm)
@@ -124,27 +123,5 @@ in
   nixFiles = assertEqual {
     actual = nixFiles { } ./fixtures/nix-files;
     expected = { fooBar = ./fixtures/nix-files/foo-bar.nix; baz = ./fixtures/nix-files/baz.nix; };
-  };
-
-  relTo = {
-    path_path = assertEqual {
-      actual = relTo ./example /abc;
-      expected = ./example/abc;
-    };
-
-    path_string = assertEqual {
-      actual = relTo ./example "abc";
-      expected = ./example/abc;
-    };
-
-    string_path = assertEqual {
-      actual = relTo "./example" /abc;
-      expected = "./example//abc";
-    };
-
-    string_string = assertEqual {
-      actual = relTo "./example" "abc";
-      expected = "./example/abc";
-    };
   };
 }

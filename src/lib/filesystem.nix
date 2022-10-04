@@ -33,8 +33,8 @@ let
     list
     nixFiles
     pair
+    path
     pipe'
-    relTo
   ;
 
   inherit (nix-alacarte.path)
@@ -53,7 +53,7 @@ in
 {
   dirToAttrs = dir:
     let
-      mkAbsolute = relTo dir;
+      mkAbsolute = path.relativeTo dir;
     in
     pipe dir [
       readDir
@@ -114,8 +114,8 @@ in
         let
           suffix = ".${withExtension}";
           files = readDir dir;
-          mkAbsolute = path:
-            if isString path then relTo dir path else path;
+          mkAbsolute = path':
+            if isString path' then path.relativeTo dir path' else path';
           excludedPaths' = map mkAbsolute excludedPaths;
           f = attrs.get return;
           f' = if withExtension == "" then const id else
@@ -133,9 +133,9 @@ in
             ;
           g = name: type:
             let
-              path = relTo dir name;
+              path' = path.relativeTo dir name;
               stem = removeSuffix suffix name;
-              file = { inherit name path stem type; };
+              file = { inherit name stem type; path = path'; };
             in
             pipe file [
               f
@@ -154,7 +154,7 @@ in
     self;
 
   filterByRelPath = relPath:
-    list.filter (dir: exists (relTo dir relPath));
+    list.filter (dir: exists (path.relativeTo dir relPath));
 
   importDirectory =
     {
@@ -183,7 +183,4 @@ in
         in
         f fn fnArgs
       );
-
-  relTo = dir: path:
-    dir + "/${toString path}";
 }

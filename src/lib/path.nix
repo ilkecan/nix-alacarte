@@ -45,5 +45,8 @@ in
       if components == [ ]
         then false
         else list.head components == "/";
+
+    relativeTo = dir: path:
+      dir + "/${toString path}";
   };
 }
