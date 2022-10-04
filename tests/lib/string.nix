@@ -36,6 +36,7 @@ let
     slice
     split
     splitAt
+    take
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -333,6 +334,29 @@ in
       expected = pair "foo" "Bar";
     };
   };
+
+  take =
+    let
+      string = "abcde";
+    in
+    {
+      negative = assertEqual {
+        actual = take (-2) string;
+        expected = "";
+      };
+
+      positive = {
+        in_range = assertEqual {
+          actual = take 3 string;
+          expected = "abc";
+        };
+
+        out_of_range = assertEqual {
+          actual = take 9 string;
+          expected = "abcde";
+        };
+      };
+    };
 
   words = assertEqual {
     actual = words "nix repl --file '<nixpkgs>'";

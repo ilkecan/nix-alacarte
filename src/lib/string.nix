@@ -201,6 +201,8 @@ in
           (slice 0 index' str)
           (slice index' int.MAX str);
 
+    take = slice' { } 0;
+
     unsafeDiscardContext = builtins.unsafeDiscardStringContext;
   };
 
