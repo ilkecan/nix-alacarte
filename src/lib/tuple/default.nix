@@ -6,9 +6,10 @@
 let
   inherit (nix-alacarte)
     attrs
+    list
     pair
     pipe'
-    string
+    str
     tuple
   ;
 
@@ -28,8 +29,8 @@ in
     join = separator:
       pipe' [
         attrs.values
-        (map toString)
-        (string.intersperse separator)
+        (list.map toString)
+        (str.intersperse separator)
       ];
 
     pair = import ./pair.nix args;

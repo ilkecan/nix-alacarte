@@ -28,16 +28,17 @@ let
     lines
     list
     negative
+    options
     pair
     pipe'
     range'
     repeat
     replicate
-    string
+    str
     unlines
   ;
 
-  inherit (string)
+  inherit (str)
     concat
     intersperse
     length
@@ -171,7 +172,10 @@ in
   repeat = n: str:
     concat (replicate n str);
 
-  string = {
+  str = {
+    __functor = _:
+      options.str;
+
     concat = lib.concatStrings;
 
     concatMap = lib.concatMapStrings;

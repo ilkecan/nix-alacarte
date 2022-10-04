@@ -15,7 +15,7 @@ let
     notEqualTo
     path
     pipe'
-    string
+    str
   ;
 
   inherit (path)
@@ -25,7 +25,7 @@ let
 
   extensionsUnsafe = 
     pipe' [
-      (string.split ".")
+      (str.split ".")
       (list.filter (notEqualTo ""))
       (list.drop 1)
     ];
@@ -43,7 +43,7 @@ in
       if path == ""
         then [ ]
         else pipe path [
-          (string.split "/")
+          (str.split "/")
           (list.ifilter (i: v: !list.elem v componentsToRemove || i == 0))
           (list.imap (i: v: if i == 0 && v == "" then "/" else v))
         ];

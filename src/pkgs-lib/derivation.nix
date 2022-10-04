@@ -14,16 +14,12 @@ let
     attrs
     list
     pipe'
-    string
+    str
     unwords
   ;
 
   inherit (nix-alacarte.letterCase)
     camelToKebab
-  ;
-
-  inherit (nix-alacarte.string)
-    optional
   ;
 
   inherit (pkgs)
@@ -35,7 +31,7 @@ let
     arg = name: value:
       "--${name} ${escapeShellArg value}";
     flag = name: enabled:
-      string.optional enabled "--${name}";
+      str.optional enabled "--${name}";
 
     listOfArgs = name:
       pipe' [
@@ -59,7 +55,7 @@ let
               attrs.mapToList (_: name: "${escapeShellArg values.${name}}") indices;
           in
           unwords values';
-        args = map (values: "--${argName} ${formatValues values}") argValues;
+        args = list.map (values: "--${argName} ${formatValues values}") argValues;
       in
       unwords args;
   };
@@ -112,7 +108,7 @@ in
     let
       env = { nativeBuildInputs = [ makeWrapper ]; };
       fmtArg = name: value:
-        string.optional (value != null) (formatArgs.${name} (camelToKebab name) value);
+        str.optional (value != null) (formatArgs.${name} (camelToKebab name) value);
       fmtArgs = pipe' [
         (attrs.remove [ "name" "outPath" ])
         (attrs.mapToList fmtArg)

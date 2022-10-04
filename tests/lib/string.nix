@@ -19,7 +19,7 @@ let
     lines
     pair
     repeat
-    string
+    str
     uncommands
     unelements
     unlines
@@ -27,7 +27,7 @@ let
     words
   ;
 
-  inherit (string)
+  inherit (str)
     concat
     concatMap
     drop

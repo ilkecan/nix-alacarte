@@ -5,7 +5,11 @@
 }:
 
 let
-  inherit (nix-alacarte.path)
+  inherit (nix-alacarte)
+    path
+  ;
+
+  inherit (path)
     components
     exists
     extensions

@@ -21,7 +21,7 @@ let
     mkAssertion
     mkThrow
     pipe'
-    string
+    str
   ;
 
   inherit (nix-alacarte.ansi.controlFunctions.controlSequences.SGR)
@@ -33,7 +33,7 @@ let
   ;
 
   boldAnd = color: msg:
-    string.concat [ bold color msg reset ];
+    str.concat [ bold color msg reset ];
 
   blue' = boldAnd blue;
   magenta' = boldAnd magenta;
@@ -75,9 +75,9 @@ let
                 else addColor;
           in
           pipe' [
-            (string.split delimiter)
+            (str.split delimiter)
             (list.imap colorMsg)
-            string.concat
+            str.concat
           ];
     in
     colors:
@@ -128,10 +128,10 @@ in
         scope = blue';
         string = green';
       } // color;
-      scope' = if list.is scope then string.intersperse "." scope else scope;
+      scope' = if list.is scope then str.intersperse "." scope else scope;
       appendScope' = appendScope args;
 
-      prefix = string.optional (scope' != "") "${color'.scope scope'}: ";
+      prefix = str.optional (scope' != "") "${color'.scope scope'}: ";
 
       throw = msg:
         builtins.throw "${prefix}${autoColor color' msg}";

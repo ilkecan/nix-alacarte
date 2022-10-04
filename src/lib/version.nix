@@ -18,12 +18,8 @@ let
 
   inherit (nix-alacarte)
     lessThan
-    string
-  ;
-
-  inherit (nix-alacarte.string)
-    intersperse
-    split
+    list
+    str
   ;
 in
 
@@ -31,21 +27,21 @@ in
   getCmakeVersion = file:
     let
       content = readFile file;
-      lines = split "\n" content;
+      lines = str.split "\n" content;
       versionLines = filter (hasInfix "_VERSION_") lines;
       sortedVersionLines = sort lessThan versionLines;
       isDigit = c: c >= "0" && c <= "9";
       filterDigits = stringAsChars (c: if isDigit c then c else "");
-      versionNumbers = map filterDigits sortedVersionLines;
-      version = intersperse "." versionNumbers;
+      versionNumbers = list.map filterDigits sortedVersionLines;
+      version = str.intersperse "." versionNumbers;
     in
     version;
 
   getUnstableVersion = lastModifiedDate:
     let
-      year = string.slice 0 4 lastModifiedDate;
-      month = string.slice 4 6 lastModifiedDate;
-      day = string.slice 6 8 lastModifiedDate;
+      year = str.slice 0 4 lastModifiedDate;
+      month = str.slice 4 6 lastModifiedDate;
+      day = str.slice 6 8 lastModifiedDate;
     in
     "unstable-${year}-${month}-${day}";
 }

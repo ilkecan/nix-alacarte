@@ -37,10 +37,6 @@ let
     pipe'
   ;
 
-  inherit (nix-alacarte.path)
-    exists
-  ;
-
   inherit (nix-alacarte.letterCase)
     kebabToCamel
   ;
@@ -154,7 +150,7 @@ in
     self;
 
   filterByRelPath = relPath:
-    list.filter (dir: exists (path.relativeTo dir relPath));
+    list.filter (dir: path.exists (path.relativeTo dir relPath));
 
   importDirectory =
     {

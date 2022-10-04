@@ -5,14 +5,14 @@
 
 let
   inherit (nix-alacarte)
-    string
+    str
   ;
 in
 
 {
   mkCpanUrl = author: pname: version:
     let
-      authorId = "${string.slice 0 1 author}/${string.slice 0 2 author}/${author}";
+      authorId = "${str.slice 0 1 author}/${str.slice 0 2 author}/${author}";
     in
     "mirror://cpan/authors/id/${authorId}/${pname}-${version}.tar.gz";
 }

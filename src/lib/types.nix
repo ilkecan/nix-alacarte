@@ -41,7 +41,7 @@ in
           merge = loc: defs:
             let
               values = getValues defs;
-              valueTypes = map typeOf values;
+              valueTypes = list.map typeOf values;
               toStr = fmtValue coerceFunctions;
             in
             if allEqual valueTypes then
@@ -52,7 +52,7 @@ in
             else
               types.string.merge
                 loc
-                (map (def: def // { value = toStr def.value; }) defs)
+                (list.map (def: def // { value = toStr def.value; }) defs)
             ;
         };
       in
