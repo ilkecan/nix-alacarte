@@ -1,27 +1,39 @@
 {
+  nix-alacarte,
   pkgs,
   ...
 }:
 
 let
-  inherit (pkgs)
-    concatText
-    writeTextFile
+  inherit (nix-alacarte)
+    file
+  ;
+
+  inherit (file)
+    concat
+    write
   ;
 
   addToFile = append: text: file:
     let
-      tempFile = writeTextFile {
+      tempFile = write {
         name = "temp";
         inherit text;
       };
       name = baseNameOf file;
       files = if append then [ file tempFile ] else [ tempFile file ];
     in
-    concatText name files;
+    concat name files;
 in
 
 {
-  appendToFile = addToFile true;
-  prependToFile = addToFile false;
+  file = {
+    append = addToFile true;
+
+    concat = pkgs.concatText;
+
+    prepend = addToFile false;
+
+    write = pkgs.writeTextFile;
+  };
 }
