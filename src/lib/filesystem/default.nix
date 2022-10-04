@@ -162,7 +162,6 @@ in
       makeOverridable ? false,
       recursive ? false,
     }:
-
     let
       nixFiles' = nixFiles {
         inherit
