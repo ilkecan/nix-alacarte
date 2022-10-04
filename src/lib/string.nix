@@ -12,9 +12,6 @@ let
   inherit (lib)
     const
     id
-    lowerChars
-    max
-    min
     pipe
     toUpper
     upperChars
@@ -26,12 +23,9 @@ let
     indentByWith
     int
     lines
-    list
-    negative
     options
     pair
     pipe'
-    range1
     repeat
     replicate
     str
@@ -52,58 +46,16 @@ let
 
   inherit (nix-alacarte.internal)
     normalizeNegativeIndex
-    throw
   ;
 
-  snakeSep = "_";
-  kebabSep = "-";
-  snakeChars = map (c: "${snakeSep}${c}") lowerChars;
-  kebabChars = map (c: "${kebabSep}${c}") lowerChars;
-
-  find' = reverse:
-    let
-      throw' = throw.appendScope "${optional reverse "r"}findString";
-    in
-    pattern:
-      let
-        patternType = typeOf pattern;
-        patternLength = length pattern;
-        searcher =
-          {
-            string = str: i:
-              slice i (i + patternLength) str == pattern;
-            lambda = pattern;
-          }.${patternType} or (throw' [ "string" "lambda" ] "`typeOf pattern`" patternType);
-      in
-      str:
-        pipe str [
-          length
-          range1
-          (if reverse then list.reverse else id)
-          (list.find (searcher str))
-        ];
-
-  sliceUnsafe = start: end:
-    builtins.substring start (end - start);
-
-  slice' =
-    {
-      normalizeNegativeIndex ? const id,
-    }:
-    start: end: string:
-      let
-        length' = length string;
-        normalizeNegativeIndex' = normalizeNegativeIndex length';
-        start' = pipe start [
-          normalizeNegativeIndex'
-          (max 0)
-        ];
-        end' = pipe end [
-          normalizeNegativeIndex'
-          (max start')
-        ];
-      in
-      sliceUnsafe start' end' string;
+  inherit (nix-alacarte.internal.str)
+    find'
+    kebabChars
+    kebabSep
+    slice'
+    snakeChars
+    snakeSep
+  ;
 in
 
 {
