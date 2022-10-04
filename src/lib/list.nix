@@ -37,7 +37,8 @@ let
     pair
     pipe'
     range
-    range'
+    range1
+    range2
     range3
     snd
     sub'
@@ -109,7 +110,7 @@ in
     let
       elemAt' = elemAt list;
     in
-    map (index: pair index (elemAt' index)) (range' (length list));
+    map (index: pair index (elemAt' index)) (range1 (length list));
 
   list =
     let
@@ -194,7 +195,7 @@ in
         in
         pipe list [
           length
-          range'
+          range1
           (filter (compose [ predicate elemAt' ]))
         ];
 
@@ -359,9 +360,11 @@ in
       zipWith = lib.zipListsWith;
     };
 
-  range = range3 1;
+  range = range2;
 
-  range' = range 0;
+  range1 = range 0;
+
+  range2 = range3 1;
 
   range3 = step:
     let

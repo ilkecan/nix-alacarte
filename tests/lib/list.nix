@@ -21,7 +21,7 @@ let
     pair
     positive
     range
-    range'
+    range1
     range3
     replicate
   ;
@@ -118,7 +118,7 @@ in
 
   at =
     let
-      list = range' 5;
+      list = range1 5;
     in
     {
       negative_index = assertFailure at (-4) list;
@@ -536,19 +536,19 @@ in
     };
   };
 
-  range' = {
+  range1 = {
     negative = assertEqual {
-      actual = range' (-4);
+      actual = range1 (-4);
       expected = [ ];
     };
 
     zero = assertEqual {
-      actual = range' 0;
+      actual = range1 0;
       expected = [ ];
     };
 
     positive = assertEqual {
-      actual = range' 5;
+      actual = range1 5;
       expected = [ 0 1 2 3 4 ];
     };
   };

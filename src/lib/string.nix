@@ -16,7 +16,6 @@ let
     max
     min
     pipe
-    reverseList
     toUpper
     upperChars
   ;
@@ -32,7 +31,7 @@ let
     options
     pair
     pipe'
-    range'
+    range1
     repeat
     replicate
     str
@@ -41,14 +40,14 @@ let
 
   inherit (str)
     concat
-    intersperse
-    take
     drop
+    intersperse
     length
     optional
     replace
     slice
     split
+    take
   ;
 
   inherit (nix-alacarte.internal)
@@ -79,8 +78,8 @@ let
       str:
         pipe str [
           length
-          range'
-          (if reverse then reverseList else id)
+          range1
+          (if reverse then list.reverse else id)
           (list.find (searcher str))
         ];
 
