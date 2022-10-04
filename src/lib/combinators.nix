@@ -6,18 +6,17 @@
 
 let
   inherit (lib)
-    id
     isFunction
   ;
 
   inherit (nix-alacarte)
     callWith
-    combinators
     list
   ;
 
-  booleanCombinator = f:
-    combinators.mkCombinator (f id);
+  inherit (nix-alacarte.internal)
+    booleanCombinator
+  ;
 in
 
 {
