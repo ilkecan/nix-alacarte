@@ -23,7 +23,7 @@ let
   };
 
   nix-alacarte = mergeLibFiles ./. args' { };
-  internal = import ./internal args';
+  internal = import ./../internal args';
 in
 
 nix-alacarte

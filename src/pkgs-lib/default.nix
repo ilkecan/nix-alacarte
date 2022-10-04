@@ -31,7 +31,7 @@ let
     nix-alacarte = recursiveUpdate nix-alacarte pkgs-lib // { inherit internal; };
   };
 
-  internal = import ./../lib/internal args';
+  internal = import ./../internal args';
   pkgs-lib = mergeLibFiles ./. args' { };
 in
 
