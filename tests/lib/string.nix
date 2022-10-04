@@ -342,20 +342,33 @@ in
     };
   };
 
-  splitAt = {
-    negative_index = assertEqual {
-      actual = splitAt (-4) "fo";
-      expected = pair "" "fo";
+  splitAt =
+    let
+      string = "abcde";
+    in
+    {
+    negative_index = {
+      out_of_bounds = assertEqual {
+        actual = splitAt (-9) string;
+        expected = pair "" string;
+      };
+
+      in_range = assertEqual {
+        actual = splitAt (-2) string;
+        expected = pair "abc" "de";
+      };
     };
 
-    index_too_large = assertEqual {
-      actual = splitAt 3 "fo";
-      expected = pair "fo" "";
-    };
+    positive_index = {
+      out_of_bounds = assertEqual {
+        actual = splitAt 24 string;
+        expected = pair string "";
+      };
 
-    index_in_range = assertEqual {
-      actual = splitAt 3 "fooBar";
-      expected = pair "foo" "Bar";
+      in_range = assertEqual {
+        actual = splitAt 2 string;
+        expected = pair "ab" "cde";
+      };
     };
   };
 

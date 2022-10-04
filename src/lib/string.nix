@@ -23,6 +23,7 @@ let
 
   inherit (nix-alacarte)
     addPrefix
+    clamp
     indentByWith
     int
     lines
@@ -41,6 +42,8 @@ let
   inherit (str)
     concat
     intersperse
+    take
+    drop
     length
     optional
     replace
@@ -199,14 +202,16 @@ in
 
     split = lib.splitString;
 
-    splitAt = index:
+    splitAt = index: string:
       let
-        index' = if negative index then 0 else index;
+        length' = length string;
+        index' = pipe index [
+          (normalizeNegativeIndex length')
+          (clamp 0 length')
+        ];
       in
-      str:
-        pair
-          (slice 0 index' str)
-          (slice index' int.MAX str);
+      pair (take index' string) (drop index' string);
+
 
     take = slice' { } 0;
 
