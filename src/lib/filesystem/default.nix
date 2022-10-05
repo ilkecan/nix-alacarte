@@ -14,7 +14,6 @@ let
 
   inherit (lib)
     const
-    flatten
     hasSuffix
     id
     mapNullable
@@ -142,7 +141,7 @@ in
         in
         pipe files [
           (attrs.mapToList g)
-          (if recursive then flatten else id)
+          (if recursive then list.flatten else id)
           (list.remove null)
           (if asAttrs then list.toAttrs else id)
         ];

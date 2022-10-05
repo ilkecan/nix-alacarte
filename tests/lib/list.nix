@@ -45,6 +45,7 @@ let
     find
     findIndex
     findIndices
+    flatten
     foldl
     foldl'
     foldr
@@ -295,6 +296,20 @@ in
     multi_elems = assertEqual {
       actual = findIndices isInt [ 4.5 4 "martin" 8 ];
       expected = [ 1 3 ];
+    };
+  };
+
+  flatten = {
+    not_a_list = assertFailure flatten 4;
+
+    flattened_list = assertEqual {
+      actual = flatten [ 0 1 2 3 4 ];
+      expected = [ 0 1 2 3 4 ];
+    };
+
+    nested_list = assertEqual {
+      actual = flatten [ 0 [ 1 [ 2 ] 3 ] 4 ];
+      expected = [ 0 1 2 3 4 ];
     };
   };
 

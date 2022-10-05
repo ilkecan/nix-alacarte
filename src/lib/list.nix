@@ -154,6 +154,13 @@ in
           (self.filter (compose [ predicate elemAt' ]))
         ];
 
+      flatten = list:
+        let
+          assertion'' = assertion'.appendScope "flatten";
+        in
+        assert assertion'' (self.is list) "not a list";
+        self.concatMap lib.flatten list;
+
       foldl = lib.foldl;
 
       foldl' = builtins.foldl';

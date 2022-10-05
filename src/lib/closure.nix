@@ -10,7 +10,6 @@ let
   ;
 
   inherit (lib)
-    flatten
     hasPrefix
     hasSuffix
     unique
@@ -27,7 +26,7 @@ let
 
   isDependencyKey = combinators.or [ (hasPrefix "deps") (hasSuffix "Inputs") ];
   getDependencies = drv: attrs.values (attrs.filter (key: _: isDependencyKey key) drv.drvAttrs);
-  reduceToDerivations = deps: unique (list.filter attrs.is (flatten deps));
+  reduceToDerivations = deps: unique (list.filter attrs.is (list.flatten deps));
 in
 
 {
