@@ -5,34 +5,18 @@
 }:
 
 let
-  inherit (nix-alacarte)
-    file
+  inherit (nix-alacarte.internal.file)
+    add
   ;
-
-  inherit (file)
-    concat
-    write
-  ;
-
-  addToFile = append: text: file:
-    let
-      tempFile = write {
-        name = "temp";
-        inherit text;
-      };
-      name = baseNameOf file;
-      files = if append then [ file tempFile ] else [ tempFile file ];
-    in
-    concat name files;
 in
 
 {
   file = {
-    append = addToFile true;
+    append = add true;
 
     concat = pkgs.concatText;
 
-    prepend = addToFile false;
+    prepend = add false;
 
     write = pkgs.writeTextFile;
   };
