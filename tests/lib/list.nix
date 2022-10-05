@@ -586,12 +586,12 @@ in
   };
 
   range3 = {
-    positive_step = assertEqual {
+    positive_stride = assertEqual {
       actual = range3 4 13 28;
       expected = [ 13 17 21 25 ];
     };
 
-    negative_step = assertEqual {
+    negative_stride = assertEqual {
       actual = range3 (-3) 13 (-2);
       expected = [ 13 10 7 4 1 ];
     };

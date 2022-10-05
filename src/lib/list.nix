@@ -276,7 +276,7 @@ in
           start = self.length list - 1;
           end = -1;
         in
-        sliceUnsafe { step = -1; } start end list;
+        sliceUnsafe { stride = -1; } start end list;
 
       singleton = lib.singleton;
 
@@ -343,17 +343,17 @@ in
 
   range2 = range3 1;
 
-  range3 = step:
+  range3 = stride:
     let
-      step' = int.toFloat step;
+      stride' = int.toFloat stride;
     in
     start:
       pipe' [
         (sub' start)
-        (div' step')
+        (div' stride')
         ceil
         (max 0)
-        (self.gen (compose [ (add start) (mul step) ]))
+        (self.gen (compose [ (add start) (mul stride) ]))
       ];
 
   # inherits

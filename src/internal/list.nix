@@ -35,7 +35,7 @@ in
     slice' =
       {
         normalizeNegativeIndex ? const id,
-        step ? 1,
+        stride ? 1,
       }:
       start: end: list:
         let
@@ -50,14 +50,14 @@ in
             (min length)
           ];
         in
-        sliceUnsafe { inherit step; } start' end' list;
+        sliceUnsafe { inherit stride; } start' end' list;
 
     sliceUnsafe =
       {
-        step ? 1,
+        stride ? 1,
       }:
       start: end: list:
-        map (elemAt list) (range3 step start end);
+        map (elemAt list) (range3 stride start end);
   };
 
   normalizeNegativeIndex = length: index:
