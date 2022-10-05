@@ -135,6 +135,12 @@ in
 
       filter = builtins.filter;
 
+      filterMap = f:
+        pipe' [
+          (self.map f)
+          (self.remove null)
+        ];
+
       find = pred:
         lib.findFirst pred null;
 

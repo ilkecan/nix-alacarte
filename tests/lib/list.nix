@@ -42,6 +42,7 @@ let
     elemIndices
     empty
     filter
+    filterMap
     find
     findIndex
     findIndices
@@ -248,10 +249,14 @@ in
     non_empty_list = assertTrue notEmpty [ 2 ];
   };
 
-
   filter = assertEqual {
     actual = filter positive [ 2 (-14) 8 0 (-0.4) 4.8 ];
     expected = [ 2 8 4.8 ];
+  };
+
+  filterMap = assertEqual {
+    actual = filterMap (x: if isInt x then 2 * x else null) [ 2 "6" null 8 (-5) 4.9 ];
+    expected = [ 4 16 (-10) ];
   };
 
   find = {
