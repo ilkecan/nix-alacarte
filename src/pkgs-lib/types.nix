@@ -36,28 +36,13 @@ let
     types
   ;
 
-  mkArgType = name:
-    types.submodule {
-      options = with options; {
-        env = str;
-        sep = str;
-        ${name} = str;
-      };
-    };
-
-  prefixArg = mkArgType "val";
-  prefixEachArg = mkArgType "vals";
-  prefixContentsArg = mkArgType "files";
-
-  toPackageSubmoduleConfig = package:
-    if types.package.check package then
-      { drv = package; }
-    else
-      package
-    ;
-
-  toPackageSubmoduleDef = { file, value }:
-    { inherit file; value = toPackageSubmoduleConfig value; };
+  inherit (nix-alacarte.internal.types')
+    prefixArg
+    prefixContentsArg
+    prefixEachArg
+    toPackageSubmoduleConfig
+    toPackageSubmoduleDef
+  ;
 in
 {
   types = {
