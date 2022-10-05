@@ -7,27 +7,22 @@
 
 let
   inherit (lib)
-    generators
+    pipe
   ;
 
-  inherit (nix-alacarte.generators)
-    toGlibKeyFile
-    toVDF
-  ;
-
-  inherit (nix-alacarte.formats)
-    fromGenerator
+  inherit (nix-alacarte)
+    pipe'
   ;
 
   inherit (nix-alacarte.internal)
+    formats
+    generators
     types
   ;
 
   inherit (pkgs)
     writeText
   ;
-
-  formats = pkgs.formats // nix-alacarte.formats;
 in
 {
   formats = {
@@ -38,10 +33,13 @@ in
     };
 
     generic = args:
-      formats.fromGenerator (generators.toKeyValue args);
+      formats.alacarte.fromGenerator (generators.toKeyValue args);
 
     glibKeyFile = { ... }@args:
-      fromGenerator (toGlibKeyFile args);
+      pipe args [
+        generators.alacarte.toGlibKeyFile
+        formats.alacarte.fromGenerator
+      ];
 
     vdf = { ... }@args:
       let
@@ -57,8 +55,11 @@ in
       in
       {
         type = valueType;
-        generate = name: value:
-          writeText name (toVDF args value);
+        generate = name:
+          pipe' [
+            (generators.alacarte.toVDF args)
+            (writeText name)
+          ];
       };
   };
 }
