@@ -5,11 +5,6 @@
 }:
 
 let
-  inherit (lib.generators)
-    toINI
-    toKeyValue
-  ;
-
   inherit (nix-alacarte)
     attrs
     fmtValue
@@ -23,7 +18,7 @@ in
       # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s03.html
       # https://developer-old.gnome.org/glib/unstable/glib-Key-value-file-parser.html
       # not the same but INI could be used as a starting point
-      toINI { };
+      lib.generators.toINI { };
 
     # https://developer.valvesoftware.com/wiki/KeyValues
     toVDF = { }:
@@ -37,7 +32,7 @@ in
               ${indentBy 2 (self value)}
               }''
             else ''"${key}" "${fmtValue' value}"'';
-        self = toKeyValue { inherit mkKeyValue; };
+        self = lib.generators.toKeyValue { inherit mkKeyValue; };
       in
       self;
   };

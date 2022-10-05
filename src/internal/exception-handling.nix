@@ -9,10 +9,6 @@ let
     id
   ;
 
-  inherit (lib.generators)
-    toPretty
-  ;
-
   inherit (nix-alacarte)
     attrs
     compose
@@ -95,7 +91,7 @@ in
       string = boldAnd green;
     };
 
-    toPretty = toPretty { };
+    toPretty = lib.generators.toPretty { };
   };
 
   throw = mkThrow args;
