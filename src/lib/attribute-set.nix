@@ -25,23 +25,6 @@ let
     snd
   ;
 
-  inherit (attrs)
-    concat
-    filter
-    gen
-    getByPath'
-    has
-    map
-    map'
-    mapToList
-    merge
-    names
-    remove
-    set
-    setByPath
-    zipWith
-  ;
-
   inherit (nix-alacarte.internal)
     throw
   ;
@@ -49,6 +32,8 @@ let
   inherit (nix-alacarte.internal.attrs)
     mkFold
   ;
+
+  self = attrs;
 in
 
 {
@@ -67,7 +52,7 @@ in
       concat = bootstrap.mergeListOfAttrs;
 
       count = predicate: attrs:
-        compose [ (list.count (n: predicate n attrs.${n})) names ] attrs;
+        compose [ (list.count (n: predicate n attrs.${n})) self.names ] attrs;
 
       filter = lib.filterAttrs;
 
@@ -77,7 +62,7 @@ in
 
       foldr = mkFold list.foldr;
 
-      forEach = flip map;
+      forEach = flip self.map;
 
       gen = lib.genAttrs;
 
@@ -87,7 +72,7 @@ in
         in
         throw''.unlessGetAttr;
 
-      getByPath = getByPath' null;
+      getByPath = self.getByPath' null;
 
       getByPath' = flip lib.attrByPath;
 
@@ -100,8 +85,8 @@ in
         names:
           pipe' [
             getAttrOrNullValue
-            (gen names)
-            (filter (_: notEqualTo nullValue))
+            (self.gen names)
+            (self.filter (_: notEqualTo nullValue))
           ];
 
       has = builtins.hasAttr;
@@ -116,18 +101,18 @@ in
 
       map' = f: attrs:
         pipe attrs [
-          names
+          self.names
           (list.map (attr: f attr attrs.${attr}))
           list.toAttrs
         ];
 
-      mapValues = compose [ map const ];
+      mapValues = compose [ self.map const ];
 
       mapToList = lib.mapAttrsToList;
 
       merge = lib.mergeAttrs;
 
-      merge' = flip merge;
+      merge' = flip self.merge;
 
       names = builtins.attrNames;
 
@@ -135,16 +120,17 @@ in
 
       partition = predicate: attrs:
         let
-          right = filter predicate attrs;
+          fst = self.filter predicate attrs;
+          snd = self.remove (self.names fst) attrs;
         in
-        pair right (remove (names right) attrs);
+        pair fst snd;
 
       remove = flip builtins.removeAttrs;
 
-      removeNulls = filter (_: notNull);
+      removeNulls = self.filter (_: notNull);
 
       rename = f:
-        map' (name: value: pair (f name value) value);
+        self.map' (name: value: pair (f name value) value);
 
       set = name: value: attrs:
         attrs // { ${name} = value; };
@@ -160,18 +146,18 @@ in
               head = fst result;
               tail = snd result;
 
-              set' = set head;
+              set = self.set head;
             in
             value: attrs:
               let
                 value' =
                   if tail == [ ]
                     then value
-                    else setByPath tail value attrs.${head};
+                    else self.setByPath tail value attrs.${head};
               in
-              set' value' attrs;
+              set value' attrs;
 
-      toList = mapToList pair;
+      toList = self.mapToList pair;
 
       values = builtins.attrValues;
 

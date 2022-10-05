@@ -19,14 +19,11 @@ let
     sub
   ;
 
-  inherit (path)
-    components
-    name
-  ;
-
   inherit (nix-alacarte.internal.path)
     extensionsUnsafe
   ;
+
+  self = path;
 in
   
 {
@@ -50,22 +47,22 @@ in
 
     extensions =
       pipe' [
-        name
+        self.name
         (mapOr [ ] extensionsUnsafe)
       ];
 
     isAbsolute = path:
       let
-        components' = components path;
+        components = self.components path;
       in
-      if components' == [ ]
+      if components == [ ]
         then false
-        else list.head components' == "/";
+        else list.head components == "/";
 
     name = path:
       let
         last' = pipe path [
-          components
+          self.components
           list.last
         ];
       in
@@ -78,9 +75,9 @@ in
 
     stem = path:
       let
-        name' = name path;
-        nameLength = str.length name';
-        extensions = extensionsUnsafe name';
+        name = self.name path;
+        nameLength = str.length name;
+        extensions = extensionsUnsafe name;
       in
       mapOr null (pipe extensions [
         (list.map str.length)
@@ -88,6 +85,6 @@ in
         (add (list.length extensions))
         (sub nameLength)
         str.take
-      ]) name';
+      ]) name;
   };
 }

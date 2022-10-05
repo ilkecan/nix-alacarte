@@ -20,28 +20,19 @@ let
   inherit (nix-alacarte)
     addPrefix
     clamp
+    fst
     indentByWith
     int
     lines
+    list
     options
     pair
     pipe'
     repeat
     replicate
+    snd
     str
     unlines
-  ;
-
-  inherit (str)
-    concat
-    drop
-    intersperse
-    length
-    optional
-    replace
-    slice
-    split
-    take
   ;
 
   inherit (nix-alacarte.internal)
@@ -56,6 +47,8 @@ let
     snakeChars
     snakeSep
   ;
+
+  self = str;
 in
 
 {
@@ -67,14 +60,13 @@ in
 
   capitalize = string:
     let
-      first = slice 0 1 string;
-      rest = slice 1 int.MAX string;
+      result = self.splitAt 1 string;
     in
-    (toUpper first) + rest;
+    (toUpper (fst result)) + (snd result);
 
-  commands = split ";";
+  commands = self.split ";";
 
-  elements = split ",";
+  elements = self.split ",";
 
   fmtValue = {
     bool ? null,
@@ -106,25 +98,25 @@ in
     in
     pipe' [
       lines
-      (map (addPrefix indentation))
+      (list.map (addPrefix indentation))
       unlines
     ];
 
   letterCase = {
-    camelToKebab = replace upperChars kebabChars;
-    camelToSnake = replace upperChars snakeChars;
+    camelToKebab = self.replace upperChars kebabChars;
+    camelToSnake = self.replace upperChars snakeChars;
 
-    kebabToCamel = replace kebabChars upperChars;
-    kebabToSnake = replace [ kebabSep ] [ snakeSep ];
+    kebabToCamel = self.replace kebabChars upperChars;
+    kebabToSnake = self.replace [ kebabSep ] [ snakeSep ];
 
-    snakeToCamel = replace snakeChars upperChars;
-    snakeToKebab = replace [ snakeSep ] [ kebabSep ];
+    snakeToCamel = self.replace snakeChars upperChars;
+    snakeToKebab = self.replace [ snakeSep ] [ kebabSep ];
   };
 
-  lines = split "\n";
+  lines = self.split "\n";
 
   repeat = n: str:
-    concat (replicate n str);
+    self.concat (replicate n str);
 
   str = {
     __functor = _:
@@ -155,13 +147,13 @@ in
 
     splitAt = index: string:
       let
-        length' = length string;
+        length = self.length string;
         index' = pipe index [
-          (normalizeNegativeIndex length')
-          (clamp 0 length')
+          (normalizeNegativeIndex length)
+          (clamp 0 length)
         ];
       in
-      pair (take index' string) (drop index' string);
+      pair (self.take index' string) (self.drop index' string);
 
 
     take = slice' { } 0;
@@ -169,13 +161,13 @@ in
     unsafeDiscardContext = builtins.unsafeDiscardStringContext;
   };
 
-  uncommands = intersperse ";";
+  uncommands = self.intersperse ";";
 
-  unelements = intersperse ",";
+  unelements = self.intersperse ",";
 
-  unlines = intersperse "\n";
+  unlines = self.intersperse "\n";
 
-  unwords = intersperse " ";
+  unwords = self.intersperse " ";
 
-  words = split " ";
+  words = self.split " ";
 }

@@ -43,34 +43,6 @@ let
     sub'
   ;
 
-  inherit (list)
-    all
-    append
-    concat
-    difference'
-    drop
-    elem
-    empty
-    filter
-    findIndex
-    findIndices
-    foldl'
-    gen
-    head
-    intersperse
-    length
-    notEmpty
-    prepend
-    singleton
-    slice
-    tail
-    take
-    toAttrs
-    uncons
-    unique
-    zipWith
-  ;
-
   inherit (nix-alacarte.internal)
     assertion
     normalizeNegativeIndex
@@ -80,6 +52,8 @@ let
     slice'
     sliceUnsafe
   ;
+
+  self = list;
 in
 
 {
@@ -87,7 +61,11 @@ in
     let
       elemAt' = elemAt list;
     in
-    map (index: pair index (elemAt' index)) (range1 (length list));
+    pipe list [
+      self.length
+      range1
+      (self.map (index: pair index (elemAt' index)))
+    ];
 
   list =
     let
@@ -98,11 +76,11 @@ in
           assertion'' = assertion'.appendScope scope;
         in
         f: list:
-          assert assertion'' (notEmpty list) "empty list";
+          assert assertion'' (self.notEmpty list) "empty list";
           let
-            initial = head list;
+            initial = self.head list;
           in
-          foldl' f initial list;
+          self.foldl' f initial list;
     in
     {
       # NOTE: i don't like this
@@ -112,7 +90,7 @@ in
       all = builtins.all;
 
       allEqual = list:
-        all (equalTo (head list)) list;
+        self.all (equalTo (self.head list)) list;
 
       any = builtins.any;
 
@@ -126,21 +104,21 @@ in
         assert assertion'' (!negative index) "negative index: `${toString index}`";
         list:
           let
-            length' = length list;
+            length = self.length list;
           in
-          assert assertion'' (index < length')
-            "index out of bounds: the length is `${toString length'}` but the index is `${toString index}`";
+          assert assertion'' (index < length)
+            "index out of bounds: the length is `${toString length}` but the index is `${toString index}`";
           elemAt list index;
 
       concat = builtins.concatLists;
 
       concatMap = builtins.concatMap;
 
-      cons = compose [ prepend singleton ];
+      cons = compose [ self.prepend self.singleton ];
 
       count = lib.count;
 
-      difference = flip difference';
+      difference = flip self.difference';
 
       difference' = lib.subtractLists;
 
@@ -149,9 +127,9 @@ in
 
       elem = builtins.elem;
 
-      elemIndex = compose [ findIndex equalTo ];
+      elemIndex = compose [ self.findIndex equalTo ];
 
-      elemIndices = compose [ findIndices equalTo ];
+      elemIndices = compose [ self.findIndices equalTo ];
 
       empty = equalTo [ ];
 
@@ -162,18 +140,18 @@ in
 
       findIndex = predicate: list:
         let
-          indices = findIndices predicate list;
+          indices = self.findIndices predicate list;
         in
-        if empty indices then null else head indices; 
+        if self.empty indices then null else self.head indices;
 
       findIndices = predicate: list:
         let
           elemAt' = elemAt list;
         in
         pipe list [
-          length
+          self.length
           range1
-          (filter (compose [ predicate elemAt' ]))
+          (self.filter (compose [ predicate elemAt' ]))
         ];
 
       foldl = lib.foldl;
@@ -182,7 +160,7 @@ in
 
       foldr = lib.foldr;
 
-      forEach = flip map;
+      forEach = flip self.map;
 
       gen = builtins.genList;
 
@@ -192,7 +170,7 @@ in
         let
           assertion'' = assertion'.appendScope "head";
         in
-        assert assertion'' (notEmpty list) "empty list";
+        assert assertion'' (self.notEmpty list) "empty list";
         builtins.head list;
 
       ifilter = predicate:
@@ -201,8 +179,8 @@ in
         in
         pipe' [
           indexed
-          (filter predicate')
-          (map snd)
+          (self.filter predicate')
+          (self.map snd)
         ];
 
       imap = lib.imap0;
@@ -211,26 +189,31 @@ in
         let
           assertion'' = assertion'.appendScope "init";
         in
-        assert assertion'' (notEmpty list) "empty list";
+        assert assertion'' (self.notEmpty list) "empty list";
         lib.init list;
 
       intercalate = seperator:
-        compose [ concat (intersperse seperator) ];
+        compose [ self.concat (self.intersperse seperator) ];
 
       intersect = lib.intersectLists;
 
-      intersperse = seperator: list:
+      intersperse = seperator:
         let
-          result = uncons list;
+          operator = accumulator: element:
+            accumulator ++ [ seperator element ];
         in
-        if result == null
-          then [ ]
-          else
-            let
-              head = fst result;
-              tail = snd result;
-            in
-        foldl' (accumulator: element: accumulator ++ [ seperator element ] ) [ head ] tail;
+        list:
+          let
+            result = self.uncons list;
+          in
+          if result == null
+            then [ ]
+            else
+              let
+                head = fst result;
+                tail = snd result;
+              in
+              self.foldl' operator [ head ] tail;
 
       is = builtins.isList;
 
@@ -238,7 +221,7 @@ in
         let
           assertion'' = assertion'.appendScope "last";
         in
-        assert assertion'' (notEmpty list) "empty list";
+        assert assertion'' (self.notEmpty list) "empty list";
         lib.last list;
 
       length = builtins.length;
@@ -248,12 +231,12 @@ in
       maximum = foldStartingWithHead "maximum" lib.max;
 
       mapToAttrs = f:
-        compose [ toAttrs (map f) ];
+        compose [ self.toAttrs (self.map f) ];
 
       minimum = foldStartingWithHead "minimum" lib.min;
 
       notElem = x:
-        compose [ not (elem x) ];
+        compose [ not (self.elem x) ];
 
       notEmpty = notEqualTo [ ];
 
@@ -268,16 +251,16 @@ in
       prepend = left: right:
         left ++ right;
 
-      product = foldl' builtins.mul 1;
+      product = self.foldl' builtins.mul 1;
 
       remove = lib.remove;
 
       replicate = n: val:
-        gen (const val) n;
+        self.gen (const val) n;
 
       reverse = list:
         let
-          start = length list - 1;
+          start = self.length list - 1;
           end = -1;
         in
         sliceUnsafe { step = -1; } start end list;
@@ -286,27 +269,27 @@ in
 
       slice = slice' { inherit normalizeNegativeIndex; };
 
-      snoc = compose [ append singleton ];
+      snoc = compose [ self.append self.singleton ];
 
       sort = builtins.sort;
 
       splitAt = index: list:
         let
-          length' = length list;
+          length = self.length list;
           index' = pipe index [
-            (normalizeNegativeIndex length')
-            (clamp 0 length')
+            (normalizeNegativeIndex length)
+            (clamp 0 length)
           ];
         in
-        pair (take index' list) (drop index' list);
+        pair (self.take index' list) (self.drop index' list);
 
-      sum = foldl' builtins.add 0;
+      sum = self.foldl' builtins.add 0;
 
       tail = list:
         let
           assertion'' = assertion'.appendScope "tail";
         in
-        assert assertion'' (notEmpty list) "empty list";
+        assert assertion'' (self.notEmpty list) "empty list";
         builtins.tail list;
 
       take = slice' { } 0;
@@ -315,24 +298,28 @@ in
 
       toAttrs =
         pipe' [
-          (map (pair: lib.nameValuePair (fst pair) (snd pair)))
+          (self.map (pair: lib.nameValuePair (fst pair) (snd pair)))
           builtins.listToAttrs
         ];
 
       uncons = list:
-        if empty list
+        if self.empty list
           then null
-          else pair (head list) (tail list);
+          else pair (self.head list) (self.tail list);
 
       union = left:
-        compose [ unique (prepend left) (difference' left) ];
+        pipe' [
+          (self.difference' left)
+          (self.prepend left)
+          self.unique
+        ];
 
       unique = lib.unique;
 
       unzip = list:
-        pair (map fst list) (map snd list);
+        pair (self.map fst list) (self.map snd list);
 
-      zip = zipWith pair;
+      zip = self.zipWith pair;
 
       zipWith = lib.zipListsWith;
     };
@@ -353,7 +340,7 @@ in
         (div' step')
         ceil
         (max 0)
-        (gen (compose [ (add start) (mul step) ]))
+        (self.gen (compose [ (add start) (mul step) ]))
       ];
 
   # inherits

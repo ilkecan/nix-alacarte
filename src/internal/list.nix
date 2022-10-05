@@ -23,13 +23,11 @@ let
     range3
   ;
 
-  inherit (list)
-    length
-  ;
-
   inherit (nix-alacarte.internal.list)
     sliceUnsafe
   ;
+
+  self = list;
 in
 
 {
@@ -41,15 +39,15 @@ in
       }:
       start: end: list:
         let
-          length' = length list;
-          normalizeNegativeIndex' = normalizeNegativeIndex length';
+          length = self.length list;
+          normalizeNegativeIndex' = normalizeNegativeIndex length;
           start' = pipe start [
             normalizeNegativeIndex'
             (max 0)
           ];
           end' = pipe end [
             normalizeNegativeIndex'
-            (min length')
+            (min length)
           ];
         in
         sliceUnsafe { inherit step; } start' end' list;

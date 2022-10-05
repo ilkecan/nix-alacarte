@@ -5,12 +5,9 @@
 
 let
   inherit (nix-alacarte)
+    fst
     singleton
     tuple
-  ;
-
-  inherit (singleton)
-    fst
   ;
 in
 

@@ -5,13 +5,10 @@
 
 let
   inherit (nix-alacarte)
-    pair
-    tuple
-  ;
-
-  inherit (pair)
     fst
+    pair
     snd
+    tuple
   ;
 in
 

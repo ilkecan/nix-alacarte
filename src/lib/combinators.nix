@@ -26,7 +26,7 @@ in
         self = fs:
           if isFunction (list.head fs) then
             val:
-              self (map (callWith val) fs)
+              self (list.map (callWith val) fs)
           else
             combineFunc fs
           ;

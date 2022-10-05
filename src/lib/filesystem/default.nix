@@ -112,7 +112,7 @@ in
           files = readDir dir;
           mkAbsolute = path':
             if isString path' then path.relativeTo dir path' else path';
-          excludedPaths' = map mkAbsolute excludedPaths;
+          excludedPaths' = list.map mkAbsolute excludedPaths;
           f = attrs.get return;
           f' = if withExtension == "" then const id else
             file: val: if hasSuffix suffix file.name then val else null;

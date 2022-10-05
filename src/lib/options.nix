@@ -99,7 +99,7 @@ let
         apply = option.apply or null;
       in
       option // {
-        ${optionalValue (apply != null) "apply"} = map apply;
+        ${optionalValue (apply != null) "apply"} = list.map apply;
         default = [ ];
         type = types.listOf option.type;
       };
