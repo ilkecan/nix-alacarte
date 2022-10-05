@@ -13,6 +13,7 @@ let
     components
     exists
     extensions
+    hasExtension
     isAbsolute
     name
     relativeTo
@@ -110,6 +111,13 @@ in
       actual = extensions "..";
       expected = [ ];
     };
+  };
+
+  hasExtension = {
+    no_extension = assertFalse hasExtension "c" ".gitignore";
+    wrong_extension = assertFalse hasExtension "cpp" "main.c";
+    correct_extension = assertTrue hasExtension "hs" "main.hs";
+    multiple_extensions = assertTrue hasExtension [ "en" "md" ] "README.en.md";
   };
 
   isAbsolute = {

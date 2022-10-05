@@ -6,17 +6,20 @@
 
 let
   inherit (lib)
+    flip
     pipe
   ;
 
   inherit (nix-alacarte)
     add
+    equalTo
     list
     mapOr
     path
     pipe'
     str
     sub
+    sub'
   ;
 
   inherit (nix-alacarte.internal.path)
@@ -49,6 +52,20 @@ in
       pipe' [
         self.name
         (mapOr [ ] extensionsUnsafe)
+      ];
+
+    hasExtension = extension: path:
+      let
+        extension' = list.to extension;
+        extensionLength = list.length extension';
+
+        extensions = self.extensions path;
+      in
+      pipe extensions [
+        list.length
+        (sub' extensionLength)
+        (flip list.drop extensions)
+        (equalTo extension')
       ];
 
     isAbsolute = path:
