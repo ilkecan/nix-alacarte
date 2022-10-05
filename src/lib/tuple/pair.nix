@@ -5,9 +5,7 @@
 
 let
   inherit (nix-alacarte)
-    fst
     pair
-    snd
     tuple
   ;
 in
@@ -20,11 +18,11 @@ in
   curry = f: x: y:
     f (pair x y);
 
-  swap = pair':
-    pair (snd pair') (fst pair');
+  swap = { fst, snd }:
+    pair snd fst;
 
-  uncurry = f: pair':
-    f (fst pair') (snd pair');
+  uncurry = f: { fst, snd }:
+    f fst snd;
 
   ## inherits
   inherit (tuple)

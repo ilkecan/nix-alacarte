@@ -5,7 +5,6 @@
 
 let
   inherit (nix-alacarte)
-    fst
     singleton
     tuple
   ;
@@ -19,8 +18,8 @@ in
   curry = f: x:
     f (singleton x);
 
-  uncurry = f: singleton':
-    f (fst singleton');
+  uncurry = f: { fst }:
+    f fst;
 
   ## inherits
   inherit (tuple)

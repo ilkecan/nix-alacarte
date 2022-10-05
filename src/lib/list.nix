@@ -311,7 +311,7 @@ in
 
       toAttrs =
         pipe' [
-          (self.map (pair: lib.nameValuePair (fst pair) (snd pair)))
+          (self.map (pair.uncurry lib.nameValuePair))
           builtins.listToAttrs
         ];
 
