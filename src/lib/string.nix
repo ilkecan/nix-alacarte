@@ -145,15 +145,25 @@ in
 
       find = find' false;
 
+      foldl = operator: initial: string:
+        let
+          length' = self.length string;
+          fold = n:
+            if n == -1
+              then initial
+              else operator (fold (n - 1)) (self.at n string);
+        in
+        fold (length' - 1);
+
       foldr = operator: initial: string:
         let
           length' = self.length string;
-          fold' = n:
+          fold = n:
             if n == length'
               then initial
-              else operator (self.at n string) (fold' (n + 1));
+              else operator (self.at n string) (fold (n + 1));
         in
-        fold' 0;
+        fold 0;
 
       intersperse = builtins.concatStringsSep;
 

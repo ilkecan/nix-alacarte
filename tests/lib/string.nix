@@ -30,6 +30,7 @@ let
     concatMap
     drop
     find
+    foldl
     foldr
     lower
     prepend
@@ -299,6 +300,11 @@ in
       actual = unlines [ "veni" "vidi" "vici" ];
       expected = "veni\nvidi\nvici";
     };
+  };
+
+  foldl = assertEqual {
+    actual = foldl (x: y: x + "," + y) "|" "abc";
+    expected = "|,a,b,c";
   };
 
   foldr = assertEqual {
