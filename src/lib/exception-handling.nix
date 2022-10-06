@@ -92,7 +92,7 @@ in
                 let
                   list' = toPretty list;
                 in
-                throw ''${prefix}: index ${index'} is not within interval ${interval''} for ${list'}'';
+                throw ''${prefix}: index `${index'}` is not within interval ${interval''} for ${list'}'';
 
         missingAttribute = attrName: attrs:
           throw "attribute `${attrName}` missing in ${toPretty attrs}";

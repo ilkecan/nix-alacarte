@@ -145,6 +145,16 @@ in
 
       find = find' false;
 
+      foldr = operator: initial: string:
+        let
+          length' = self.length string;
+          fold' = n:
+            if n == length'
+              then initial
+              else operator (self.at n string) (fold' (n + 1));
+        in
+        fold' 0;
+
       intersperse = builtins.concatStringsSep;
 
       length = builtins.stringLength;
@@ -179,7 +189,6 @@ in
           ];
         in
         pair (self.take index' string) (self.drop index' string);
-
 
       take = slice' { } 0;
 
