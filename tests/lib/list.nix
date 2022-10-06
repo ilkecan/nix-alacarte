@@ -31,6 +31,7 @@ let
     append
     at
     concat
+    concat2
     concatMap
     cons
     count
@@ -134,6 +135,11 @@ in
   concat = assertEqual {
     actual = concat [ [ 1 2 3 ] [ 4 5 ] [ 6 ] [ ] ];
     expected = [ 1 2 3 4 5 6 ];
+  };
+
+  concat2 = assertEqual {
+    actual = concat2 [ 0 2 4 ] [ 1 3 ];
+    expected = [ 0 2 4 1 3 ];
   };
 
   concatMap = assertEqual {

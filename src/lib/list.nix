@@ -112,6 +112,9 @@ in
 
       concat = builtins.concatLists;
 
+      concat2 = left: right:
+        left ++ right;
+
       concatMap = builtins.concatMap;
 
       cons = compose [ self.prepend self.singleton ];
