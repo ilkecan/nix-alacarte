@@ -1,6 +1,5 @@
 {
   dnm,
-  lib,
   nix-alacarte,
   ...
 }:
@@ -12,7 +11,6 @@ let
     fmtValue
     indentBy
     indentByWith
-    int
     lines
     pair
     str
@@ -25,6 +23,7 @@ let
 
   inherit (str)
     append
+    at
     capitalize
     concat
     concat2
@@ -54,6 +53,7 @@ let
 
   inherit (dnm)
     assertEqual
+    assertFailure
     assertNull
   ;
 in
@@ -83,6 +83,30 @@ in
     actual = unelements [ "apple" "orange" ];
     expected = "apple,orange";
   };
+
+  at =
+    let
+      string = "abcde";
+    in
+    {
+      negative_index = {
+        out_of_bounds = assertFailure at (-9) string;
+
+        in_range = assertEqual {
+          actual = at (-4) string;
+          expected = "b";
+        };
+      };
+
+      positive_index = {
+        out_of_bounds = assertFailure at (-9) string;
+
+        in_range = assertEqual {
+          actual = at 2 string;
+          expected = "c";
+        };
+      };
+    };
 
   capitalize = assertEqual {
     actual = capitalize "hellO";

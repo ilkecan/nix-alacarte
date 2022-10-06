@@ -21,6 +21,7 @@ let
     fst
     indentByWith
     int
+    interval
     lines
     list
     options
@@ -32,6 +33,7 @@ let
   ;
 
   inherit (nix-alacarte.internal)
+    assertion
     normalizeNegativeIndex
   ;
 
@@ -99,73 +101,92 @@ in
 
   lines = self.split "\n";
 
-  str = {
-    __functor = _:
-      options.str;
+  str =
+    let
+      assertion' = assertion.appendScope "str";
+    in
+    {
+      __functor = _:
+        options.str;
 
-    append = suffix: string:
-      string + suffix;
+      append = suffix: string:
+        string + suffix;
 
-    capitalize = string:
-      let
-        result = self.splitAt 1 string;
-      in
-      (self.upper (fst result)) + (snd result);
+      at =
+        let
+          assertion'' = assertion'.appendScope "at";
+        in
+        index: string:
+          let
+            length = self.length string;
+            interval' = interval (-length) length;
+          in
+          assert assertion''.indexBounds interval' index string;
+          let
+            index' = normalizeNegativeIndex length index;
+          in
+          builtins.substring index' 1 string;
 
-    concat = lib.concatStrings;
+      capitalize = string:
+        let
+          result = self.splitAt 1 string;
+        in
+        (self.upper (fst result)) + (snd result);
 
-    concat2 = left: right:
-      left + right;
+      concat = lib.concatStrings;
 
-    concatMap = lib.concatMapStrings;
+      concat2 = left: right:
+        left + right;
 
-    drop = count:
-      slice' { } count int.MAX;
+      concatMap = lib.concatMapStrings;
 
-    find = find' false;
+      drop = count:
+        slice' { } count int.MAX;
 
-    intersperse = builtins.concatStringsSep;
+      find = find' false;
 
-    length = builtins.stringLength;
+      intersperse = builtins.concatStringsSep;
 
-    lower = lib.toLower;
+      length = builtins.stringLength;
 
-    optional = lib.optionalString;
+      lower = lib.toLower;
 
-    prepend = prefix: string:
-      prefix + string;
+      optional = lib.optionalString;
 
-    rfind = find' true;
+      prepend = prefix: string:
+        prefix + string;
 
-    replace = builtins.replaceStrings;
+      rfind = find' true;
 
-    replicate = n:
-      pipe' [
-        (list.replicate n)
-        self.concat
-      ];
+      replace = builtins.replaceStrings;
 
-    slice = slice' { inherit normalizeNegativeIndex; };
-
-    split = lib.splitString;
-
-    splitAt = index: string:
-      let
-        length = self.length string;
-        index' = pipe index [
-          (normalizeNegativeIndex length)
-          (clamp 0 length)
+      replicate = n:
+        pipe' [
+          (list.replicate n)
+          self.concat
         ];
-      in
-      pair (self.take index' string) (self.drop index' string);
+
+      slice = slice' { inherit normalizeNegativeIndex; };
+
+      split = lib.splitString;
+
+      splitAt = index: string:
+        let
+          length = self.length string;
+          index' = pipe index [
+            (normalizeNegativeIndex length)
+            (clamp 0 length)
+          ];
+        in
+        pair (self.take index' string) (self.drop index' string);
 
 
-    take = slice' { } 0;
+      take = slice' { } 0;
 
-    unsafeDiscardContext = builtins.unsafeDiscardStringContext;
+      unsafeDiscardContext = builtins.unsafeDiscardStringContext;
 
-    upper = lib.toUpper;
-  };
+      upper = lib.toUpper;
+    };
 
   uncommands = self.intersperse ";";
 
