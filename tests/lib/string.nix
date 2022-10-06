@@ -9,7 +9,6 @@ let
   inherit (nix-alacarte)
     addPrefix
     addSuffix
-    capitalize
     commands
     elements
     fmtValue
@@ -28,6 +27,7 @@ let
   ;
 
   inherit (str)
+    capitalize
     concat
     concatMap
     drop
@@ -66,11 +66,6 @@ in
     expected = "foobar";
   };
 
-  capitalize = assertEqual {
-    actual = capitalize "hellO";
-    expected = "HellO";
-  };
-
   commands = assertEqual {
     actual = commands "touch a;ls -al";
     expected = [ "touch a" "ls -al" ];
@@ -89,6 +84,11 @@ in
   unelements = assertEqual{
     actual = unelements [ "apple" "orange" ];
     expected = "apple,orange";
+  };
+
+  capitalize = assertEqual {
+    actual = capitalize "hellO";
+    expected = "HellO";
   };
 
   concat = assertEqual {

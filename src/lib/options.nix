@@ -20,11 +20,11 @@ let
 
   inherit (nix-alacarte)
     attrs
-    capitalize
     compose
     list
     optionalValue
     pair
+    str
   ;
 
   inherit (nix-alacarte.options)
@@ -58,7 +58,7 @@ let
   setterFunctions = attrs.gen optionAttributes attrs.set;
   unsetterFunctions =
     list.mapToAttrs
-      (name: pair "unset${capitalize name}" (unsetAttr name))
+      (name: pair "unset${str.capitalize name}" (unsetAttr name))
       optionAttributes
     ;
 

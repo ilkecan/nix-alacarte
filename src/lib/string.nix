@@ -58,12 +58,6 @@ in
   addSuffix = suffix: string:
     string + suffix;
 
-  capitalize = string:
-    let
-      result = self.splitAt 1 string;
-    in
-    (toUpper (fst result)) + (snd result);
-
   commands = self.split ";";
 
   elements = self.split ",";
@@ -121,6 +115,12 @@ in
   str = {
     __functor = _:
       options.str;
+
+    capitalize = string:
+      let
+        result = self.splitAt 1 string;
+      in
+      (toUpper (fst result)) + (snd result);
 
     concat = lib.concatStrings;
 

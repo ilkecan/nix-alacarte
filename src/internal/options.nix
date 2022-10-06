@@ -11,9 +11,9 @@ let
 
   inherit (nix-alacarte)
     attrs
-    capitalize
     compose
     list
+    str
   ;
 
   inherit (nix-alacarte.internal.options)
@@ -34,7 +34,7 @@ in
     generateOptions = optionFunctions:
       attrs.concat [
         (attrs.map (_name: toOption) optionFunctions)
-        (attrs.rename (name: _value: "mk${capitalize name}") optionFunctions)
+        (attrs.rename (name: _value: "mk${str.capitalize name}") optionFunctions)
       ];
 
     mkOptionConstructor = unaryFunction:
