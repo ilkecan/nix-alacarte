@@ -2,7 +2,7 @@
   lib,
   nix-alacarte,
   ...
-}:
+}@args:
 
 let
   inherit (lib)
@@ -53,6 +53,8 @@ in
     lhs >= rhs;
 
   greaterThanOrEqualTo' = flip greaterThanOrEqualTo;
+
+  interval = import ./interval.nix args;
 
   lessThan = builtins.lessThan;
 
