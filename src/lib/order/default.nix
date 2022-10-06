@@ -16,10 +16,8 @@ let
     compose
     greaterThan
     greaterThanOrEqualTo
-    int
     lessThan
     lessThanOrEqualTo
-    unwrapOr
   ;
 
   inherit (nix-alacarte.internal)
