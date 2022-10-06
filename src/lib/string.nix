@@ -17,7 +17,6 @@ let
   ;
 
   inherit (nix-alacarte)
-    addPrefix
     clamp
     fst
     indentByWith
@@ -51,9 +50,6 @@ let
 in
 
 {
-  addPrefix = prefix: string:
-    prefix + string;
-
   addSuffix = suffix: string:
     string + suffix;
 
@@ -91,7 +87,7 @@ in
     in
     pipe' [
       lines
-      (list.map (addPrefix indentation))
+      (list.map (self.prepend indentation))
       unlines
     ];
 
@@ -137,6 +133,9 @@ in
     lower = lib.toLower;
 
     optional = lib.optionalString;
+
+    prepend = prefix: string:
+      prefix + string;
 
     rfind = find' true;
 

@@ -7,7 +7,6 @@
 
 let
   inherit (nix-alacarte)
-    addPrefix
     addSuffix
     commands
     elements
@@ -33,6 +32,7 @@ let
     drop
     find
     lower
+    prepend
     replace
     rfind
     slice
@@ -58,11 +58,6 @@ let
 in
 
 {
-  addPrefix = assertEqual {
-    actual = addPrefix "foo" "bar";
-    expected = "foobar";
-  };
-
   addSuffix = assertEqual {
     actual = addSuffix "bar" "foo";
     expected = "foobar";
@@ -153,6 +148,11 @@ in
       actual = find (str: i: (slice i (i + 2) str) == "AR") "foObARbAz";
       expected = 4;
     };
+  };
+
+  prepend = assertEqual {
+    actual = prepend "foo" "bar";
+    expected = "foobar";
   };
 
   rfind = {
