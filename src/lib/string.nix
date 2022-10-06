@@ -27,7 +27,6 @@ let
     pair
     pipe'
     repeat
-    replicate
     snd
     str
     unlines
@@ -101,8 +100,11 @@ in
 
   lines = self.split "\n";
 
-  repeat = n: str:
-    self.concat (replicate n str);
+  repeat = n:
+    pipe' [
+      (list.replicate n)
+       self.concat
+    ];
 
   str = {
     __functor = _:

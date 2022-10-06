@@ -358,9 +358,4 @@ in
         (max 0)
         (self.gen (compose [ (add start) (mul stride) ]))
       ];
-
-  # inherits
-  inherit (list)
-    replicate
-  ;
 }

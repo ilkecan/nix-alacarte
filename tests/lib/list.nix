@@ -23,7 +23,6 @@ let
     range
     range1
     range3
-    replicate
   ;
 
   inherit (list)
@@ -75,6 +74,7 @@ let
     prepend
     product
     remove
+    replicate
     reverse
     singleton
     slice
