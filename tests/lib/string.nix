@@ -31,6 +31,7 @@ let
     drop
     find
     foldl
+    foldl'
     foldr
     lower
     prepend
@@ -304,6 +305,11 @@ in
 
   foldl = assertEqual {
     actual = foldl (x: y: x + "," + y) "|" "abc";
+    expected = "|,a,b,c";
+  };
+
+  foldl' = assertEqual {
+    actual = foldl' (x: y: x + "," + y) "|" "abc";
     expected = "|,a,b,c";
   };
 

@@ -6,6 +6,7 @@
 
 let
   inherit (builtins)
+    seq
     typeOf
   ;
 
@@ -154,6 +155,20 @@ in
               else operator (fold (n - 1)) (self.at n string);
         in
         fold (length' - 1);
+
+      foldl' = operator: initial: string:
+        let
+          length' = self.length string;
+          end = length' - 1;
+          fold = n: value:
+            let
+              result = operator value (self.at n string);
+            in
+            if n == end
+              then result
+              else seq result (fold (n + 1) result);
+        in
+        fold 0 initial;
 
       foldr = operator: initial: string:
         let
