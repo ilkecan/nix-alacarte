@@ -28,6 +28,7 @@ let
     append
     capitalize
     concat
+    concat2
     concatMap
     drop
     find
@@ -91,6 +92,11 @@ in
   concat = assertEqual {
     actual = concat [ "foo" "bar" "baz" ];
     expected = "foobarbaz";
+  };
+
+  conat2 = assertEqual {
+    actual = concat2 "foo" "bar";
+    expected = "foobar";
   };
 
   concatMap = assertEqual {

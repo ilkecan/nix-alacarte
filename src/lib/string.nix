@@ -119,6 +119,9 @@ in
 
     concat = lib.concatStrings;
 
+    concat2 = left: right:
+      left + right;
+
     concatMap = lib.concatMapStrings;
 
     drop = count:
