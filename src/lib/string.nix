@@ -134,6 +134,8 @@ in
 
     length = builtins.stringLength;
 
+    lower = lib.toLower;
+
     optional = lib.optionalString;
 
     rfind = find' true;

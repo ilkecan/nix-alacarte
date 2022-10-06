@@ -32,6 +32,7 @@ let
     concatMap
     drop
     find
+    lower
     replace
     rfind
     slice
@@ -266,6 +267,23 @@ in
     multi = assertEqual {
       actual = unlines [ "veni" "vidi" "vici" ];
       expected = "veni\nvidi\nvici";
+    };
+  };
+
+  lower = {
+    lowercase = assertEqual {
+      actual = lower "abc";
+      expected = "abc";
+    };
+
+    mixed = assertEqual {
+      actual = lower "aBC";
+      expected = "abc";
+    };
+
+    uppercase = assertEqual {
+      actual = lower "ABC";
+      expected = "abc";
     };
   };
 
