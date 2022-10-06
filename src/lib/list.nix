@@ -49,6 +49,7 @@ let
   ;
 
   inherit (nix-alacarte.internal.list)
+    foldStartingWithHead
     slice'
     sliceUnsafe
   ;
@@ -70,17 +71,6 @@ in
   list =
     let
       assertion' = assertion.appendScope "list";
-
-      foldStartingWithHead = scope:
-        let
-          assertion'' = assertion'.appendScope scope;
-        in
-        f: list:
-          assert assertion'' (self.notEmpty list) "empty list";
-          let
-            initial = self.head list;
-          in
-          self.foldl' f initial list;
     in
     {
       # NOTE: i don't like this
