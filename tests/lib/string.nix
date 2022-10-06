@@ -38,6 +38,7 @@ let
     split
     splitAt
     take
+    upper
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -403,5 +404,22 @@ in
   unwords = assertEqual {
     actual = unwords [ "nix" "repl" "--file" "'<nixpkgs>'" ];
     expected = "nix repl --file '<nixpkgs>'";
+  };
+
+  upper = {
+    lower = assertEqual {
+      actual = upper "abc";
+      expected = "ABC";
+    };
+
+    mixed = assertEqual {
+      actual = upper "aBc";
+      expected = "ABC";
+    };
+
+    uppercase = assertEqual {
+      actual = upper "ABC";
+      expected = "ABC";
+    };
   };
 }

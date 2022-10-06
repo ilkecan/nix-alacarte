@@ -13,7 +13,6 @@ let
     const
     id
     pipe
-    toUpper
     upperChars
   ;
 
@@ -120,7 +119,7 @@ in
       let
         result = self.splitAt 1 string;
       in
-      (toUpper (fst result)) + (snd result);
+      (self.upper (fst result)) + (snd result);
 
     concat = lib.concatStrings;
 
@@ -159,6 +158,8 @@ in
     take = slice' { } 0;
 
     unsafeDiscardContext = builtins.unsafeDiscardStringContext;
+
+    upper = lib.toUpper;
   };
 
   uncommands = self.intersperse ";";
