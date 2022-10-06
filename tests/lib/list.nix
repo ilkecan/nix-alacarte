@@ -1,6 +1,5 @@
 {
   dnm,
-  lib,
   nix-alacarte,
   ...
 }:
@@ -124,12 +123,23 @@ in
       list = range1 5;
     in
     {
-      negative_index = assertFailure at (-4) list;
-      index_in_range = assertEqual {
-        actual = at 2 list;
-        expected = 2;
+      negative_index = {
+        out_of_bounds = assertFailure at (-9) list;
+
+        in_range = assertEqual {
+          actual = at (-4) list;
+          expected = 1;
+        };
       };
-      index_to_large = assertFailure at 22 list;
+
+      positive_index = {
+        out_of_bounds = assertFailure at (-9) list;
+
+        in_range = assertEqual {
+          actual = at 2 list;
+          expected = 2;
+        };
+      };
     };
 
   concat = assertEqual {
@@ -681,30 +691,30 @@ in
       list = [ 0 1 2 3 4 ];
     in
     {
-    negative_index = {
-      out_of_bounds = assertEqual {
-        actual = splitAt (-9) list;
-        expected = pair [ ] list;
+      negative_index = {
+        out_of_bounds = assertEqual {
+          actual = splitAt (-9) list;
+          expected = pair [ ] list;
+        };
+
+        in_range = assertEqual {
+          actual = splitAt (-2) list;
+          expected = pair [ 0 1 2 ] [ 3 4 ];
+        };
       };
 
-      in_range = assertEqual {
-        actual = splitAt (-2) list;
-        expected = pair [ 0 1 2 ] [ 3 4 ];
+      positive_index = {
+        out_of_bounds = assertEqual {
+          actual = splitAt 24 list;
+          expected = pair list [ ];
+        };
+
+        in_range = assertEqual {
+          actual = splitAt 2 list;
+          expected = pair [ 0 1 ] [ 2 3 4 ];
+        };
       };
     };
-
-    positive_index = {
-      out_of_bounds = assertEqual {
-        actual = splitAt 24 list;
-        expected = pair list [ ];
-      };
-
-      in_range = assertEqual {
-        actual = splitAt 2 list;
-        expected = pair [ 0 1 ] [ 2 3 4 ];
-      };
-    };
-  };
 
   sum = {
     empty = assertEqual {

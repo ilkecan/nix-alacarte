@@ -6,6 +6,7 @@
 let
   inherit (nix-alacarte)
     compose
+    interval
     list
     mkAssertion
     mkThrow
@@ -15,6 +16,7 @@ let
   inherit (nix-alacarte.internal.exceptionHandling)
     appendScope
     autoColor
+    bold
     defaultColors
   ;
 in
@@ -38,6 +40,12 @@ in
           pred = attrs.has attrName attrs;
         in
         pred || throw.missingAttribute attrName attrs;
+
+      indexBounds = interval': index: list:
+        let
+          predicate = interval.contains index interval';
+        in
+        predicate || throw.indexOutOfBounds interval' index list;
 
       oneOf = list': name: value:
         let
@@ -67,6 +75,24 @@ in
 
         __functor = _:
           throw;
+
+        indexOutOfBounds =
+          let
+            prefix = bold "index out of bounds";
+          in
+          interval':
+            let
+              interval'' = interval.toString interval';
+            in
+            index:
+              let
+                index' = toString index;
+              in
+              list:
+                let
+                  list' = toPretty list;
+                in
+                throw ''${prefix}: index ${index'} is not within interval ${interval''} for ${list'}'';
 
         missingAttribute = attrName: attrs:
           throw "attribute `${attrName}` missing in ${toPretty attrs}";

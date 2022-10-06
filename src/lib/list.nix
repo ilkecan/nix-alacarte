@@ -27,9 +27,9 @@ let
     fst
     indexed
     int
+    interval
     list
     mul
-    negative
     not
     notEqualTo
     options
@@ -97,18 +97,20 @@ in
       append = right: left:
         left ++ right;
 
-      at = index:
+      at =
         let
           assertion'' = assertion'.appendScope "at";
         in
-        assert assertion'' (!negative index) "negative index: `${toString index}`";
-        list:
+        index: list:
           let
             length = self.length list;
+            interval' = interval (-length) length;
           in
-          assert assertion'' (index < length)
-            "index out of bounds: the length is `${toString length}` but the index is `${toString index}`";
-          elemAt list index;
+          assert assertion''.indexBounds interval' index list;
+          let
+            index' = normalizeNegativeIndex length index;
+          in
+          elemAt list index';
 
       concat = builtins.concatLists;
 

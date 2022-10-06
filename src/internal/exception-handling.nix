@@ -85,6 +85,9 @@ in
         msg:
           list.foldl' colorOnce' msg colorMap;
 
+    bold = msg:
+      str.concat [ bold msg reset ];
+
     defaultColors = {
       codeBlock = boldAnd magenta;
       scope = boldAnd blue;
