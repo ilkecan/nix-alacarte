@@ -26,7 +26,6 @@ let
     options
     pair
     pipe'
-    repeat
     snd
     str
     unlines
@@ -79,7 +78,7 @@ in
 
   indentByWith = char: count:
     let
-      indentation = repeat count char;
+      indentation = self.replicate count char;
     in
     pipe' [
       lines
@@ -99,12 +98,6 @@ in
   };
 
   lines = self.split "\n";
-
-  repeat = n:
-    pipe' [
-      (list.replicate n)
-       self.concat
-    ];
 
   str = {
     __functor = _:
@@ -145,6 +138,12 @@ in
     rfind = find' true;
 
     replace = builtins.replaceStrings;
+
+    replicate = n:
+      pipe' [
+        (list.replicate n)
+        self.concat
+      ];
 
     slice = slice' { inherit normalizeNegativeIndex; };
 

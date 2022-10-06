@@ -15,7 +15,6 @@ let
     int
     lines
     pair
-    repeat
     str
     uncommands
     unelements
@@ -35,6 +34,7 @@ let
     lower
     prepend
     replace
+    replicate
     rfind
     slice
     split
@@ -293,11 +293,6 @@ in
     };
   };
 
-  repeat = assertEqual {
-    actual = repeat 4 " |";
-    expected = " | | | |";
-  };
-
   replace =
     let
       plural = replace [ "y" ] [ "ies" ];
@@ -313,6 +308,11 @@ in
         expected = "flies";
       };
     };
+
+  replicate = assertEqual {
+    actual = replicate 4 " |";
+    expected = " | | | |";
+  };
 
   slice =
     let
