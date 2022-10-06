@@ -7,7 +7,6 @@
 
 let
   inherit (nix-alacarte)
-    addSuffix
     commands
     elements
     fmtValue
@@ -26,6 +25,7 @@ let
   ;
 
   inherit (str)
+    append
     capitalize
     concat
     concatMap
@@ -58,8 +58,8 @@ let
 in
 
 {
-  addSuffix = assertEqual {
-    actual = addSuffix "bar" "foo";
+  append = assertEqual {
+    actual = append "bar" "foo";
     expected = "foobar";
   };
 

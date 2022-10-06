@@ -50,9 +50,6 @@ let
 in
 
 {
-  addSuffix = suffix: string:
-    string + suffix;
-
   commands = self.split ";";
 
   elements = self.split ",";
@@ -110,6 +107,9 @@ in
   str = {
     __functor = _:
       options.str;
+
+    append = suffix: string:
+      string + suffix;
 
     capitalize = string:
       let
