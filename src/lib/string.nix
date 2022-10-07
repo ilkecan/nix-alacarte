@@ -19,6 +19,7 @@ let
 
   inherit (nix-alacarte)
     clamp
+    compose
     fst
     indentByWith
     int
@@ -140,6 +141,8 @@ in
         left + right;
 
       concatMap = lib.concatMapStrings;
+
+      cons = compose [ self.prepend self.singleton ];
 
       drop = count:
         slice' { } count int.MAX;

@@ -28,6 +28,7 @@ let
     concat
     concat2
     concatMap
+    cons
     drop
     find
     foldl
@@ -132,6 +133,11 @@ in
   concatMap = assertEqual {
     actual = concatMap (s: "${s}, ") [ "foo" "bar" "baz" ];
     expected = "foo, bar, baz, ";
+  };
+
+  cons = assertEqual {
+    actual = cons "a" "bc";
+    expected = "abc";
   };
 
   drop =
