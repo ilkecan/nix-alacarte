@@ -49,6 +49,7 @@ let
     foldl
     foldl'
     foldr
+    foldr'
     forEach
     gen
     groupBy
@@ -346,6 +347,11 @@ in
 
   foldr = assertEqual {
     actual = foldr (x: y: x + y) "|" [ "a" "b" "c" ];
+    expected = "abc|";
+  };
+
+  foldr' = assertEqual {
+    actual = foldr' (x: y: x + y) "|" [ "a" "b" "c" ];
     expected = "abc|";
   };
 

@@ -6,8 +6,9 @@
 
 let
   inherit (builtins)
-    elemAt
     ceil
+    elemAt
+    seq
   ;
 
   inherit (lib)
@@ -167,6 +168,19 @@ in
       foldl' = builtins.foldl';
 
       foldr = lib.foldr;
+
+      foldr' = operator: initial: list:
+        let
+          length' = self.length list;
+          fold = n: value:
+            let
+              result = operator (self.at n list) value;
+            in
+            if n == 0
+              then result
+              else seq result (fold (n - 1) result);
+        in
+        fold (length' - 1) initial;
 
       forEach = flip self.map;
 
