@@ -38,6 +38,7 @@ let
     foldr'
     intercalate
     lower
+    notEmpty
     prepend
     replace
     replicate
@@ -198,6 +199,11 @@ in
       actual = find (str: i: (slice i (i + 2) str) == "AR") "foObARbAz";
       expected = 4;
     };
+  };
+
+  notEmpty = {
+    empty_string = assertFalse notEmpty "";
+    non_empty_string = assertTrue notEmpty "2c";
   };
 
   prepend = assertEqual {

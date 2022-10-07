@@ -27,6 +27,7 @@ let
     interval
     lines
     list
+    notEqualTo
     options
     pair
     pipe'
@@ -204,6 +205,8 @@ in
       length = builtins.stringLength;
 
       lower = lib.toLower;
+
+      notEmpty = notEqualTo "";
 
       optional = lib.optionalString;
 
