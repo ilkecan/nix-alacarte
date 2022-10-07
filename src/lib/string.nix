@@ -139,8 +139,7 @@ in
 
       concat = lib.concatStrings;
 
-      concat2 = left: right:
-        left + right;
+      concat2 = self.intercalate2 "";
 
       concatMap = lib.concatMapStrings;
 
@@ -215,6 +214,9 @@ in
         self.take (self.length string - 1) string;
 
       intercalate = builtins.concatStringsSep;
+
+      intercalate2 = seperator: left: right:
+        left + seperator + right;
 
       intersperse = seperator:
         let

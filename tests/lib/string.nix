@@ -39,6 +39,7 @@ let
     head
     init
     intercalate
+    intercalate2
     intersperse
     last
     lower
@@ -373,6 +374,11 @@ in
   intercalate = assertEqual {
     actual = intercalate ", " [ "there" "was" "a" "time" ];
     expected = "there, was, a, time";
+  };
+
+  intercalate2 = assertEqual {
+    actual = intercalate2 " ile " "leyla" "mecnun";
+    expected = "leyla ile mecnun";
   };
 
   intersperse = assertEqual {
