@@ -33,7 +33,7 @@ in
       isDigit = c: c >= "0" && c <= "9";
       filterDigits = stringAsChars (c: if isDigit c then c else "");
       versionNumbers = list.map filterDigits sortedVersionLines;
-      version = str.intersperse "." versionNumbers;
+      version = str.intercalate "." versionNumbers;
     in
     version;
 

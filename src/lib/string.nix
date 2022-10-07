@@ -193,7 +193,7 @@ in
         in
         fold (length' - 1) initial;
 
-      intersperse = builtins.concatStringsSep;
+      intercalate = builtins.concatStringsSep;
 
       length = builtins.stringLength;
 
@@ -235,13 +235,13 @@ in
       upper = lib.toUpper;
     };
 
-  uncommands = self.intersperse ";";
+  uncommands = self.intercalate ";";
 
-  unelements = self.intersperse ",";
+  unelements = self.intercalate ",";
 
-  unlines = self.intersperse "\n";
+  unlines = self.intercalate "\n";
 
-  unwords = self.intersperse " ";
+  unwords = self.intercalate " ";
 
   words = self.split " ";
 }

@@ -30,7 +30,7 @@ in
       pipe' [
         attrs.values
         (list.map toString)
-        (str.intersperse separator)
+        (str.intercalate separator)
       ];
 
     pair = import ./pair.nix args;
