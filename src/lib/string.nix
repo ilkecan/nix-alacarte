@@ -216,6 +216,24 @@ in
 
       intercalate = builtins.concatStringsSep;
 
+      intersperse = seperator:
+        let
+          operator = accumulator: element:
+            accumulator + seperator + element;
+        in
+        string:
+          let
+            result = self.uncons string;
+          in
+          if result == null
+            then [ ]
+            else
+              let
+                head = fst result;
+                tail = snd result;
+              in
+              self.foldl' operator head tail;
+
       last = string:
         let
           assertion'' = assertion'.appendScope "last";
