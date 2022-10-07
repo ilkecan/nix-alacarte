@@ -274,6 +274,11 @@ in
 
       take = slice' { } 0;
 
+      uncons = string:
+        if self.empty string
+          then null
+          else pair (self.head string) (self.tail string);
+
       unsafeDiscardContext = builtins.unsafeDiscardStringContext;
 
       upper = lib.toUpper;

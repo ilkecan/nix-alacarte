@@ -52,6 +52,7 @@ let
     splitAt
     tail
     take
+    uncons
     upper
   ;
 
@@ -547,6 +548,20 @@ in
   words = assertEqual {
     actual = words "nix repl --file '<nixpkgs>'";
     expected = [ "nix" "repl" "--file" "'<nixpkgs>'" ];
+  };
+
+  uncons = {
+    empty = assertNull uncons "";
+
+    single_elem = assertEqual {
+      actual = uncons "2";
+      expected = pair "2" "";
+    };
+
+    multi_elems = assertEqual {
+      actual = uncons "235";
+      expected = pair "2" "35";
+    };
   };
 
   unwords = assertEqual {
