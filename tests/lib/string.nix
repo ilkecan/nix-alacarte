@@ -33,6 +33,7 @@ let
     foldl
     foldl'
     foldr
+    foldr'
     lower
     prepend
     replace
@@ -315,6 +316,11 @@ in
 
   foldr = assertEqual {
     actual = foldr (x: y: x + "," + y) "|" "abc";
+    expected = "a,b,c,|";
+  };
+
+  foldr' = assertEqual {
+    actual = foldr' (x: y: x + "," + y) "|" "abc";
     expected = "a,b,c,|";
   };
 

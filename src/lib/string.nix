@@ -180,6 +180,19 @@ in
         in
         fold 0;
 
+      foldr' = operator: initial: string:
+        let
+          length' = self.length string;
+          fold = n: value:
+            let
+              result = operator (self.at n string) value;
+            in
+            if n == 0
+              then result
+              else seq result (fold (n - 1) result);
+        in
+        fold (length' - 1) initial;
+
       intersperse = builtins.concatStringsSep;
 
       length = builtins.stringLength;
