@@ -251,6 +251,13 @@ in
         in
         pair (self.take index' string) (self.drop index' string);
 
+      tail = string:
+        let
+          assertion'' = assertion'.appendScope "tail";
+        in
+        assert assertion'' (self.notEmpty string) "empty string";
+        self.drop 1 string;
+
       take = slice' { } 0;
 
       unsafeDiscardContext = builtins.unsafeDiscardStringContext;

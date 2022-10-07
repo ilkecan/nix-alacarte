@@ -48,6 +48,7 @@ let
     slice
     split
     splitAt
+    tail
     take
     upper
   ;
@@ -488,6 +489,15 @@ in
         actual = splitAt 2 string;
         expected = pair "ab" "cde";
       };
+    };
+  };
+
+  tail = {
+    empty_string = assertFailure tail "";
+
+    non_empty_string = assertEqual {
+      actual = tail "0112";
+      expected = "112";
     };
   };
 
