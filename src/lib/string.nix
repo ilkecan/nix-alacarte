@@ -20,6 +20,7 @@ let
   inherit (nix-alacarte)
     clamp
     compose
+    equalTo
     fst
     indentByWith
     int
@@ -146,6 +147,8 @@ in
 
       drop = count:
         slice' { } count int.MAX;
+
+      empty = equalTo "";
 
       find = find' false;
 

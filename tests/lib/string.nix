@@ -30,6 +30,7 @@ let
     concatMap
     cons
     drop
+    empty
     find
     foldl
     foldl'
@@ -61,7 +62,9 @@ let
   inherit (dnm)
     assertEqual
     assertFailure
+    assertFalse
     assertNull
+    assertTrue
   ;
 in
 
@@ -162,6 +165,11 @@ in
         };
       };
     };
+
+  empty = {
+    empty_string = assertTrue empty "";
+    non_empty_string = assertFalse empty "bc";
+  };
 
   find = {
     nonexisting = assertNull find "a" "bbc";
