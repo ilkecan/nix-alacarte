@@ -40,6 +40,7 @@ let
     replace
     replicate
     rfind
+    singleton
     slice
     split
     splitAt
@@ -366,6 +367,15 @@ in
   replicate = assertEqual {
     actual = replicate 4 " |";
     expected = " | | | |";
+  };
+
+  singleton = {
+    character = assertEqual {
+      actual = singleton "a";
+      expected = "a";
+    };
+
+    string = assertFailure singleton "abc";
   };
 
   slice =

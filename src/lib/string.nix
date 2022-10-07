@@ -214,6 +214,13 @@ in
           self.concat
         ];
 
+      singleton = character:
+        let
+          assertion' = assertion.appendScope "singleton";
+        in
+        assert assertion' (self.length character == 1) "not a character: `${character}`";
+        character;
+
       slice = slice' { inherit normalizeNegativeIndex; };
 
       split = lib.splitString;
