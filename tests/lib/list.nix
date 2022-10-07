@@ -335,24 +335,46 @@ in
     };
   };
 
-  foldl = assertEqual {
-    actual = foldl (x: y: x + y) "|" [ "a" "b" "c" ];
-    expected = "|abc";
+  foldl = {
+    left_fold = assertEqual {
+      actual = foldl (x: y: x + y) "|" [ "a" "b" "c" ];
+      expected = "|abc";
+    };
+
+    evaluation_lazy = assertEqual {
+      actual = foldl (x: y: if y == 5 then 42 else x + y) 0 [ 1 2 3 (throw "up") 5 ];
+      expected = 42;
+    };
   };
 
-  foldl' = assertEqual {
-    actual = foldl' (x: y: x + y) "|" [ "a" "b" "c" ];
-    expected = "|abc";
+  foldl' = {
+    left_fold = assertEqual {
+      actual = foldl' (x: y: x + y) "|" [ "a" "b" "c" ];
+      expected = "|abc";
+    };
+
+    evalution_is_strict = assertFailure foldl' (x: y: if y == 5 then 42 else x + y) 0 [ 1 2 3 (throw "up") 5 ];
   };
 
-  foldr = assertEqual {
-    actual = foldr (x: y: x + y) "|" [ "a" "b" "c" ];
-    expected = "abc|";
+  foldr = {
+    right_fold = assertEqual {
+      actual = foldr (x: y: x + y) "|" [ "a" "b" "c" ];
+      expected = "abc|";
+    };
+
+    evaluation_lazy = assertEqual {
+      actual = foldr (x: y: if x == 1 then 42 else x + y) 0 [ 1 (throw "up") 3 4 5 ];
+      expected = 42;
+    };
   };
 
-  foldr' = assertEqual {
-    actual = foldr' (x: y: x + y) "|" [ "a" "b" "c" ];
-    expected = "abc|";
+  foldr' = {
+    right_fold = assertEqual {
+      actual = foldr' (x: y: x + y) "|" [ "a" "b" "c" ];
+      expected = "abc|";
+    };
+
+    evalution_is_strict = assertFailure foldr' (x: y: if x == 1 then 42 else x + y) 0 [ 1 (throw "up") 3 4 5 ];
   };
 
   forEach = assertEqual {
