@@ -39,6 +39,7 @@ let
     head
     init
     intercalate
+    last
     lower
     notEmpty
     prepend
@@ -370,6 +371,15 @@ in
   intercalate = assertEqual {
     actual = intercalate ", " [ "there" "was" "a" "time" ];
     expected = "there, was, a, time";
+  };
+
+  last = {
+    empty_list = assertFailure last "";
+
+    non_empty_list = assertEqual {
+      actual = last "123";
+      expected = "3";
+    };
   };
 
   lower = {

@@ -216,6 +216,13 @@ in
 
       intercalate = builtins.concatStringsSep;
 
+      last = string:
+        let
+          assertion'' = assertion'.appendScope "last";
+        in
+        assert assertion'' (self.notEmpty string) "empty string";
+        self.at (self.length string - 1) string;
+
       length = builtins.stringLength;
 
       lower = lib.toLower;
