@@ -207,6 +207,13 @@ in
         assert assertion'' (self.notEmpty string) "empty string";
         self.at 0 string;
 
+      init = string:
+        let
+          assertion'' = assertion'.appendScope "init";
+        in
+        assert assertion'' (self.notEmpty string) "empty string";
+        self.take (self.length string - 1) string;
+
       intercalate = builtins.concatStringsSep;
 
       length = builtins.stringLength;

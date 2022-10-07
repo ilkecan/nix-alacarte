@@ -37,6 +37,7 @@ let
     foldr
     foldr'
     head
+    init
     intercalate
     lower
     notEmpty
@@ -354,6 +355,15 @@ in
     non_empty_string = assertEqual {
       actual = head "0112";
       expected = "0";
+    };
+  };
+
+  init = {
+    empty_string = assertFailure init "";
+
+    non_empty_string = assertEqual {
+      actual = init "123";
+      expected = "12";
     };
   };
 
