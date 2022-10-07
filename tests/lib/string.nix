@@ -34,6 +34,7 @@ let
     foldl'
     foldr
     foldr'
+    intercalate
     lower
     prepend
     replace
@@ -322,6 +323,11 @@ in
   foldr' = assertEqual {
     actual = foldr' (x: y: x + "," + y) "|" "abc";
     expected = "a,b,c,|";
+  };
+
+  intercalate = assertEqual {
+    actual = intercalate ", " [ "there" "was" "a" "time" ];
+    expected = "there, was, a, time";
   };
 
   lower = {
