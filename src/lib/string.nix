@@ -200,6 +200,13 @@ in
         in
         fold (length' - 1) initial;
 
+      head = string:
+        let
+          assertion'' = assertion'.appendScope "head";
+        in
+        assert assertion'' (self.notEmpty string) "empty string";
+        self.at 0 string;
+
       intercalate = builtins.concatStringsSep;
 
       length = builtins.stringLength;

@@ -36,6 +36,7 @@ let
     foldl'
     foldr
     foldr'
+    head
     intercalate
     lower
     notEmpty
@@ -344,6 +345,15 @@ in
   foldr' = assertEqual {
     actual = foldr' (x: y: x + "," + y) "|" "abc";
     expected = "a,b,c,|";
+  };
+
+  head = {
+    empty_string = assertFailure head "";
+
+    non_empty_string = assertEqual {
+      actual = head "0112";
+      expected = "0";
+    };
   };
 
   intercalate = assertEqual {
