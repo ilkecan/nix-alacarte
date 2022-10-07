@@ -105,8 +105,7 @@ in
 
       concat = builtins.concatLists;
 
-      concat2 = left: right:
-        left ++ right;
+      concat2 = self.intercalate2 [ ];
 
       concatMap = builtins.concatMap;
 
@@ -216,6 +215,9 @@ in
 
       intercalate = seperator:
         compose [ self.concat (self.intersperse seperator) ];
+
+      intercalate2 = seperator: left: right:
+        left ++ seperator ++ right;
 
       intersect = lib.intersectLists;
 

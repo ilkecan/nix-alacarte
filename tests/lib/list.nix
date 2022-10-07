@@ -58,6 +58,7 @@ let
     imap
     init
     intercalate
+    intercalate2
     intersect
     intersperse
     is
@@ -434,6 +435,11 @@ in
   intercalate = assertEqual {
     actual = intercalate [ 0 1 ] [ [ 1 3 5 ] [ 4 8 ] [ 3 5 7 ] ];
     expected = [ 1 3 5 0 1 4 8 0 1 3 5 7 ];
+  };
+
+  intercalate2 = assertEqual {
+    actual = intercalate2 [ 0 1 ] [ 1 3 5 ] [ 4 8 ];
+    expected = [ 1 3 5 0 1 4 8 ];
   };
 
   intersect = {
