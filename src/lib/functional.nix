@@ -29,4 +29,7 @@ in
 
   ternary = cond: expr1: expr2:
     if cond then expr1 else expr2;
+
+  ternary' = expr1: expr2: cond:
+    if cond then expr1 else expr2;
 }

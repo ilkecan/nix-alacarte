@@ -11,6 +11,7 @@ let
     compose
     pipe'
     ternary
+    ternary'
   ;
 
   inherit (dnm)
@@ -51,6 +52,18 @@ in
 
     second_expr = assertEqual {
       actual = ternary (4 < 9) "four" "nine";
+      expected = "four";
+    };
+  };
+
+  ternary' = {
+    first_expr = assertEqual {
+      actual = ternary' "four" "one" (4 < 1);
+      expected = "one";
+    };
+
+    second_expr = assertEqual {
+      actual = ternary' "four" "nine" (4 < 9);
       expected = "four";
     };
   };
