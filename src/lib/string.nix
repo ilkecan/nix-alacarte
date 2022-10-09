@@ -59,28 +59,6 @@ in
 
   elements = self.split ",";
 
-  fmtValue = {
-    bool ? null,
-    float ? null,
-    int ? null,
-    lambda ? null,
-    list ? null,
-    null ? null,
-    path ? null,
-    set ? null,
-    string ? null,
-  }@fmtFs: value:
-    let
-      fmtFs' = {
-        bool = v: if v then "1" else "";
-        float = nix-alacarte.float.toString;
-        null = const "";
-        string = id;
-      } // fmtFs;
-      fmt = fmtFs'.${typeOf value} or toString;
-    in
-    fmt value;
-
   indentBy = indentBy' " ";
 
   indentBy' = char: count:
@@ -304,6 +282,28 @@ in
 
       upper = lib.toUpper;
     };
+
+  mkToString = {
+    bool ? null,
+    float ? null,
+    int ? null,
+    lambda ? null,
+    list ? null,
+    null ? null,
+    path ? null,
+    set ? null,
+    string ? null,
+  }@fs: value:
+    let
+      fs' = {
+        bool = v: if v then "1" else "";
+        float = nix-alacarte.float.toString;
+        null = const "";
+        string = id;
+      } // fs;
+      toString = fs'.${typeOf value} or builtins.toString;
+    in
+    toString value;
 
   uncommands = self.intercalate ";";
 

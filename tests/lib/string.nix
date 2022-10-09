@@ -8,11 +8,11 @@ let
   inherit (nix-alacarte)
     commands
     elements
-    fmtValue
     indentBy
     indentBy'
     indentWith
     lines
+    mkToString
     pair
     str
     uncommands
@@ -248,19 +248,6 @@ in
     };
   };
 
-
-  fmtValue = {
-    default = assertEqual {
-      actual = fmtValue { } true;
-      expected = "1";
-    };
-
-    custom = assertEqual {
-      actual = fmtValue { bool = v: if v then "yes" else "no"; } true;
-      expected = "yes";
-    };
-  };
-
   indentBy = {
     single_line = assertEqual {
       actual = indentBy 4 "alice";
@@ -415,6 +402,18 @@ in
     uppercase = assertEqual {
       actual = lower "ABC";
       expected = "abc";
+    };
+  };
+
+  mkToString = {
+    default = assertEqual {
+      actual = mkToString { } true;
+      expected = "1";
+    };
+
+    custom = assertEqual {
+      actual = mkToString { bool = v: if v then "yes" else "no"; } true;
+      expected = "yes";
     };
   };
 

@@ -7,8 +7,8 @@
 let
   inherit (nix-alacarte)
     attrs
-    fmtValue
     indentBy
+    mkToString
   ;
 in
 
@@ -23,7 +23,7 @@ in
     # https://developer.valvesoftware.com/wiki/KeyValues
     toVDF = { }:
       let
-        fmtValue' = fmtValue { };
+        toString = mkToString { };
         mkKeyValue = key: value:
           if attrs.is value
             then ''
@@ -31,7 +31,7 @@ in
               {
               ${indentBy 2 (self value)}
               }''
-            else ''"${key}" "${fmtValue' value}"'';
+            else ''"${key}" "${toString value}"'';
         self = lib.generators.toKeyValue { inherit mkKeyValue; };
       in
       self;

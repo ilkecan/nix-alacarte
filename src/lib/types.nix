@@ -22,8 +22,8 @@ let
   inherit (nix-alacarte)
     allEqual
     attrs
-    fmtValue
     list
+    mkToString
     unwords
   ;
 
@@ -44,7 +44,7 @@ in
             let
               values = getValues defs;
               valueTypes = list.map typeOf values;
-              toStr = fmtValue coerceFunctions;
+              toString = mkToString coerceFunctions;
             in
             if allEqual valueTypes then
               {
@@ -54,7 +54,7 @@ in
             else
               types.string.merge
                 loc
-                (list.map (def: def // { value = toStr def.value; }) defs)
+                (list.map (def: def // { value = toString def.value; }) defs)
             ;
         };
       in
