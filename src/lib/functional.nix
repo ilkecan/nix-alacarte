@@ -26,4 +26,7 @@ in
     foldr call arg fs;
 
   pipe' = flip pipe;
+
+  ternary = cond: expr1: expr2:
+    if cond then expr1 else expr2;
 }

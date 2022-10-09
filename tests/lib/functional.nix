@@ -10,6 +10,7 @@ let
     callWith
     compose
     pipe'
+    ternary
   ;
 
   inherit (dnm)
@@ -40,5 +41,17 @@ in
   pipe' = assertEqual {
     actual = pipe' [ double subtractNine addFive ] 5;
     expected = 6;
+  };
+
+  ternary = {
+    first_expr = assertEqual {
+      actual = ternary (4 < 1) "four" "one";
+      expected = "one";
+    };
+
+    second_expr = assertEqual {
+      actual = ternary (4 < 9) "four" "nine";
+      expected = "four";
+    };
   };
 }
