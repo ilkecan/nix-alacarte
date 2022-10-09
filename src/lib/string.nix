@@ -22,7 +22,7 @@ let
     compose
     equalTo
     fst
-    indentByWith
+    indentBy'
     indentWith
     int
     interval
@@ -81,9 +81,9 @@ in
     in
     fmt value;
 
-  indentBy = indentByWith " ";
+  indentBy = indentBy' " ";
 
-  indentByWith = char: count:
+  indentBy' = char: count:
     indentWith (_: _: self.replicate count char);
 
   indentWith = f:

@@ -10,7 +10,7 @@ let
     elements
     fmtValue
     indentBy
-    indentByWith
+    indentBy'
     indentWith
     lines
     pair
@@ -273,8 +273,8 @@ in
     };
   };
 
-  indentByWith = assertEqual {
-    actual = indentByWith "|" 2 "bob";
+  indentBy' = assertEqual {
+    actual = indentBy' "|" 2 "bob";
     expected = "||bob";
   };
 
