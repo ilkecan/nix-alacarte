@@ -1,5 +1,4 @@
 {
-  lib,
   nix-alacarte,
   ...
 }:
@@ -85,7 +84,6 @@ in
             );
           in
           f {
-            # mkSequence = mkControlSequence "m";
             mkSequence = controlSequences.mkSequence "m";
 
             reset = 0 ;
