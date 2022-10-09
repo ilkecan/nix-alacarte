@@ -14,14 +14,12 @@ let
     attrs
   ;
 
-  inherit (attrs)
-    zipWith
-  ;
+  self = attrs;
 in
 {
   attrs = {
     mkFold = fold:
       op:
-        compose [ zipWith const (fold op) ];
+        compose [ self.zipWith const (fold op) ];
   };
 }

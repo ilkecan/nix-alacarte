@@ -157,6 +157,11 @@ in
               in
               set value' attrs;
 
+      size = pipe' [
+        self.names
+        list.length
+      ];
+
       toList = self.mapToList pair;
 
       values = builtins.attrValues;

@@ -44,6 +44,7 @@ let
     rename
     set
     setByPath
+    size
     toList
     values
     zip
@@ -330,6 +331,18 @@ in
     depth_3 = assertEqual {
       actual = setByPath [ "top" "middle" "bottom" ] 42 { top = { middle = { bottom = null; }; other = "hey"; }; };
       expected = { top = { middle = { bottom = 42; }; other = "hey"; }; };
+    };
+  };
+
+  size = {
+    empty = assertEqual {
+      actual = size { };
+      expected = 0;
+    };
+
+    non_empty = assertEqual {
+      actual = size { a = 1; b = 2; c = 3; };
+      expected = 3;
     };
   };
 
