@@ -11,6 +11,7 @@ let
     fmtValue
     indentBy
     indentByWith
+    indentWith
     lines
     pair
     str
@@ -275,6 +276,11 @@ in
   indentByWith = assertEqual {
     actual = indentByWith "|" 2 "bob";
     expected = "||bob";
+  };
+
+  indentWith = assertEqual {
+    actual = indentWith (i: line: if i == 0 then "- " else "  ") "a: 2\nb: true\nc: 4.2";
+    expected = "- a: 2\n  b: true\n  c: 4.2";
   };
 
   letterCase = {

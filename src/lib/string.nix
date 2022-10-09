@@ -23,6 +23,7 @@ let
     equalTo
     fst
     indentByWith
+    indentWith
     int
     interval
     lines
@@ -83,12 +84,12 @@ in
   indentBy = indentByWith " ";
 
   indentByWith = char: count:
-    let
-      indentation = self.replicate count char;
-    in
+    indentWith (_: _: self.replicate count char);
+
+  indentWith = f:
     pipe' [
       lines
-      (list.map (self.prepend indentation))
+      (list.imap (index: line: "${f index line}${line}"))
       unlines
     ];
 
