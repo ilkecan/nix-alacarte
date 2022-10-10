@@ -84,6 +84,9 @@ in
 
   lines = self.split "\n";
 
+  quote = string:
+    ''"${string}"'';
+
   str =
     let
       assertion' = assertion.appendScope "str";

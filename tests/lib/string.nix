@@ -14,6 +14,7 @@ let
     lines
     mkToString
     pair
+    quote
     str
     uncommands
     unelements
@@ -217,6 +218,11 @@ in
   prepend = assertEqual {
     actual = prepend "foo" "bar";
     expected = "foobar";
+  };
+
+  quote = assertEqual {
+    actual = quote ''ab"c"d'';
+    expected = ''"ab"c"d"'';
   };
 
   rfind = {
