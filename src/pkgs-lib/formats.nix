@@ -61,5 +61,28 @@ in
             (writeText name)
           ];
       };
+
+    yaml = { ... }@args:
+      let
+        valueType = with types; nullOr (oneOf [
+          bool
+          int
+          float
+          str
+          path
+          (attrsOf valueType)
+          (listOf valueType)
+        ]) // {
+          description = "YAML value";
+        };
+      in
+      {
+        type = valueType;
+        generate = name:
+          pipe' [
+            (generators.alacarte.toYAML args)
+            (writeText name)
+          ];
+      };
   };
 }
