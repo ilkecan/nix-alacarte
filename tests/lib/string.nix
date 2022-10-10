@@ -8,6 +8,7 @@ let
   inherit (nix-alacarte)
     commands
     elements
+    enclose
     indentBy
     indentBy'
     indentWith
@@ -252,6 +253,11 @@ in
       actual = rfind (str: i: (slice i (i + 2) str) == "AR") "foObARbAz";
       expected = 4;
     };
+  };
+
+  enclose = assertEqual {
+    actual = enclose "(" ")" "24.8 - 3.3";
+    expected = "(24.8 - 3.3)";
   };
 
   indentBy = {

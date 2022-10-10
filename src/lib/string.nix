@@ -20,6 +20,7 @@ let
   inherit (nix-alacarte)
     clamp
     compose
+    enclose
     equalTo
     fst
     indentBy'
@@ -59,6 +60,9 @@ in
 
   elements = self.split ",";
 
+  enclose = left: right: string:
+    "${left}${string}${right}";
+
   indentBy = indentBy' " ";
 
   indentBy' = char: count:
@@ -84,8 +88,7 @@ in
 
   lines = self.split "\n";
 
-  quote = string:
-    ''"${string}"'';
+  quote = enclose ''"'' ''"'';
 
   str =
     let
@@ -198,12 +201,11 @@ in
       intercalate = builtins.concatStringsSep;
 
       intercalate2 = seperator: left: right:
-        left + seperator + right;
+        "${left}${seperator}${right}";
 
       intersperse = seperator:
         let
-          operator = accumulator: element:
-            accumulator + seperator + element;
+          operator = self.intercalate2 seperator;
         in
         string:
           let
