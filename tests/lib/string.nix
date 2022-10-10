@@ -28,6 +28,7 @@ let
     append
     at
     capitalize
+    chars
     concat
     concat2
     concatMap
@@ -132,6 +133,18 @@ in
   capitalize = assertEqual {
     actual = capitalize "hellO";
     expected = "HellO";
+  };
+
+  chars = {
+    empty = assertEqual {
+      actual = chars "";
+      expected = [ ];
+    };
+
+    non_empty = assertEqual {
+      actual = chars "abcde";
+      expected = [ "a" "b" "c" "d" "e" ];
+    };
   };
 
   concat = assertEqual {

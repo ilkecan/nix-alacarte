@@ -122,6 +122,8 @@ in
         in
         (self.upper (fst result)) + (snd result);
 
+      chars = lib.stringToCharacters;
+
       concat = lib.concatStrings;
 
       concat2 = self.intercalate2 "";
