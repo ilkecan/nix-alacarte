@@ -11,11 +11,14 @@ let
 
   inherit (lib)
     boolToString
+    pipe
   ;
 
   inherit (nix-alacarte)
     attrs
     compose
+    str
+    enclose
     indentBy
     indentWith
     list
@@ -43,6 +46,44 @@ in
         (attrs.mapToList mkKeyValue)
         unlines
       ];
+
+    # https://github.com/luvit/luvit/wiki/Lua-Table-Interop-Notation
+    toLTIN = { }:
+      let
+        toString = mkToString {
+          bool = boolToString;
+          list = value:
+            ''
+              {
+              ${pipe value [
+                (list.map (compose [ (enclose "  " ",") toString]))
+                unlines
+              ]}
+              }'';
+          null = _:
+            "nil";
+          set = value:
+            ''
+              {
+              ${pipe value [
+                (attrs.mapToList mkKeyValue)
+                (list.map (enclose "  " ","))
+                unlines
+              ]}
+              }'';
+          string = quote;
+        };
+
+        mkKeyValue = key: value:
+          let
+            value' = pipe value [
+              toString
+              (indentWith (index: _: str.optional (index != 0) "  "))
+            ];
+          in
+          ''${key} = ${value'}'';
+      in
+      toString;
 
     # https://developer.valvesoftware.com/wiki/KeyValues
     toVDF = { }:
