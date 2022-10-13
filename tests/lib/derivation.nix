@@ -7,7 +7,11 @@
 let
   inherit (nix-alacarte)
     addPassthru
-    sourceOf
+    drv
+  ;
+
+  inherit (drv)
+    source
   ;
 
   inherit (dnm)
@@ -28,14 +32,14 @@ in
     };
   };
 
-  sourceOf = {
+  source = {
     has_src_attr = assertEqual {
-      actual = sourceOf { src = "<source-drv>"; };
+      actual = source { src = "<source-drv>"; };
       expected = "<source-drv>";
     };
 
     does_not_have_src_attr = assertEqual {
-      actual = sourceOf "<flake-input>";
+      actual = source "<flake-input>";
       expected = "<flake-input>";
     };
   };

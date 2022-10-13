@@ -52,12 +52,14 @@ in
       );
     in drv';
 
+  drv = {
+    source = drv:
+      drv.src or drv;
+  };
+
   mkOverlay = args: drvFuncFile:
     (final: _prev: {
       ${kebabToCamel (removeSuffix ".nix" (baseNameOf drvFuncFile))} =
           final.callPackage drvFuncFile args;
     });
-
-  sourceOf = pkg:
-    pkg.src or pkg;
 }
