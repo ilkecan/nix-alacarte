@@ -7,12 +7,16 @@
 
 let
   inherit (lib)
-    id
     mkOption
     types
   ;
 
-  inherit (nix-alacarte.options)
+  inherit (nix-alacarte)
+    fn
+    options
+  ;
+
+  inherit (options)
     internal
     public
     readOnly
@@ -123,7 +127,7 @@ in
     in
     {
       type_is_correct = assertEqual {
-        actual = (coerceTo types.unspecified id emptyOption).type.name;
+        actual = (coerceTo types.unspecified fn.id emptyOption).type.name;
         expected = "coercedTo";
       };
 

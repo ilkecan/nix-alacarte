@@ -40,6 +40,9 @@ in
       throw' = throw.appendScope "fn";
     in
     {
+      id = x:
+        x;
+
       toAttrs =
         let
           throw'' = throw'.appendScope "toAttrs";

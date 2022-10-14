@@ -11,13 +11,13 @@ let
 
   inherit (lib)
     const
-    id
     max
     min
     pipe
   ;
 
   inherit (nix-alacarte)
+    fn
     list
     negative
     range3
@@ -53,7 +53,7 @@ in
 
       slice' =
         {
-          normalizeNegativeIndex ? const id,
+          normalizeNegativeIndex ? const fn.id,
           stride ? 1,
         }:
         start: end: list:

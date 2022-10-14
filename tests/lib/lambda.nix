@@ -16,6 +16,7 @@ let
   ;
 
   inherit (fn)
+    id
     toAttrs
   ;
 
@@ -45,6 +46,11 @@ in
   compose = assertEqual {
     actual = compose [ double addFive subtractNine ] 2;
     expected = -4;
+  };
+
+  id = assertEqual {
+    actual = id 24.4;
+    expected = 24.4;
   };
 
   pipe' = assertEqual {

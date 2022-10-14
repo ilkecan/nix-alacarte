@@ -12,7 +12,6 @@ let
   inherit (lib)
     const
     getExe
-    id
     isDerivation
     isOptionType
     pipe
@@ -21,6 +20,7 @@ let
   inherit (nix-alacarte)
     attrs
     compose
+    fn
     list
     optionalValue
     pair
@@ -168,7 +168,7 @@ let
               default (getExe arg)
             else
               {
-                null = id;
+                null = fn.id;
                 string = default arg;
               }.${type}
             ;

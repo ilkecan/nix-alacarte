@@ -7,13 +7,13 @@
 let
   inherit (lib)
     flip
-    id
     max
     min
   ;
 
   inherit (nix-alacarte)
     compose
+    fn
     greaterThan
     greaterThanOrEqualTo
     lessThan
@@ -32,11 +32,11 @@ in
     in
     low:
       let
-        max' = if low == null then id else max low;
+        max' = if low == null then fn.id else max low;
       in
       high:
         let
-          min' = if high == null then id else min high;
+          min' = if high == null then fn.id else min high;
         in
         assert assertion' (low == null || high == null || low <= high) "`low` cannot be greater than `high`";
         compose [ min' max' ];

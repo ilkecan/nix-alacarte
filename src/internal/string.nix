@@ -11,13 +11,13 @@ let
 
   inherit (lib)
     const
-    id
     lowerChars
     max
     pipe
   ;
 
   inherit (nix-alacarte)
+    fn
     list
     range1
     str
@@ -65,7 +65,7 @@ in
             pipe str [
               length
               range1
-              (if reverse then list.reverse else id)
+              (if reverse then list.reverse else fn.id)
               (list.find (searcher str))
             ];
 
@@ -75,7 +75,7 @@ in
 
       slice' =
         {
-          normalizeNegativeIndex ? const id,
+          normalizeNegativeIndex ? const fn.id,
         }:
         start: end: string:
           let

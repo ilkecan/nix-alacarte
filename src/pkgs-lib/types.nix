@@ -10,14 +10,9 @@
 }:
 
 let
-  inherit (builtins)
-    foldl'
-  ;
-
   inherit (lib)
     const
     getValues
-    id
     isFunction
     mkDefault
     mkMerge
@@ -28,6 +23,7 @@ let
   inherit (nix-alacarte)
     attrs
     combinators
+    fn
     list
     options
   ;
@@ -109,9 +105,9 @@ in
             (mkDefault default)
             {
               final = pipe cfg.drv [
-                (if cfg.overrideAttrs != null then overrideAttrs else id)
-                (if cfg.override != null then override else id)
-                (if cfg.wrap != null then wrap else id)
+                (if cfg.overrideAttrs != null then overrideAttrs else fn.id)
+                (if cfg.override != null then override else fn.id)
+                (if cfg.wrap != null then wrap else fn.id)
               ];
             }
           ];

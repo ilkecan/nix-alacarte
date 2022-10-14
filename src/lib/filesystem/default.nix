@@ -15,7 +15,6 @@ let
   inherit (lib)
     const
     hasSuffix
-    id
     mapNullable
     pipe
     removeSuffix
@@ -29,6 +28,7 @@ let
     attrs
     dirToAttrs
     filesOf
+    fn
     list
     nixFiles
     pair
@@ -82,7 +82,7 @@ in
       })
       (if convertNameToCamel
         then attrs.rename (name: _: kebabToCamel name)
-        else id)
+        else fn.id)
     ];
 
   filesOf =
@@ -113,7 +113,7 @@ in
             if isString path' then path.relativeTo dir path' else path';
           excludedPaths' = list.map mkAbsolute excludedPaths;
           f = attrs.get return;
-          f' = if withExtension == "" then const id else
+          f' = if withExtension == "" then const fn.id else
             file: val: if hasSuffix suffix file.name then val else null;
           f'' = file: val:
             if list.elem file.path excludedPaths' then null
@@ -124,7 +124,7 @@ in
               file:
                 mapNullable (pair file.stem)
             else
-              const id
+              const fn.id
             ;
           g = name: type:
             let
@@ -141,9 +141,9 @@ in
         in
         pipe files [
           (attrs.mapToList g)
-          (if recursive then list.flatten else id)
+          (if recursive then list.flatten else fn.id)
           (list.remove null)
-          (if asAttrs then list.toAttrs else id)
+          (if asAttrs then list.toAttrs else fn.id)
         ];
     in
     self;
@@ -164,7 +164,7 @@ in
           recursive
         ;
       };
-      f = if makeOverridable then lib.makeOverridable else id;
+      f = if makeOverridable then lib.makeOverridable else fn.id;
     in
     dir: args:
       let

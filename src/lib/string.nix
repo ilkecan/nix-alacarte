@@ -12,7 +12,6 @@ let
 
   inherit (lib)
     const
-    id
     pipe
     upperChars
   ;
@@ -22,6 +21,7 @@ let
     compose
     enclose
     equalTo
+    fn
     fst
     indentBy'
     indentWith
@@ -306,7 +306,7 @@ in
         bool = v: if v then "1" else "";
         float = nix-alacarte.float.toString;
         null = const "";
-        string = id;
+        string = fn.id;
       } // fs;
       toString = fs'.${typeOf value} or builtins.toString;
     in

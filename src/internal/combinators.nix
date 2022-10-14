@@ -1,20 +1,16 @@
 {
-  lib,
   nix-alacarte,
   ...
 }:
 
 let
-  inherit (lib)
-    id
-  ;
-
   inherit (nix-alacarte)
     combinators
+    fn
   ;
 in
 
 {
   booleanCombinator = f:
-    combinators.mkCombinator (f id);
+    combinators.mkCombinator (f fn.id);
 }

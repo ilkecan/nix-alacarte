@@ -6,13 +6,14 @@
 
 let
   inherit (lib)
-    id
+    generators
   ;
 
   inherit (nix-alacarte)
     attrs
     compose
     even
+    fn
     list
     mkAssertion
     mkThrow
@@ -68,7 +69,7 @@ in
                   else compose [ addDelimiters color ];
               colorMsg = index:
                 if even index
-                  then id
+                  then fn.id
                   else addColor;
             in
             pipe' [
@@ -94,7 +95,7 @@ in
       string = boldAnd green;
     };
 
-    toPretty = lib.generators.toPretty { };
+    toPretty = generators.toPretty { };
   };
 
   throw = mkThrow args;
