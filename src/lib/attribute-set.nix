@@ -6,10 +6,6 @@
 }:
 
 let
-  inherit (lib)
-    const
-  ;
-
   inherit (nix-alacarte)
     attrs
     fn
@@ -103,7 +99,7 @@ in
           list.toAttrs
         ];
 
-      mapValues = fn.compose [ self.map const ];
+      mapValues = fn.compose [ self.map fn.const ];
 
       mapToList = lib.mapAttrsToList;
 
@@ -137,7 +133,7 @@ in
           result = list.uncons attrPath;
         in
         if result == null
-          then const
+          then fn.const
           else
             let
               head = fst result;

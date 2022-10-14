@@ -11,7 +11,6 @@
 
 let
   inherit (lib)
-    const
     getValues
     isFunction
     mkDefault
@@ -44,7 +43,7 @@ in
     overrideAttrsArgs = mkOptionType {
       name = "overrideAttrs args";
       check = isFunction;
-      merge = const getValues;
+      merge = fn.const getValues;
     };
 
     packageSubmodule = default:

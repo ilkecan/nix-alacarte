@@ -10,7 +10,6 @@ let
   ;
 
   inherit (lib)
-    const
     getExe
     isDerivation
     isOptionType
@@ -89,7 +88,7 @@ let
         default = option.default or option.type.emptyValue.value or null;
       in
       option // {
-        ${optionalValue (default != null) "default"} = const default;
+        ${optionalValue (default != null) "default"} = fn.const default;
         type = types.functionTo option.type;
       };
     list = option:

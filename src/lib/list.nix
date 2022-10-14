@@ -12,7 +12,6 @@ let
   ;
 
   inherit (lib)
-    const
     max
   ;
 
@@ -276,7 +275,7 @@ in
       remove = lib.remove;
 
       replicate = n: val:
-        self.gen (const val) n;
+        self.gen (fn.const val) n;
 
       reverse = list:
         let

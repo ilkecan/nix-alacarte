@@ -37,6 +37,9 @@ in
       compose = fs: arg:
         list.foldr self.call arg fs;
 
+      const = x: _:
+        x;
+
       flip = f: x: y:
         f y x;
 

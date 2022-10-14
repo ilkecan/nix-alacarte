@@ -11,7 +11,6 @@ let
   ;
 
   inherit (lib)
-    const
     upperChars
   ;
 
@@ -302,7 +301,7 @@ in
       fs' = {
         bool = v: if v then "1" else "";
         float = nix-alacarte.float.toString;
-        null = const "";
+        null = fn.const "";
         string = fn.id;
       } // fs;
       toString = fs'.${typeOf value} or builtins.toString;

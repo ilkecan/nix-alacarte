@@ -1,14 +1,9 @@
 {
-  lib,
   nix-alacarte,
   ...
 }:
 
 let
-  inherit (lib)
-    const
-  ;
-
   inherit (nix-alacarte)
     attrs
     fn
@@ -20,6 +15,6 @@ in
   attrs = {
     mkFold = fold:
       op:
-        fn.compose [ self.zipWith const (fold op) ];
+        fn.compose [ self.zipWith fn.const (fold op) ];
   };
 }

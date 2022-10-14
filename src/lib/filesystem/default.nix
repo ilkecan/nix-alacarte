@@ -13,7 +13,6 @@ let
   ;
 
   inherit (lib)
-    const
     hasSuffix
     mapNullable
     removeSuffix
@@ -111,7 +110,7 @@ in
             if isString path' then path.relativeTo dir path' else path';
           excludedPaths' = list.map mkAbsolute excludedPaths;
           f = attrs.get return;
-          f' = if withExtension == "" then const fn.id else
+          f' = if withExtension == "" then fn.const fn.id else
             file: val: if hasSuffix suffix file.name then val else null;
           f'' = file: val:
             if list.elem file.path excludedPaths' then null
@@ -122,7 +121,7 @@ in
               file:
                 mapNullable (pair file.stem)
             else
-              const fn.id
+              fn.const fn.id
             ;
           g = name: type:
             let

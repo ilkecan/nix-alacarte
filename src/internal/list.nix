@@ -10,7 +10,6 @@ let
   ;
 
   inherit (lib)
-    const
     max
     min
   ;
@@ -52,7 +51,7 @@ in
 
       slice' =
         {
-          normalizeNegativeIndex ? const fn.id,
+          normalizeNegativeIndex ? fn.const fn.id,
           stride ? 1,
         }:
         start: end: list:

@@ -10,7 +10,6 @@ let
   ;
 
   inherit (lib)
-    const
     lowerChars
     max
   ;
@@ -74,7 +73,7 @@ in
 
       slice' =
         {
-          normalizeNegativeIndex ? const fn.id,
+          normalizeNegativeIndex ? fn.const fn.id,
         }:
         start: end: string:
           let

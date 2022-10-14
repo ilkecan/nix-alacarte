@@ -13,6 +13,7 @@ let
     call
     callWith
     compose
+    const
     flip
     id
     pipe
@@ -48,6 +49,11 @@ in
   compose = assertEqual {
     actual = compose [ double addFive subtractNine ] 2;
     expected = -4;
+  };
+
+  const = assertEqual {
+    actual = const 7 (throw "up");
+    expected = 7;
   };
 
   flip = assertEqual {
