@@ -10,10 +10,6 @@ let
     typeOf
   ;
 
-  inherit (lib)
-    flip
-  ;
-
   inherit (nix-alacarte)
     attrs
     fn
@@ -36,17 +32,20 @@ in
       call = f:
         f;
 
-      callWith = flip self.call;
+      callWith = self.flip self.call;
 
       compose = fs: arg:
         list.foldr self.call arg fs;
+
+      flip = f: x: y:
+        f y x;
 
       id = x:
         x;
 
       pipe = list.foldl' self.callWith;
 
-      pipe' = flip self.pipe;
+      pipe' = self.flip self.pipe;
 
       ternary = cond: expr1: expr2:
         if cond then expr1 else expr2;

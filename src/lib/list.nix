@@ -13,7 +13,6 @@ let
 
   inherit (lib)
     const
-    flip
     max
   ;
 
@@ -110,7 +109,7 @@ in
 
       count = lib.count;
 
-      difference = flip self.difference';
+      difference = fn.flip self.difference';
 
       difference' = lib.subtractLists;
 
@@ -178,7 +177,7 @@ in
         in
         fold (length' - 1) initial;
 
-      forEach = flip self.map;
+      forEach = fn.flip self.map;
 
       gen = builtins.genList;
 

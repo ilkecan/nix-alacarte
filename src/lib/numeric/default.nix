@@ -5,10 +5,6 @@
 }@args:
 
 let
-  inherit (lib)
-    flip
-  ;
-
   inherit (nix-alacarte)
     add
     div
@@ -36,7 +32,7 @@ in
 
   div = builtins.div;
 
-  div' = flip div;
+  div' = fn.flip div;
 
   even = fn.compose [ (equalTo 0) (mod' 2) ];
 
@@ -48,7 +44,7 @@ in
 
   mod = lib.mod;
 
-  mod' = flip mod;
+  mod' = fn.flip mod;
 
   mul = builtins.mul;
 
@@ -63,5 +59,5 @@ in
 
   sub = builtins.sub;
 
-  sub' = flip sub;
+  sub' = fn.flip sub;
 }

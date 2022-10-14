@@ -6,7 +6,6 @@
 
 let
   inherit (lib)
-    flip
     max
     min
   ;
@@ -46,23 +45,23 @@ in
   greaterThan = lhs: rhs:
     lhs > rhs;
 
-  greaterThan' = flip greaterThan;
+  greaterThan' = fn.flip greaterThan;
 
   greaterThanOrEqualTo = lhs: rhs:
     lhs >= rhs;
 
-  greaterThanOrEqualTo' = flip greaterThanOrEqualTo;
+  greaterThanOrEqualTo' = fn.flip greaterThanOrEqualTo;
 
   interval = import ./interval.nix args;
 
   lessThan = builtins.lessThan;
 
-  lessThan' = flip lessThan;
+  lessThan' = fn.flip lessThan;
 
   lessThanOrEqualTo = lhs: rhs:
     lhs <= rhs;
 
-  lessThanOrEqualTo' = flip lessThanOrEqualTo;
+  lessThanOrEqualTo' = fn.flip lessThanOrEqualTo;
 
   notEqualTo = lhs: rhs:
     lhs != rhs;

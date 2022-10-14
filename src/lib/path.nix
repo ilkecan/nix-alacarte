@@ -1,14 +1,9 @@
 {
-  lib,
   nix-alacarte,
   ...
 }:
 
 let
-  inherit (lib)
-    flip
-  ;
-
   inherit (nix-alacarte)
     add
     equalTo
@@ -63,7 +58,7 @@ in
       fn.pipe extensions [
         list.length
         (sub' extensionLength)
-        (flip list.drop extensions)
+        (fn.flip list.drop extensions)
         (equalTo extension')
       ];
 

@@ -8,7 +8,6 @@
 let
   inherit (lib)
     const
-    flip
   ;
 
   inherit (nix-alacarte)
@@ -60,7 +59,7 @@ in
 
       foldr = mkFold list.foldr;
 
-      forEach = flip self.map;
+      forEach = fn.flip self.map;
 
       gen = lib.genAttrs;
 
@@ -72,7 +71,7 @@ in
 
       getByPath = self.getByPath' null;
 
-      getByPath' = flip lib.attrByPath;
+      getByPath' = fn.flip lib.attrByPath;
 
       getMany =
         let
@@ -110,7 +109,7 @@ in
 
       merge = lib.mergeAttrs;
 
-      merge' = flip self.merge;
+      merge' = fn.flip self.merge;
 
       names = builtins.attrNames;
 
@@ -123,7 +122,7 @@ in
         in
         pair fst snd;
 
-      remove = flip builtins.removeAttrs;
+      remove = fn.flip builtins.removeAttrs;
 
       removeNulls = self.filter (_: notNull);
 
