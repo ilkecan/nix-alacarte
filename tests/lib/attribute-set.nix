@@ -44,6 +44,7 @@ let
     rename
     set
     setByPath
+    setIfMissing
     size
     toList
     values
@@ -331,6 +332,18 @@ in
     depth_3 = assertEqual {
       actual = setByPath [ "top" "middle" "bottom" ] 42 { top = { middle = { bottom = null; }; other = "hey"; }; };
       expected = { top = { middle = { bottom = 42; }; other = "hey"; }; };
+    };
+  };
+
+  setIfMissing = {
+    existing = assertEqual {
+      actual = setIfMissing "existing" true { existing = false; };
+      expected = { existing = false; };
+    };
+
+    new = assertEqual {
+      actual = setIfMissing "new" true { existing = false; };
+      expected = { existing = false; new = true; };
     };
   };
 

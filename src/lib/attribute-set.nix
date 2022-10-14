@@ -157,6 +157,11 @@ in
               in
               set value' attrs;
 
+      setIfMissing = name: value: attrs:
+        if self.has name attrs
+          then attrs
+          else self.set name value attrs;
+
       size = pipe' [
         self.names
         list.length
