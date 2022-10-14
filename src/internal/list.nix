@@ -13,7 +13,6 @@ let
     const
     max
     min
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -60,11 +59,11 @@ in
           let
             length = self.length list;
             normalizeNegativeIndex' = normalizeNegativeIndex length;
-            start' = pipe start [
+            start' = fn.pipe start [
               normalizeNegativeIndex'
               (max 0)
             ];
-            end' = pipe end [
+            end' = fn.pipe end [
               normalizeNegativeIndex'
               (min length)
             ];

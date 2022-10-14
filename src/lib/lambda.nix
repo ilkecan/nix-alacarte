@@ -12,7 +12,6 @@ let
 
   inherit (lib)
     flip
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -45,7 +44,9 @@ in
       id = x:
         x;
 
-      pipe' = flip pipe;
+      pipe = list.foldl' self.callWith;
+
+      pipe' = flip self.pipe;
 
       ternary = cond: expr1: expr2:
         if cond then expr1 else expr2;

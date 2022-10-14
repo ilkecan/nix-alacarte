@@ -11,7 +11,6 @@ let
 
   inherit (lib)
     boolToString
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -54,7 +53,7 @@ in
           list = value:
             ''
               {
-              ${pipe value [
+              ${fn.pipe value [
                 (list.map (fn.compose [ (enclose "  " ",") toString]))
                 unlines
               ]}
@@ -64,7 +63,7 @@ in
           set = value:
             ''
               {
-              ${pipe value [
+              ${fn.pipe value [
                 (attrs.mapToList mkKeyValue)
                 (list.map (enclose "  " ","))
                 unlines
@@ -75,7 +74,7 @@ in
 
         mkKeyValue = key: value:
           let
-            value' = pipe value [
+            value' = fn.pipe value [
               toString
               (indentWith (index: _: str.optional (index != 0) "  "))
             ];

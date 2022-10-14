@@ -14,7 +14,6 @@ let
     getExe
     isDerivation
     isOptionType
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -145,7 +144,7 @@ let
 
   option = type:
     if isOptionType type
-      then mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
+      then mkOptionConstructor (fn.pipe (lib.mkOption { inherit type; }))
       else fn.compose [ option type ];
 
   optionFunctions = attrs.concat [

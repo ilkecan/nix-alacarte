@@ -9,7 +9,6 @@ let
   inherit (lib)
     const
     flip
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -99,7 +98,7 @@ in
       map = builtins.mapAttrs;
 
       map' = f: attrs:
-        pipe attrs [
+        fn.pipe attrs [
           self.names
           (list.map (attr: f attr attrs.${attr}))
           list.toAttrs

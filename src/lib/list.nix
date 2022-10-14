@@ -15,7 +15,6 @@ let
     const
     flip
     max
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -61,7 +60,7 @@ in
     let
       elemAt' = elemAt list;
     in
-    pipe list [
+    fn.pipe list [
       self.length
       range1
       (self.map (index: pair index (elemAt' index)))
@@ -147,7 +146,7 @@ in
         let
           elemAt' = elemAt list;
         in
-        pipe list [
+        fn.pipe list [
           self.length
           range1
           (self.filter (fn.compose [ predicate elemAt' ]))
@@ -298,7 +297,7 @@ in
       splitAt = index: list:
         let
           length = self.length list;
-          index' = pipe index [
+          index' = fn.pipe index [
             (normalizeNegativeIndex length)
             (clamp 0 length)
           ];

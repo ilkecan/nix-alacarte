@@ -16,7 +16,6 @@ let
     const
     hasSuffix
     mapNullable
-    pipe
     removeSuffix
   ;
 
@@ -49,7 +48,7 @@ in
     let
       mkAbsolute = path.relativeTo dir;
     in
-    pipe dir [
+    fn.pipe dir [
       readDir
       (attrs.map (name: type:
         let
@@ -131,14 +130,14 @@ in
               stem = removeSuffix suffix name;
               file = { inherit name stem type; path = path'; };
             in
-            pipe file [
+            fn.pipe file [
               f
               (f' file)
               (f'' file)
               (f''' file)
             ];
         in
-        pipe files [
+        fn.pipe files [
           (attrs.mapToList g)
           (if recursive then list.flatten else fn.id)
           (list.remove null)

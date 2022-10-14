@@ -7,13 +7,10 @@
 }:
 
 let
-  inherit (lib)
-    pipe
-  ;
-
   inherit (nix-alacarte)
     attrs
     dirToAttrs
+    fn
     list
   ;
 in
@@ -21,7 +18,7 @@ in
 {
   patchInputs = inputs': patchesDir: systems:
     let
-      patchesFor = pipe patchesDir [
+      patchesFor = fn.pipe patchesDir [
         dirToAttrs
         (attrs.map (_: attrs.values))
         (attrs.filter (_: list.notEmpty))

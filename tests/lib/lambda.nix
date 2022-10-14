@@ -14,6 +14,7 @@ let
     callWith
     compose
     id
+    pipe
     pipe'
     ternary
     ternary'
@@ -53,9 +54,28 @@ in
     expected = 24.4;
   };
 
-  pipe' = assertEqual {
-    actual = pipe' [ double subtractNine addFive ] 5;
-    expected = 6;
+  pipe = {
+    empty = assertEqual {
+      actual = pipe 5 [ ];
+      expected = 5;
+    };
+
+    non_empty = assertEqual {
+      actual = pipe 5 [ double subtractNine addFive ];
+      expected = 6;
+    };
+  };
+
+  pipe' = {
+    empty = assertEqual {
+      actual = pipe' [ ] 5;
+      expected = 5;
+    };
+
+    non_empty = assertEqual {
+      actual = pipe' [ double subtractNine addFive ] 5;
+      expected = 6;
+    };
   };
 
   ternary = {

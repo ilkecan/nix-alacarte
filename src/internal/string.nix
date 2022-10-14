@@ -13,7 +13,6 @@ let
     const
     lowerChars
     max
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -62,7 +61,7 @@ in
               }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
           in
           str:
-            pipe str [
+            fn.pipe str [
               length
               range1
               (if reverse then list.reverse else fn.id)
@@ -81,11 +80,11 @@ in
           let
             length' = length string;
             normalizeNegativeIndex' = normalizeNegativeIndex length';
-            start' = pipe start [
+            start' = fn.pipe start [
               normalizeNegativeIndex'
               (max 0)
             ];
-            end' = pipe end [
+            end' = fn.pipe end [
               normalizeNegativeIndex'
               (max start')
             ];

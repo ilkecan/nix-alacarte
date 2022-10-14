@@ -7,7 +7,6 @@
 let
   inherit (lib)
     flip
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -40,7 +39,7 @@ in
       in
       if path == ""
         then [ ]
-        else pipe path [
+        else fn.pipe path [
           (str.split "/")
           (list.ifilter (i: v: !list.elem v componentsToRemove || i == 0))
           (list.imap (i: v: if i == 0 && v == "" then "/" else v))
@@ -61,7 +60,7 @@ in
 
         extensions = self.extensions path;
       in
-      pipe extensions [
+      fn.pipe extensions [
         list.length
         (sub' extensionLength)
         (flip list.drop extensions)
@@ -78,7 +77,7 @@ in
 
     name = path:
       let
-        last' = pipe path [
+        last' = fn.pipe path [
           self.components
           list.last
         ];
@@ -96,7 +95,7 @@ in
         nameLength = str.length name;
         extensions = extensionsUnsafe name;
       in
-      mapOr null (pipe extensions [
+      mapOr null (fn.pipe extensions [
         (list.map str.length)
         list.sum
         (add (list.length extensions))

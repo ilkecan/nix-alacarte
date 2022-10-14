@@ -6,10 +6,6 @@
 }:
 
 let
-  inherit (lib)
-    pipe
-  ;
-
   inherit (nix-alacarte)
     fn
   ;
@@ -36,7 +32,7 @@ in
       formats.alacarte.fromGenerator (generators.toKeyValue args);
 
     glibKeyFile = { ... }@args:
-      pipe args [
+      fn.pipe args [
         generators.alacarte.toGlibKeyFile
         formats.alacarte.fromGenerator
       ];

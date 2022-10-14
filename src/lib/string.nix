@@ -12,7 +12,6 @@ let
 
   inherit (lib)
     const
-    pipe
     upperChars
   ;
 
@@ -262,7 +261,7 @@ in
       splitAt = index: string:
         let
           length = self.length string;
-          index' = pipe index [
+          index' = fn.pipe index [
             (normalizeNegativeIndex length)
             (clamp 0 length)
           ];

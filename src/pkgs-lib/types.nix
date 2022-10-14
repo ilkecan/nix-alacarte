@@ -17,7 +17,6 @@ let
     mkDefault
     mkMerge
     mkOptionType
-    pipe
   ;
 
   inherit (nix-alacarte)
@@ -104,7 +103,7 @@ in
           config = mkMerge [
             (mkDefault default)
             {
-              final = pipe cfg.drv [
+              final = fn.pipe cfg.drv [
                 (if cfg.overrideAttrs != null then overrideAttrs else fn.id)
                 (if cfg.override != null then override else fn.id)
                 (if cfg.wrap != null then wrap else fn.id)
