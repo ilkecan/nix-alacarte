@@ -308,11 +308,15 @@ in
     in
     toString value;
 
+  queries = self.split "&";
+
   uncommands = self.intercalate ";";
 
   unelements = self.intercalate ",";
 
   unlines = self.intercalate "\n";
+
+  unqueries = self.intercalate "&";
 
   unwords = self.intercalate " ";
 

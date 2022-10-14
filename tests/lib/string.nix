@@ -15,11 +15,13 @@ let
     lines
     mkToString
     pair
+    queries
     quote
     str
     uncommands
     unelements
     unlines
+    unqueries
     unwords
     words
   ;
@@ -232,6 +234,11 @@ in
   prepend = assertEqual {
     actual = prepend "foo" "bar";
     expected = "foobar";
+  };
+
+  queries = assertEqual {
+    actual = queries "key1=value1&key2=value2";
+    expected = [ "key1=value1" "key2=value2" ];
   };
 
   quote = assertEqual {
@@ -604,6 +611,11 @@ in
       actual = uncons "235";
       expected = pair "2" "35";
     };
+  };
+
+  unqueries = assertEqual {
+    actual = unqueries [ "key1=value1" "key2=value2" ];
+    expected = "key1=value1&key2=value2";
   };
 
   unwords = assertEqual {
