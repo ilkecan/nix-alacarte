@@ -9,13 +9,21 @@ let
     call
     callWith
     compose
+    fn
     pipe'
     ternary
     ternary'
   ;
 
+  inherit (fn)
+    toAttrs
+  ;
+
   inherit (dnm)
+    assertAll
     assertEqual
+    assertFailure
+    assertTrue
   ;
 
   double = x: 2 * x;
@@ -66,5 +74,40 @@ in
       actual = ternary' "four" "nine" (4 < 9);
       expected = "four";
     };
+  };
+
+  toAttrs = {
+    non_function = assertFailure toAttrs 24;
+
+    lambda =
+      let
+        x = { x, y ? 0 }: x + y;
+        y = toAttrs x;
+        args = { x = 3; y = 5; };
+      in
+      assertAll [
+        (assertTrue (y ? __functor))
+        (assertEqual {
+          actual = y.__functionArgs;
+          expected = { x = false; y = true; };
+        })
+        (assertTrue (x args == y args))
+      ];
+
+    attribute_set =
+      let
+        x = { __functor = _: x: y: x + y; };
+        y = toAttrs x;
+        arg1 = 3;
+        arg2 = 5;
+      in
+      assertAll [
+        (assertTrue (y ? __functor))
+        (assertEqual {
+          actual = y.__functionArgs;
+          expected = { };
+        })
+        (assertTrue (x arg1 arg2 == y arg1 arg2))
+      ];
   };
 }
