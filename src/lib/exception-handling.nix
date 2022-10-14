@@ -5,7 +5,7 @@
 
 let
   inherit (nix-alacarte)
-    compose
+    fn
     interval
     list
     mkAssertion
@@ -30,7 +30,7 @@ in
         pred || throw msg;
     in
     {
-      appendScope = compose [ mkAssertion appendScope' ];
+      appendScope = fn.compose [ mkAssertion appendScope' ];
 
       __functor = _:
         assertion;
@@ -71,7 +71,7 @@ in
         builtins.throw "${prefix}${autoColor color' msg}";
 
       self = {
-        appendScope = compose [ mkThrow appendScope' ];
+        appendScope = fn.compose [ mkThrow appendScope' ];
 
         __functor = _:
           throw;

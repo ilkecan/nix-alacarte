@@ -11,14 +11,13 @@ let
 
   inherit (nix-alacarte)
     attrs
-    compose
+    fn
     list
     str
   ;
 
   inherit (nix-alacarte.internal.options)
     mkOptionConstructor
-    withDefault
   ;
 
   optionConstructorType = "option-constructor";
@@ -26,7 +25,7 @@ let
   toOption = mkOptionFunction:
     if isOptionConstructor mkOptionFunction
       then mkOptionFunction [ ]
-      else compose [ toOption mkOptionFunction ];
+      else fn.compose [ toOption mkOptionFunction ];
 in
 
 {
@@ -48,9 +47,9 @@ in
         prependDefaultFs = list.prepend defaultFs;
         self = mkOptionFunction:
           if isOptionConstructor mkOptionFunction then
-            mkOptionConstructor (compose [ mkOptionFunction prependDefaultFs ])
+            mkOptionConstructor (fn.compose [ mkOptionFunction prependDefaultFs ])
           else
-            compose [ self mkOptionFunction ];
+            fn.compose [ self mkOptionFunction ];
       in
       self;
   };

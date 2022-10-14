@@ -15,16 +15,15 @@ let
     const
     flip
     max
-    min
     pipe
   ;
 
   inherit (nix-alacarte)
     add
     clamp
-    compose
     div'
     equalTo
+    fn
     fst
     indexed
     int
@@ -35,7 +34,6 @@ let
     notEqualTo
     options
     pair
-    pipe'
     range
     range1
     range2
@@ -109,7 +107,7 @@ in
 
       concatMap = builtins.concatMap;
 
-      cons = compose [ self.prepend self.singleton ];
+      cons = fn.compose [ self.prepend self.singleton ];
 
       count = lib.count;
 
@@ -122,16 +120,16 @@ in
 
       elem = builtins.elem;
 
-      elemIndex = compose [ self.findIndex equalTo ];
+      elemIndex = fn.compose [ self.findIndex equalTo ];
 
-      elemIndices = compose [ self.findIndices equalTo ];
+      elemIndices = fn.compose [ self.findIndices equalTo ];
 
       empty = equalTo [ ];
 
       filter = builtins.filter;
 
       filterMap = f:
-        pipe' [
+        fn.pipe' [
           (self.map f)
           (self.remove null)
         ];
@@ -152,7 +150,7 @@ in
         pipe list [
           self.length
           range1
-          (self.filter (compose [ predicate elemAt' ]))
+          (self.filter (fn.compose [ predicate elemAt' ]))
         ];
 
       flatten = list:
@@ -198,7 +196,7 @@ in
         let
           predicate' = pair.uncurry predicate;
         in
-        pipe' [
+        fn.pipe' [
           indexed
           (self.filter predicate')
           (self.map snd)
@@ -214,7 +212,7 @@ in
         lib.init list;
 
       intercalate = seperator:
-        compose [ self.concat (self.intersperse seperator) ];
+        fn.compose [ self.concat (self.intersperse seperator) ];
 
       intercalate2 = seperator: left: right:
         left ++ seperator ++ right;
@@ -255,12 +253,12 @@ in
       maximum = foldStartingWithHead "maximum" lib.max;
 
       mapToAttrs = f:
-        compose [ self.toAttrs (self.map f) ];
+        fn.compose [ self.toAttrs (self.map f) ];
 
       minimum = foldStartingWithHead "minimum" lib.min;
 
       notElem = x:
-        compose [ not (self.elem x) ];
+        fn.compose [ not (self.elem x) ];
 
       notEmpty = notEqualTo [ ];
 
@@ -293,7 +291,7 @@ in
 
       slice = slice' { inherit normalizeNegativeIndex; };
 
-      snoc = compose [ self.append self.singleton ];
+      snoc = fn.compose [ self.append self.singleton ];
 
       sort = builtins.sort;
 
@@ -321,7 +319,7 @@ in
       to = lib.toList;
 
       toAttrs =
-        pipe' [
+        fn.pipe' [
           (self.map (pair.uncurry lib.nameValuePair))
           builtins.listToAttrs
         ];
@@ -332,7 +330,7 @@ in
           else pair (self.head list) (self.tail list);
 
       union = left:
-        pipe' [
+        fn.pipe' [
           (self.difference' left)
           (self.prepend left)
           self.unique
@@ -359,11 +357,11 @@ in
       stride' = int.toFloat stride;
     in
     start:
-      pipe' [
+      fn.pipe' [
         (sub' start)
         (div' stride')
         ceil
         (max 0)
-        (self.gen (compose [ (add start) (mul stride) ]))
+        (self.gen (fn.compose [ (add start) (mul stride) ]))
       ];
 }

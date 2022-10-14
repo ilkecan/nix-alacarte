@@ -10,10 +10,10 @@ let
 
   inherit (nix-alacarte)
     attrs
+    fn
     increment
     list
     pair
-    pipe'
     uncommands
   ;
 
@@ -50,7 +50,7 @@ let
         "24" = 2;
       }.${toString bit};
     in
-    pipe' [
+    fn.pipe' [
       (list.prepend [ typeParameter bitParamater ])
       SGR.mkSequence
     ];
@@ -65,7 +65,7 @@ in
       controlSequences = {
         # https://www.ecma-international.org/wp-content/uploads/ECMA-48_5th_edition_june_1991.pdf#page=75
         mkSequence = final:
-          pipe' [
+          fn.pipe' [
           (list.map toString)
           uncommands
           # use the two-character `ESC [` sequence instead of the 8-bit C1 CSI

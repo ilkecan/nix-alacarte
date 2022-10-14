@@ -19,7 +19,6 @@ let
 
   inherit (nix-alacarte)
     attrs
-    compose
     fn
     list
     optionalValue
@@ -49,7 +48,7 @@ let
     withDefault
   ;
 
-  unsetAttr = compose [ attrs.remove list.singleton ];
+  unsetAttr = fn.compose [ attrs.remove list.singleton ];
 
   optionAttributes = [
     "apply"
@@ -76,7 +75,7 @@ let
     addCheck = check: option:
       setType (types.addCheck option.type check) option;
     between = lowest:
-      compose [ setType (types.ints.between lowest) ];
+      fn.compose [ setType (types.ints.between lowest) ];
 
     coerceTo = type: coerceFunc: option:
       let
@@ -147,7 +146,7 @@ let
   option = type:
     if isOptionType type
       then mkOptionConstructor (pipe (lib.mkOption { inherit type; }))
-      else compose [ option type ];
+      else fn.compose [ option type ];
 
   optionFunctions = attrs.concat [
     {

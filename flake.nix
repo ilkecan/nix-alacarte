@@ -8,7 +8,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         # https://github.com/NixOS/nix/issues/4931
-        nix-alacarte.follows = "";
+        # nix-alacarte.follows = "";
       };
     };
 

@@ -13,10 +13,10 @@ let
   inherit (nix-alacarte)
     add
     equalTo
+    fn
     list
     mapOr
     path
-    pipe'
     str
     sub
     sub'
@@ -49,7 +49,7 @@ in
     exists = builtins.pathExists;
 
     extensions =
-      pipe' [
+      fn.pipe' [
         self.name
         (mapOr [ ] extensionsUnsafe)
       ];

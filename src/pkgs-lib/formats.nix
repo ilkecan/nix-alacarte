@@ -11,7 +11,7 @@ let
   ;
 
   inherit (nix-alacarte)
-    pipe'
+    fn
   ;
 
   inherit (nix-alacarte.internal)
@@ -56,7 +56,7 @@ in
       {
         type = valueType;
         generate = name:
-          pipe' [
+          fn.pipe' [
             (generators.alacarte.toVDF args)
             (writeText name)
           ];
@@ -79,7 +79,7 @@ in
       {
         type = valueType;
         generate = name:
-          pipe' [
+          fn.pipe' [
             (generators.alacarte.toYAML args)
             (writeText name)
           ];

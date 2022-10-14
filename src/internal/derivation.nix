@@ -11,8 +11,8 @@ let
 
   inherit (nix-alacarte)
     attrs
+    fn
     list
-    pipe'
     str
     unwords
   ;
@@ -24,7 +24,7 @@ let
       str.optional enabled "--${name}";
 
     listOfArgs = name:
-      pipe' [
+      fn.pipe' [
         list.to
         (list.map (format.arg name))
         unwords

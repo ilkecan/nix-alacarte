@@ -6,9 +6,9 @@
 let
   inherit (nix-alacarte)
     attrs
+    fn
     list
     pair
-    pipe'
     str
     tuple
   ;
@@ -27,7 +27,7 @@ in
       throw'.unlessGetAttr "fst";
 
     join = separator:
-      pipe' [
+      fn.pipe' [
         attrs.values
         (list.map toString)
         (str.intercalate separator)

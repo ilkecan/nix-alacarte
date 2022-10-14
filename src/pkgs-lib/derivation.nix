@@ -7,7 +7,7 @@
 let
   inherit (nix-alacarte)
     attrs
-    pipe'
+    fn
     str
   ;
 
@@ -31,7 +31,7 @@ in
       env = { nativeBuildInputs = [ makeWrapper ]; };
       fmtArg = name: value:
         str.optional (value != null) (formatArgs.${name} (camelToKebab name) value);
-      fmtArgs = pipe' [
+      fmtArgs = fn.pipe' [
         (attrs.remove [ "name" "outPath" ])
         (attrs.mapToList fmtArg)
         toString

@@ -18,7 +18,6 @@ let
 
   inherit (nix-alacarte)
     clamp
-    compose
     enclose
     equalTo
     fn
@@ -32,7 +31,6 @@ let
     notEqualTo
     options
     pair
-    pipe'
     snd
     str
     unlines
@@ -69,7 +67,7 @@ in
     indentWith (_: _: self.replicate count char);
 
   indentWith = f:
-    pipe' [
+    fn.pipe' [
       lines
       (list.imap (index: line: "${f index line}${line}"))
       unlines
@@ -130,7 +128,7 @@ in
 
       concatMap = lib.concatMapStrings;
 
-      cons = compose [ self.prepend self.singleton ];
+      cons = fn.compose [ self.prepend self.singleton ];
 
       drop = count:
         slice' { } count int.MAX;
@@ -245,7 +243,7 @@ in
       replace = builtins.replaceStrings;
 
       replicate = n:
-        pipe' [
+        fn.pipe' [
           (list.replicate n)
           self.concat
         ];

@@ -6,17 +6,17 @@
 
 let
   inherit (nix-alacarte)
-    call
-    callWith
-    compose
     fn
-    pipe'
-    ternary
-    ternary'
   ;
 
   inherit (fn)
+    call
+    callWith
+    compose
     id
+    pipe'
+    ternary
+    ternary'
     toAttrs
   ;
 

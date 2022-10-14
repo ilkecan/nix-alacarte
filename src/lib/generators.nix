@@ -16,15 +16,14 @@ let
 
   inherit (nix-alacarte)
     attrs
-    compose
-    str
     enclose
+    fn
     indentBy
     indentWith
     list
     mkToString
-    pipe'
     quote
+    str
     unlines
   ;
 
@@ -42,7 +41,7 @@ in
       generators.toINI { };
 
     toKeyValue = { mkKeyValue }:
-      pipe' [
+      fn.pipe' [
         (attrs.mapToList mkKeyValue)
         unlines
       ];
@@ -56,7 +55,7 @@ in
             ''
               {
               ${pipe value [
-                (list.map (compose [ (enclose "  " ",") toString]))
+                (list.map (fn.compose [ (enclose "  " ",") toString]))
                 unlines
               ]}
               }'';
@@ -105,8 +104,8 @@ in
       let
         toString = mkToString {
           bool = boolToString;
-          list = pipe' [
-            (list.map (compose [ (indentWith indentListElement) toString ]))
+          list = fn.pipe' [
+            (list.map (fn.compose [ (indentWith indentListElement) toString ]))
             unlines
           ];
           set = generators.alacarte.toKeyValue { inherit mkKeyValue; };

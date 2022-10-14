@@ -10,7 +10,7 @@ let
   ;
 
   inherit (nix-alacarte)
-    callWith
+    fn
     list
   ;
 
@@ -26,7 +26,7 @@ in
         self = fs:
           if isFunction (list.head fs) then
             val:
-              self (list.map (callWith val) fs)
+              self (list.map (fn.callWith val) fs)
           else
             combineFunc fs
           ;

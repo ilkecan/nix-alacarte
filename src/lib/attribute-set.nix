@@ -14,14 +14,13 @@ let
 
   inherit (nix-alacarte)
     attrs
-    compose
+    fn
     fst
     list
     notEqualTo
     notNull
     options
     pair
-    pipe'
     snd
   ;
 
@@ -52,7 +51,7 @@ in
       concat = bootstrap.mergeListOfAttrs;
 
       count = predicate: attrs:
-        compose [ (list.count (n: predicate n attrs.${n})) self.names ] attrs;
+        fn.compose [ (list.count (n: predicate n attrs.${n})) self.names ] attrs;
 
       filter = lib.filterAttrs;
 
@@ -83,7 +82,7 @@ in
             attrs.${name} or nullValue;
         in
         names:
-          pipe' [
+          fn.pipe' [
             getAttrOrNullValue
             (self.gen names)
             (self.filter (_: notEqualTo nullValue))
@@ -106,7 +105,7 @@ in
           list.toAttrs
         ];
 
-      mapValues = compose [ self.map const ];
+      mapValues = fn.compose [ self.map const ];
 
       mapToList = lib.mapAttrsToList;
 
@@ -162,7 +161,7 @@ in
           then attrs
           else self.set name value attrs;
 
-      size = pipe' [
+      size = fn.pipe' [
         self.names
         list.length
       ];

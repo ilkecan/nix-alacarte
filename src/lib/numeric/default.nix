@@ -11,9 +11,9 @@ let
 
   inherit (nix-alacarte)
     add
-    compose
     div
     equalTo
+    fn
     greaterThan'
     lessThan'
     mod
@@ -38,7 +38,7 @@ in
 
   div' = flip div;
 
-  even = compose [ (equalTo 0) (mod' 2) ];
+  even = fn.compose [ (equalTo 0) (mod' 2) ];
 
   float = import ./float.nix args;
 
@@ -57,7 +57,7 @@ in
 
   negative = lessThan' 0;
 
-  odd = compose [ (notEqualTo 0) (mod' 2) ];
+  odd = fn.compose [ (notEqualTo 0) (mod' 2) ];
 
   positive = greaterThan' 0;
 

@@ -33,7 +33,6 @@ let
     nixFiles
     pair
     path
-    pipe'
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -71,7 +70,7 @@ in
       recursive ? false,
     }:
 
-    pipe' [
+    fn.pipe' [
       (filesOf {
         inherit
           excludedPaths

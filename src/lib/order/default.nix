@@ -12,7 +12,6 @@ let
   ;
 
   inherit (nix-alacarte)
-    compose
     fn
     greaterThan
     greaterThanOrEqualTo
@@ -39,7 +38,7 @@ in
           min' = if high == null then fn.id else min high;
         in
         assert assertion' (low == null || high == null || low <= high) "`low` cannot be greater than `high`";
-        compose [ min' max' ];
+        fn.compose [ min' max' ];
 
   equalTo = lhs: rhs:
     lhs == rhs;

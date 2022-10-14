@@ -11,7 +11,7 @@ let
 
   inherit (nix-alacarte)
     add
-    compose
+    fn
     greaterThan'
     indexed
     lessThan
@@ -389,7 +389,7 @@ in
   };
 
   groupBy = assertEqual {
-    actual = groupBy (compose [ toString (mod' 2) ]) [ 2 85 30 18 (-9) ];
+    actual = groupBy (fn.compose [ toString (mod' 2) ]) [ 2 85 30 18 (-9) ];
     expected = { "-1" = [ (-9) ]; "0" = [ 2 30 18 ]; "1" = [ 85 ]; };
   };
 

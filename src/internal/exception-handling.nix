@@ -11,13 +11,11 @@ let
 
   inherit (nix-alacarte)
     attrs
-    compose
     even
     fn
     list
     mkAssertion
     mkThrow
-    pipe'
     str
   ;
 
@@ -65,14 +63,14 @@ in
             let
               addColor =
                 if colorDelimiters
-                  then compose [ color addDelimiters ]
-                  else compose [ addDelimiters color ];
+                  then fn.compose [ color addDelimiters ]
+                  else fn.compose [ addDelimiters color ];
               colorMsg = index:
                 if even index
                   then fn.id
                   else addColor;
             in
-            pipe' [
+            fn.pipe' [
               (str.split delimiter)
               (list.imap colorMsg)
               str.concat

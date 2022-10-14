@@ -5,17 +5,17 @@
 
 let
   inherit (nix-alacarte)
-    pipe'
-    str
+    fn
     list
     notEqualTo
+    str
   ;
 in
 
 {
   path = {
     extensionsUnsafe = 
-      pipe' [
+      fn.pipe' [
         (str.split ".")
         (list.filter (notEqualTo ""))
         (list.drop 1)

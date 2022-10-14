@@ -12,36 +12,46 @@ let
 
   inherit (lib)
     flip
-    foldr
     pipe
   ;
 
   inherit (nix-alacarte)
     attrs
-    call
+    fn
+    list
   ;
 
   inherit (nix-alacarte.internal)
     throw
   ;
+
+  self = fn;
 in
 
 {
-  call = f:
-    f;
-
-  callWith = flip call;
-
-  compose = fs: arg:
-    foldr call arg fs;
-
   fn =
     let
       throw' = throw.appendScope "fn";
     in
     {
+      call = f:
+        f;
+
+      callWith = flip self.call;
+
+      compose = fs: arg:
+        list.foldr self.call arg fs;
+
       id = x:
         x;
+
+      pipe' = flip pipe;
+
+      ternary = cond: expr1: expr2:
+        if cond then expr1 else expr2;
+
+      ternary' = expr1: expr2: cond:
+        if cond then expr1 else expr2;
 
       toAttrs =
         let
@@ -66,12 +76,4 @@ in
               attrs.setIfMissing "__functionArgs" (functionArgs function') function;
           }.${type} or (throw'' "not a function but `${type}`");
     };
-
-  pipe' = flip pipe;
-
-  ternary = cond: expr1: expr2:
-    if cond then expr1 else expr2;
-
-  ternary' = expr1: expr2: cond:
-    if cond then expr1 else expr2;
 }
