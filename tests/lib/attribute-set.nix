@@ -192,11 +192,6 @@ in
     };
   };
 
-  is = {
-    attrs = assertTrue is { some = "attrs"; };
-    not_an_attrs = assertFalse is 24.4;
-  };
-
   map = assertEqual {
     actual = map (n: v: "${n}:${toString v}") { a = 1; b = 2; c = 3; };
     expected = { a = "a:1"; b = "b:2"; c = "c:3"; };

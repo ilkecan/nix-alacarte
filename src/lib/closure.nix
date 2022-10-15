@@ -19,6 +19,7 @@ let
     attrs
     combinators
     list
+    type
   ;
 
   wrap = drv: { key = drv.outPath; inherit drv; };
@@ -26,7 +27,7 @@ let
 
   isDependencyKey = combinators.or [ (hasPrefix "deps") (hasSuffix "Inputs") ];
   getDependencies = drv: attrs.values (attrs.filter (key: _: isDependencyKey key) drv.drvAttrs);
-  reduceToDerivations = deps: unique (list.filter attrs.is (list.flatten deps));
+  reduceToDerivations = deps: unique (list.filter type.isAttrs (list.flatten deps));
 in
 
 {

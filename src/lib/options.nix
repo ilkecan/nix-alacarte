@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    typeOf
-  ;
-
   inherit (lib)
     getExe
     isDerivation
@@ -22,6 +18,7 @@ let
     optionalValue
     pair
     str
+    type
   ;
 
   inherit (nix-alacarte.options)
@@ -159,7 +156,7 @@ let
       # str
       exe = arg:
         let
-          type = typeOf arg;
+          type' = type.of arg;
           setDefault =
             if isDerivation arg then
               default (getExe arg)
@@ -167,7 +164,7 @@ let
               {
                 null = fn.id;
                 string = default arg;
-              }.${type}
+              }.${type'}
             ;
         in
         withDefault [ setDefault readOnly ]

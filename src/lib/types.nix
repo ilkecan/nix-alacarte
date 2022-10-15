@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    typeOf
-  ;
-
   inherit (lib)
     getValues
     mergeEqualOption
@@ -24,6 +20,7 @@ let
     attrs
     list
     mkToString
+    type
     unwords
   ;
 
@@ -39,11 +36,11 @@ in
         self = mkOptionType {
           name = "coercibleToString";
           check = x:
-            attrs.has (typeOf x) coerceFunctions || isCoercibleToString x;
+            attrs.has (type.of x) coerceFunctions || isCoercibleToString x;
           merge = loc: defs:
             let
               values = getValues defs;
-              valueTypes = list.map typeOf values;
+              valueTypes = list.map type.of values;
               toString = mkToString coerceFunctions;
             in
             if allEqual valueTypes then

@@ -12,7 +12,6 @@
 let
   inherit (lib)
     getValues
-    isFunction
     mkDefault
     mkMerge
     mkOptionType
@@ -24,6 +23,7 @@ let
     fn
     list
     options
+    type
   ;
 
   inherit (nix-alacarte.internal)
@@ -42,7 +42,7 @@ in
   types = {
     overrideAttrsArgs = mkOptionType {
       name = "overrideAttrs args";
-      check = isFunction;
+      check = type.isFn;
       merge = fn.const getValues;
     };
 

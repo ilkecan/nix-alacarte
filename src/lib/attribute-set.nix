@@ -88,8 +88,6 @@ in
 
       intersect = builtins.intersectAttrs;
 
-      is = builtins.isAttrs;
-
       map = builtins.mapAttrs;
 
       map' = f: attrs:

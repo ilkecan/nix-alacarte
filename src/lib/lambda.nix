@@ -5,15 +5,11 @@
 }:
 
 let
-  inherit (builtins)
-    functionArgs
-    typeOf
-  ;
-
   inherit (nix-alacarte)
     attrs
     fn
     list
+    type
   ;
 
   inherit (nix-alacarte.internal)
@@ -62,12 +58,12 @@ in
         in
         function:
           let
-            type = typeOf function;
+            type' = type.of function;
           in
           {
             lambda = {
               __functor = _: function;
-              __functionArgs = functionArgs function;
+              __functionArgs = builtins.functionArgs function;
             };
 
             set =
@@ -76,7 +72,7 @@ in
                   throw'' "not a function, `__functor` attribute is missing"
                 );
               in
-              attrs.setIfMissing "__functionArgs" (functionArgs function') function;
-          }.${type} or (throw'' "not a function but `${type}`");
+              attrs.setIfMissing "__functionArgs" (builtins.functionArgs function') function;
+          }.${type'} or (throw'' "not a function but `${type'}`");
     };
 }

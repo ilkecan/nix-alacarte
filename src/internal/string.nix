@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    typeOf
-  ;
-
   inherit (lib)
     lowerChars
     max
@@ -19,6 +15,7 @@ let
     list
     range1
     str
+    type
   ;
 
   inherit (str)
@@ -50,14 +47,14 @@ in
         in
         pattern:
           let
-            patternType = typeOf pattern;
+            patternType = type.of pattern;
             patternLength = length pattern;
             searcher =
               {
                 string = str: i:
                   slice i (i + patternLength) str == pattern;
                 lambda = pattern;
-              }.${patternType} or (throw'' [ "string" "lambda" ] "`typeOf pattern`" patternType);
+              }.${patternType} or (throw'' [ "string" "lambda" ] "`type.of pattern`" patternType);
           in
           str:
             fn.pipe str [

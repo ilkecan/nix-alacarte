@@ -7,7 +7,6 @@
 let
   inherit (builtins)
     seq
-    typeOf
   ;
 
   inherit (lib)
@@ -31,6 +30,7 @@ let
     pair
     snd
     str
+    type
     unlines
   ;
 
@@ -304,7 +304,7 @@ in
         null = fn.const "";
         string = fn.id;
       } // fs;
-      toString = fs'.${typeOf value} or builtins.toString;
+      toString = fs'.${type.of value} or builtins.toString;
     in
     toString value;
 

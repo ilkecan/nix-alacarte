@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    typeOf
-  ;
-
   inherit (lib)
     boolToString
   ;
@@ -23,6 +19,7 @@ let
     mkToString
     quote
     str
+    type
     unlines
   ;
 
@@ -88,7 +85,7 @@ in
       let
         toString = mkToString { };
         mkKeyValue = key: value:
-          if attrs.is value
+          if type.isAttrs value
             then ''
               "${key}"
               {
@@ -122,7 +119,7 @@ in
             set = ''
               ${key}:
               ${indentBy 2 (toString value)}'';
-          }.${typeOf value} or ''${key}: ${toString value}'';
+          }.${type.of value} or ''${key}: ${toString value}'';
       in
       value:
         ''

@@ -4,16 +4,13 @@
 }:
 
 let
-  inherit (builtins)
-    typeOf
-  ;
-
   inherit (nix-alacarte)
     attrs
     fn
     increment
     list
     pair
+    type
     uncommands
   ;
 
@@ -80,7 +77,7 @@ in
                 set = f value;
                 int = SGR.mkSequence [ value ];
                 lambda = value;
-              }.${typeOf value}
+              }.${type.of value}
             );
           in
           f {

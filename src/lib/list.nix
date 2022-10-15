@@ -37,6 +37,7 @@ let
     range3
     snd
     sub'
+    type
   ;
 
   inherit (nix-alacarte.internal)
@@ -154,7 +155,7 @@ in
         let
           assertion'' = assertion'.appendScope "flatten";
         in
-        assert assertion'' (self.is list) "not a list";
+        assert assertion'' (type.isList list) "not a list";
         self.concatMap lib.flatten list;
 
       foldl = lib.foldl;
@@ -233,8 +234,6 @@ in
                 tail = snd result;
               in
               self.foldl' operator [ head ] tail;
-
-      is = builtins.isList;
 
       last = list:
         let

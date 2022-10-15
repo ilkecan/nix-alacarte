@@ -5,10 +5,6 @@
 }:
 
 let
-  inherit (builtins)
-    isInt
-  ;
-
   inherit (nix-alacarte)
     add
     fn
@@ -22,6 +18,7 @@ let
     range
     range1
     range3
+    type
   ;
 
   inherit (list)
@@ -273,51 +270,54 @@ in
   };
 
   filterMap = assertEqual {
-    actual = filterMap (x: if isInt x then 2 * x else null) [ 2 "6" null 8 (-5) 4.9 ];
+    actual =
+      filterMap
+        (x: if type.isInt x then 2 * x else null)
+        [ 2 "6" null 8 (-5) 4.9 ];
     expected = [ 4 16 (-10) ];
   };
 
   find = {
-    not_found = assertNull find isInt [ 4.5 "martin" ];
+    not_found = assertNull find type.isInt [ 4.5 "martin" ];
 
     single_elem = assertEqual {
-      actual = find isInt [ 4.5 4 "martin" ];
+      actual = find type.isInt [ 4.5 4 "martin" ];
       expected = 4;
     };
 
     multi_elems = assertEqual {
-      actual = find isInt [ 4.5 4 "martin" 8 ];
+      actual = find type.isInt [ 4.5 4 "martin" 8 ];
       expected = 4;
     };
   };
 
   findIndex = {
-    not_found = assertNull findIndex isInt [ 4.5 "martin" ];
+    not_found = assertNull findIndex type.isInt [ 4.5 "martin" ];
 
     single_elem = assertEqual {
-      actual = findIndex isInt [ 4.5 4 "martin" ];
+      actual = findIndex type.isInt [ 4.5 4 "martin" ];
       expected = 1;
     };
 
     multi_elems = assertEqual {
-      actual = findIndex isInt [ 4.5 4 "martin" 8 ];
+      actual = findIndex type.isInt [ 4.5 4 "martin" 8 ];
       expected = 1;
     };
   };
 
   findIndices = {
     not_found = assertEqual {
-      actual = findIndices isInt [ 4.5 "martin" ];
+      actual = findIndices type.isInt [ 4.5 "martin" ];
       expected = [ ];
     };
 
     single_elem = assertEqual {
-      actual = findIndices isInt [ 4.5 4 "martin" ];
+      actual = findIndices type.isInt [ 4.5 4 "martin" ];
       expected = [ 1 ];
     };
 
     multi_elems = assertEqual {
-      actual = findIndices isInt [ 4.5 4 "martin" 8 ];
+      actual = findIndices type.isInt [ 4.5 4 "martin" 8 ];
       expected = [ 1 3 ];
     };
   };
@@ -457,11 +457,6 @@ in
   intersperse = assertEqual {
     actual = intersperse 0 [ 2 4 6 8 ];
     expected = [ 2 0 4 0 6 0 8 ];
-  };
-
-  is = {
-    list = assertTrue is [ "some" "list" ];
-    not_a_list = assertFalse is 6.4;
   };
 
   last = {

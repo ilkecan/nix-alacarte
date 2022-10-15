@@ -8,7 +8,6 @@
 let
   inherit (builtins)
     functionArgs
-    isString
     readDir
   ;
 
@@ -31,6 +30,7 @@ let
     nixFiles
     pair
     path
+    type
   ;
 
   inherit (nix-alacarte.letterCase)
@@ -107,7 +107,7 @@ in
           suffix = ".${withExtension}";
           files = readDir dir;
           mkAbsolute = path':
-            if isString path' then path.relativeTo dir path' else path';
+            if type.isStr path' then path.relativeTo dir path' else path';
           excludedPaths' = list.map mkAbsolute excludedPaths;
           f = attrs.get return;
           f' = if withExtension == "" then fn.const fn.id else

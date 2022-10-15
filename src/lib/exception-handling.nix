@@ -11,6 +11,7 @@ let
     mkAssertion
     mkThrow
     str
+    type
   ;
 
   inherit (nix-alacarte.internal.exceptionHandling)
@@ -62,7 +63,7 @@ in
     }@args:
     let
       color' = defaultColors // color;
-      scope' = if list.is scope then str.intercalate "." scope else scope;
+      scope' = if type.isList scope then str.intercalate "." scope else scope;
       appendScope' = appendScope args;
 
       prefix = str.optional (scope' != "") "${color'.scope scope'}: ";

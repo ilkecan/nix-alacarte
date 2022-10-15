@@ -1,17 +1,13 @@
 {
-  lib,
   nix-alacarte,
   ...
 }:
 
 let
-  inherit (lib)
-    isFunction
-  ;
-
   inherit (nix-alacarte)
     fn
     list
+    type
   ;
 
   inherit (nix-alacarte.internal)
@@ -24,7 +20,7 @@ in
     mkCombinator = combineFunc:
       let
         self = fs:
-          if isFunction (list.head fs) then
+          if type.isFn (list.head fs) then
             val:
               self (list.map (fn.callWith val) fs)
           else
