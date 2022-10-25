@@ -13,7 +13,6 @@ let
     indentBy'
     indentWith
     lines
-    mkToString
     pair
     queries
     quote
@@ -434,18 +433,6 @@ in
     uppercase = assertEqual {
       actual = lower "ABC";
       expected = "abc";
-    };
-  };
-
-  mkToString = {
-    default = assertEqual {
-      actual = mkToString { } true;
-      expected = "1";
-    };
-
-    custom = assertEqual {
-      actual = mkToString { bool = v: if v then "yes" else "no"; } true;
-      expected = "yes";
     };
   };
 
