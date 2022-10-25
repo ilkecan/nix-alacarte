@@ -17,6 +17,7 @@ let
     cat
     concat
     count
+    empty
     filter
     foldl
     foldl'
@@ -29,7 +30,6 @@ let
     has
     hasByPath
     intersect
-    is
     map
     map'
     mapToList
@@ -37,6 +37,7 @@ let
     merge
     merge'
     names
+    notEmpty
     optional
     partition
     remove
@@ -92,6 +93,11 @@ in
   count = assertEqual {
     actual = count lessThan { a = "c"; b = "a"; c = "c"; z = "d"; w = "y"; };
     expected = 2;
+  };
+
+  empty = {
+    empty_set = assertTrue empty { };
+    non_empty_set = assertFalse empty { b = 2; };
   };
 
   filter = assertEqual {
@@ -239,6 +245,11 @@ in
   names = assertEqual {
     actual = names { c = null; x = 123; y = 41.2; };
     expected = [ "c" "x" "y" ];
+  };
+
+  notEmpty = {
+    empty_set = assertFalse notEmpty { };
+    non_empty_set = assertTrue notEmpty { b = 2; };
   };
 
   optional = {

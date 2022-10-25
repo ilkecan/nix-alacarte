@@ -8,6 +8,7 @@
 let
   inherit (nix-alacarte)
     attrs
+    equalTo
     fn
     fst
     list
@@ -46,6 +47,8 @@ in
 
       count = predicate: attrs:
         fn.compose [ (list.count (n: predicate n attrs.${n})) self.names ] attrs;
+
+      empty = equalTo { };
 
       filter = lib.filterAttrs;
 
@@ -106,6 +109,8 @@ in
       merge' = fn.flip self.merge;
 
       names = builtins.attrNames;
+
+      notEmpty = notEqualTo { };
 
       optional = lib.optionalAttrs;
 
