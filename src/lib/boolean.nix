@@ -7,21 +7,38 @@ let
   inherit (nix-alacarte)
     fn
   ;
+
+  inherit (nix-alacarte.internal)
+    assertion
+  ;
 in
 
 {
-  bool = {
-    and = left: right:
-      left && right;
+  bool =
+    let
+      assertion' = assertion.appendScope "bool";
+    in
+    {
+      and = left: right:
+        left && right;
 
-    not = bool:
-      !bool;
+      not = bool:
+        !bool;
 
-    or = left: right:
-      left || right;
+      or = left: right:
+        left || right;
 
-    toInt = fn.ternary' 1 0;
+      toInt = fn.ternary' 1 0;
 
-    toOnOff = fn.ternary' "on" "off";
-  };
+      toOnOff = fn.ternary' "on" "off";
+
+      xor =
+        let
+          assertion'' = assertion'.appendScope "xor";
+        in
+        left: right:
+        assert assertion''.type "bool" "left" left;
+        assert assertion''.type "bool" "right" right;
+          left != right;
+    };
 }

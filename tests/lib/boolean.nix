@@ -14,6 +14,7 @@ let
     not
     toInt
     toOnOff
+    xor
   ;
 
   inherit (dnm)
@@ -69,5 +70,12 @@ in
       actual = toOnOff false;
       expected = "off";
     };
+  };
+
+  xor = {
+    true_true = assertFalse xor true true;
+    true_false = assertTrue xor true false;
+    false_true = assertTrue xor false true;
+    false_false = assertFalse xor false false;
   };
 }
