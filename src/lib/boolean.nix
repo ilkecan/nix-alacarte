@@ -11,8 +11,14 @@ in
 
 {
   bool = {
+    and = left: right:
+      left && right;
+
     not = bool:
       !bool;
+
+    or = left: right:
+      left || right;
 
     toInt = fn.ternary' 1 0;
 
