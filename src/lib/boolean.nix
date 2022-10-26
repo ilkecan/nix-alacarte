@@ -5,12 +5,15 @@
 
 let
   inherit (nix-alacarte)
+    bool
     fn
   ;
 
   inherit (nix-alacarte.internal)
     assertion
   ;
+
+  self = bool;
 in
 
 {
@@ -21,6 +24,9 @@ in
     {
       and = left: right:
         left && right;
+
+      nand = left:
+        fn.compose [ self.not (self.and left) ];
 
       not = bool:
         !bool;
