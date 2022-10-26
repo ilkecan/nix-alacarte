@@ -6,9 +6,13 @@
 
 let
   inherit (nix-alacarte)
-    boolToInt
+    bool
+  ;
+
+  inherit (bool)
     not
-    onOff
+    toInt
+    toOnOff
   ;
 
   inherit (dnm)
@@ -19,31 +23,31 @@ let
 in
 
 {
-  boolToInt = {
-    true = assertEqual {
-      actual = boolToInt true;
-      expected = 1;
-    };
-
-    false = assertEqual {
-      actual = boolToInt false;
-      expected = 0;
-    };
-  };
-
   not = {
     true = assertFalse not true;
     false = assertTrue not false;
   };
 
-  onOff = {
+  toInt = {
+    true = assertEqual {
+      actual = toInt true;
+      expected = 1;
+    };
+
+    false = assertEqual {
+      actual = toInt false;
+      expected = 0;
+    };
+  };
+
+  toOnOff = {
     on = assertEqual {
-      actual = onOff true;
+      actual = toOnOff true;
       expected = "on";
     };
 
     off = assertEqual {
-      actual = onOff false;
+      actual = toOnOff false;
       expected = "off";
     };
   };

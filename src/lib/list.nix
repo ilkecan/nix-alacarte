@@ -17,6 +17,7 @@ let
 
   inherit (nix-alacarte)
     add
+    bool
     clamp
     div'
     equalTo
@@ -27,7 +28,6 @@ let
     interval
     list
     mul
-    not
     notEqualTo
     options
     pair
@@ -254,7 +254,7 @@ in
       minimum = foldStartingWithHead "minimum" lib.min;
 
       notElem = x:
-        fn.compose [ not (self.elem x) ];
+        fn.compose [ bool.not (self.elem x) ];
 
       notEmpty = notEqualTo [ ];
 

@@ -254,16 +254,6 @@ in
     non_empty_list = assertFalse empty [ 2 ];
   };
 
-  notElem = {
-    true = assertTrue notElem "second" [ 1 ];
-    false = assertFalse notElem 24 [ 123.89 null 24 899 true ];
-  };
-
-  notEmpty = {
-    empty_list = assertFalse notEmpty [ ];
-    non_empty_list = assertTrue notEmpty [ 2 ];
-  };
-
   filter = assertEqual {
     actual = filter positive [ 2 (-14) 8 0 (-0.4) 4.8 ];
     expected = [ 2 8 4.8 ];
@@ -526,6 +516,16 @@ in
       actual = minimum listOfFloats;
       expected = 1.7;
     };
+  };
+
+  notElem = {
+    true = assertTrue notElem "second" [ 1 ];
+    false = assertFalse notElem 24 [ 123.89 null 24 899 true ];
+  };
+
+  notEmpty = {
+    empty_list = assertFalse notEmpty [ ];
+    non_empty_list = assertTrue notEmpty [ 2 ];
   };
 
   optional = {

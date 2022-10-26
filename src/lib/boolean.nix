@@ -1,14 +1,21 @@
 {
+  nix-alacarte,
   ...
 }:
 
+let
+  inherit (nix-alacarte)
+    fn
+  ;
+in
+
 {
-  boolToInt = bool:
-    if bool then 1 else 0;
+  bool = {
+    not = bool:
+      !bool;
 
-  not = bool:
-    !bool;
+    toInt = fn.ternary' 1 0;
 
-  onOff = bool:
-    if bool then "on" else "off";
+    toOnOff = fn.ternary' "on" "off";
+  };
 }
