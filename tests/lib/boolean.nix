@@ -12,6 +12,7 @@ let
   inherit (bool)
     and
     nand
+    nor
     not
     toInt
     toOnOff
@@ -39,6 +40,13 @@ in
     true_false = assertTrue nand true false;
     false_true = assertTrue nand false true;
     false_false = assertTrue nand false false;
+  };
+
+  nor = {
+    true_true = assertFalse nor true true;
+    true_false = assertFalse nor true false;
+    false_true = assertFalse nor false true;
+    false_false = assertTrue nor false false;
   };
 
   not = {

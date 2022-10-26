@@ -28,6 +28,9 @@ in
       nand = left:
         fn.compose [ self.not (self.and left) ];
 
+      nor = left:
+        fn.compose [ self.not (self.or left) ];
+
       not = bool:
         !bool;
 
