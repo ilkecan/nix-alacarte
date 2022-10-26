@@ -15,6 +15,7 @@ let
     not
     toInt
     toOnOff
+    xnor
     xor
   ;
 
@@ -78,6 +79,13 @@ in
       actual = toOnOff false;
       expected = "off";
     };
+  };
+
+  xnor = {
+    true_true = assertTrue xnor true true;
+    true_false = assertFalse xnor true false;
+    false_true = assertFalse xnor false true;
+    false_false = assertTrue xnor false false;
   };
 
   xor = {

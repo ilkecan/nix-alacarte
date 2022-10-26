@@ -38,6 +38,9 @@ in
 
       toOnOff = fn.ternary' "on" "off";
 
+      xnor = left:
+        fn.compose [ self.not (self.xor left) ];
+
       xor =
         let
           assertion'' = assertion'.appendScope "xor";
