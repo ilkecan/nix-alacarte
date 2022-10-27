@@ -103,6 +103,9 @@ in
 
         unlessGetAttr = attrName: attrs:
           attrs.${attrName} or (self.missingAttribute attrName attrs);
+
+        typeMismatch = type': name:
+          throw "`${name}` is not of type ${type'}";
       };
     in
     self;
