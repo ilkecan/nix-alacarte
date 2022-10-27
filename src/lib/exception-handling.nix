@@ -42,6 +42,12 @@ in
         in
         pred || throw.missingAttribute attrName attrs;
 
+      type = type': name: value:
+        let
+          pred = type.of value == type';
+        in
+        pred || throw.typeMismatch type' name;
+
       indexBounds = interval': index: list:
         let
           predicate = interval.contains index interval';
