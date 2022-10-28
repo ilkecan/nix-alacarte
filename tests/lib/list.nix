@@ -22,7 +22,9 @@ let
   ;
 
   inherit (list)
+    all
     allEqual
+    any
     append
     at
     concat
@@ -58,7 +60,6 @@ let
     intercalate2
     intersect
     intersperse
-    is
     last
     length
     map
@@ -105,12 +106,36 @@ let
 in
 
 {
+  all =
+    let
+      predicate = greaterThan' 3;
+    in
+    {
+      empty = assertTrue all predicate [ ];
+      only_false = assertFalse all predicate [ 1 2 ];
+      false_and_true = assertFalse all predicate [ 1 2 4 5 ];
+      only_true = assertTrue all predicate [ 4 5 ];
+      lazy = assertFalse all predicate [ 1 2 4 5 (throw "up") ];
+    };
+
   allEqual = {
     zero_elem = assertTrue allEqual [ ];
     one_elem = assertTrue allEqual [ 2 ];
     many_elems_true = assertTrue allEqual [ 2 2 2 ];
     many_elems_false = assertFalse allEqual [ 2 3 2 ];
   };
+
+  any = 
+    let
+      predicate = greaterThan' 3;
+    in
+    {
+      empty = assertFalse any predicate [ ];
+      only_false = assertFalse any predicate [ 1 2 ];
+      false_and_true = assertTrue any predicate [ 1 2 4 5 ];
+      only_true = assertTrue any predicate [ 4 5 ];
+      lazy = assertTrue any predicate [ 1 2 4 5 (throw "up") ];
+    };
 
   append = assertEqual {
     actual = append [ 2 ] [ 1 ];
