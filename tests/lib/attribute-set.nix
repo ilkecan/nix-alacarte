@@ -7,12 +7,15 @@
 let
   inherit (nix-alacarte)
     attrs
+    equalTo
     lessThan
     list
     pair
   ;
 
   inherit (attrs)
+    all
+    any
     cartesianProduct
     cat
     concat
@@ -63,6 +66,30 @@ let
 in
 
 {
+  all =
+    let
+      predicate = equalTo;
+    in
+    {
+      empty = assertTrue all predicate { };
+      only_false = assertFalse all predicate { a = 1; b = 2; };
+      false_and_true = assertFalse all predicate { a = 1; b = 2; c = "c"; d = "d"; };
+      only_true = assertTrue all predicate { c = "c"; d = "d"; };
+      lazy = assertFalse all predicate { a = 1; b = 2; c = "c"; d = throw "up"; };
+    };
+
+  any =
+    let
+      predicate = equalTo;
+    in
+    {
+      empty = assertFalse any predicate { };
+      only_false = assertFalse any predicate { a = 1; b = 2; };
+      false_and_true = assertTrue any predicate { a = 1; b = 2; c = "c"; d = "d"; };
+      only_true = assertTrue any predicate { c = "c"; d = "d"; };
+      lazy = assertTrue any predicate { a = 1; b = 2; c = "c"; d = throw "up"; };
+    };
+
   cartesianProduct = assertEqual {
     actual = cartesianProduct { x = [ 3 5 ]; y = [ "m" "l" ]; };
     expected = [

@@ -24,6 +24,7 @@ let
   ;
 
   inherit (nix-alacarte.internal.attrs)
+    fromListFn
     mkFold
   ;
 
@@ -39,14 +40,17 @@ in
       __functor = _:
         options.attrs;
 
+      all = fromListFn list.all;
+
+      any = fromListFn list.any;
+
       cartesianProduct = lib.cartesianProductOfSets;
 
       cat = builtins.catAttrs;
 
       concat = bootstrap.mergeListOfAttrs;
 
-      count = predicate: attrs:
-        fn.compose [ (list.count (n: predicate n attrs.${n})) self.names ] attrs;
+      count = fromListFn list.count;
 
       empty = equalTo { };
 
@@ -158,10 +162,7 @@ in
           then attrs
           else self.set name value attrs;
 
-      size = fn.pipe' [
-        self.names
-        list.length
-      ];
+      size = fn.compose [ list.length self.names ];
 
       toList = self.mapToList pair;
 
