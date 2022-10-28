@@ -20,6 +20,10 @@ let
     sub
     sub'
   ;
+
+  inherit (nix-alacarte.internal)
+    assertion
+  ;
 in
 
 {
@@ -56,6 +60,14 @@ in
   odd = fn.compose [ (notEqualTo 0) (mod' 2) ];
 
   positive = greaterThan' 0;
+
+  recip =
+    let
+      assertion' = assertion.appendScope "recip";
+    in
+    num:
+      assert assertion' (num != 0) "division by zero";
+      1.0 / num;
 
   sub = builtins.sub;
 

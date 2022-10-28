@@ -20,12 +20,14 @@ let
     negative
     odd
     positive
+    recip
     sub
     sub'
   ;
 
   inherit (dnm)
     assertEqual
+    assertFailure
     assertFalse
     assertTrue
   ;
@@ -218,6 +220,20 @@ in
       negative = assertFalse positive (-4.4);
       zero = assertFalse positive 0.0;
       positive = assertTrue positive 48.9;
+    };
+  };
+
+  recip = {
+    integer = assertEqual {
+      actual = recip 4;
+      expected = 0.25;
+    };
+
+    zero = assertFailure recip 0;
+
+    float = assertEqual {
+      actual = recip 1.75;
+      expected = 4.0 / 7;
     };
   };
 
